@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>watanabot</groupId>
 	<artifactId>watanabot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 
 	<repositories>
 		<repository> <!-- This repo fixes issues with transitive dependencies -->
