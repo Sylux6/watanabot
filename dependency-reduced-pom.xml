@@ -18,7 +18,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>bootstrap.Main</mainClass>
+                  <mainClass>bot.Main</mainClass>
                 </transformer>
               </transformers>
               <filters>
@@ -47,5 +47,9 @@
       <url>https://jitpack.io</url>
     </repository>
   </repositories>
+  <properties>
+    <maven.compiler.target>8</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
+  </properties>
 </project>
 
