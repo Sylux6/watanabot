@@ -87,9 +87,9 @@ public class CommandHandler {
 	IEmoji yousoro;
 	    yousoro = event.getGuild().getEmojiByName("yousoro");
 	    if (yousoro != null)
-		BotUtils.sendMessage(event.getChannel(), BotUtils.getEmoji(event.getGuild(), "yousoro"));
+		BotUtils.sendMessage(event.getChannel(), "<@" + event.getAuthor().getLongID() + "> " + BotUtils.getEmoji(event.getGuild(), "yousoro"));
 	    else
-		BotUtils.sendMessage(event.getChannel(), "Yousoro!~");
+		BotUtils.sendMessage(event.getChannel(), "<@" + event.getAuthor().getLongID() + "> Yousoro!~");
 	
     }
     

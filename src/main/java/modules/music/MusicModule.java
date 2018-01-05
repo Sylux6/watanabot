@@ -58,7 +58,7 @@ public class MusicModule extends AbstractModule {
 		System.out.println("NULL");
 		return;
 	    }
-	    System.out.println("----------HERE");
+	    
 	    audioPlayers.remove(event.getGuild().getStringID());
 	    botVoiceChannel.leave();
 

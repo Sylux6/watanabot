@@ -5,6 +5,7 @@ import java.util.Random;
 
 import core.BotUtils;
 import net.kodehawa.lib.imageboards.DefaultImageBoards;
+import net.kodehawa.lib.imageboards.entities.Rating;
 
 public class GeneralModule extends AbstractModule {
 
@@ -31,9 +32,12 @@ public class GeneralModule extends AbstractModule {
 	});
 
 	commands.put("nya", (event, args) -> {
-	    DefaultImageBoards.SAFEBOORU.search(100, "nekomimi").async(images -> {
+	    DefaultImageBoards.DANBOORU.search(100, "nekomimi").async(images -> {
+		int i = 0;
 		Collections.shuffle(images);
-		BotUtils.sendMessage(event.getChannel(), images.get(0).getURL());
+		while (!images.get(i).getRating().equals(Rating.SAFE))
+		    i++;
+		BotUtils.sendMessage(event.getChannel(), images.get(i).getURL());
 	    });
 	});
 
