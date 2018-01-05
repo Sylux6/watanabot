@@ -38,6 +38,11 @@ public class BotUtils {
 	
     }
     
+    // Checks if a yousoro emoji exists
+    static boolean yousoroEmojiExists(IGuild guild) {
+	return guild.getEmojiByName("yousoro") != null;
+    }
+    
     // Returns emoji syntax for message
     static public String getEmoji(IGuild guild, String emoji) {
 	return "<:"+emoji+":"+guild.getEmojiByName(emoji).getLongID()+">";

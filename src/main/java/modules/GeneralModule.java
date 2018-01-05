@@ -6,9 +6,6 @@ import bot.BotUtils;
 
 public class GeneralModule extends AbstractModule {
 
-    public GeneralModule(String name) {
-	super(name);
-    }
 
     @Override
     public void populate() {

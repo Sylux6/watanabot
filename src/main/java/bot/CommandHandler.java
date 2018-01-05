@@ -8,12 +8,18 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.vdurmont.emoji.EmojiManager;
+
 import bot.threads.ThreadCommand;
 import bot.threads.ThreadReaction;
 import modules.AbstractModule;
+import modules.BlindtestModule;
 import modules.GeneralModule;
+import modules.MusicModule;
 import sx.blah.discord.api.events.EventSubscriber;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MentionEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.handle.obj.IEmoji;
 
 public class CommandHandler {
 
@@ -27,12 +33,14 @@ public class CommandHandler {
 	moduleMap = new HashMap<>();
 	
 	// Init
-	moduleMap.put("general", new GeneralModule("general"));
+	moduleMap.put("general", new GeneralModule());
+	moduleMap.put("music", new MusicModule());
+	moduleMap.put("blindtest", new BlindtestModule());
     }
 
     @EventSubscriber
     public void onMessageReceived(MessageReceivedEvent event) {
-
+	
 	// Get all elements of the received message separated by blankspaces
 	List<String> tmp = new ArrayList<>(Arrays.asList(event.getMessage().getContent().split("\\s+")));
 
@@ -72,6 +80,17 @@ public class CommandHandler {
 	// Calling the command
 	if (module.getMapCommands().containsKey(argTab.get(0)))
 	    service.execute(new ThreadCommand(module, event, argTab));
+    }
+    
+    @EventSubscriber
+    public void onMentionEvent(MentionEvent event) {
+	IEmoji yousoro;
+	    yousoro = event.getGuild().getEmojiByName("yousoro");
+	    if (yousoro != null)
+		BotUtils.sendMessage(event.getChannel(), BotUtils.getEmoji(event.getGuild(), "yousoro"));
+	    else
+		BotUtils.sendMessage(event.getChannel(), "Yousoro!~");
+	
     }
     
 }
