@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.vdurmont.emoji.EmojiManager;
-
 import bot.threads.ThreadCommand;
 import bot.threads.ThreadReaction;
 import modules.AbstractModule;

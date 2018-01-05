@@ -14,7 +14,10 @@ public class GeneralModule extends AbstractModule {
 	});
 	
 	commands.put("roll", (event, args) -> {
-	    BotUtils.sendMessage(event.getChannel(), roll()+" "+BotUtils.getEmoji(event.getGuild(), "yousoro"));
+	    if (BotUtils.yousoroEmojiExists(event.getGuild()))
+		BotUtils.sendMessage(event.getChannel(), roll()+" "+BotUtils.getEmoji(event.getGuild(), "yousoro"));
+	    else
+		BotUtils.sendMessage(event.getChannel(), roll()+"");
 	});
 	
 	commands.put("wait", (event, args) -> {

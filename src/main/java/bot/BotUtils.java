@@ -39,7 +39,7 @@ public class BotUtils {
     }
     
     // Checks if a yousoro emoji exists
-    static boolean yousoroEmojiExists(IGuild guild) {
+    static public boolean yousoroEmojiExists(IGuild guild) {
 	return guild.getEmojiByName("yousoro") != null;
     }
     

@@ -18,7 +18,7 @@ public class ThreadReaction implements Runnable {
     @Override
     public void run() {
 	message = event.getMessage().getContent();
-	
+		
 	// Let's go for the if... else if...
 	
 	if (message.matches("(.*(?i)yousoro.*)|(.*sylux6Yo.*)")) {
@@ -33,6 +33,7 @@ public class ThreadReaction implements Runnable {
 	else if (message.matches(".*(?i)lewd.*")) {
 	    BotUtils.sendMessage(event.getChannel(), "I'm not lewd!");
 	}
+	
     }
 
 }
