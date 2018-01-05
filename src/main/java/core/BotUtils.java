@@ -1,4 +1,4 @@
-package bot;
+package core;
 
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;

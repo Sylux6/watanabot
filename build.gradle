@@ -15,8 +15,11 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
     maven {
-    url  "https://jitpack.io"
-  }
+        url  "https://jitpack.io"
+    }
+    maven {
+        url  "https://dl.bintray.com/kodehawa/maven" 
+    }
 }
 
 dependencies {
@@ -30,5 +33,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     
     compile "com.github.austinv11:Discord4J:2.9.3"
+    compile 'com.sedmelluq:lavaplayer:1.2.45'
+    compile 'net.kodehawa:imageboard-api:2.0'
 }
 

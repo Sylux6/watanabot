@@ -1,4 +1,4 @@
-package bot.threads;
+package threads;
 
 import java.util.List;
 

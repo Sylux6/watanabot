@@ -1,4 +1,4 @@
-package bot;
+package core;
 
 import sx.blah.discord.api.IDiscordClient;
 
@@ -19,10 +19,11 @@ public class Main {
 	// Register a listener via the EventSubscriber annotation which allows for
 	// organisation and delegation of events
 	cli.getDispatcher().registerListener(commandHandler);
+	
 
 	// Only login after all events are registered otherwise some may be missed.
+	cli.changePlayingText("with Chika");
 	cli.login();
-
     }
 
 }

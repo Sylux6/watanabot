@@ -1,4 +1,4 @@
-package bot;
+package core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,16 +8,17 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import bot.threads.ThreadCommand;
-import bot.threads.ThreadReaction;
 import modules.AbstractModule;
-import modules.BlindtestModule;
 import modules.GeneralModule;
-import modules.MusicModule;
+import modules.Blindtest.BlindtestModule;
+import modules.music.MusicModule;
+import modules.picture.PictureModule;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MentionEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IEmoji;
+import threads.ThreadCommand;
+import threads.ThreadReaction;
 
 public class CommandHandler {
 
@@ -34,6 +35,7 @@ public class CommandHandler {
 	moduleMap.put("general", new GeneralModule());
 	moduleMap.put("music", new MusicModule());
 	moduleMap.put("blindtest", new BlindtestModule());
+	moduleMap.put("picture", new PictureModule());
     }
 
     @EventSubscriber

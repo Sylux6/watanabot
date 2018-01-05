@@ -1,4 +1,4 @@
-package bot.interfaces;
+package interfaces;
 
 public interface IModule {
     

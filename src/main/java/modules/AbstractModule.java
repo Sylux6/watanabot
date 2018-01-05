@@ -3,9 +3,9 @@ package modules;
 import java.util.HashMap;
 import java.util.Map;
 
-import bot.interfaces.ICommand;
+import interfaces.ICommand;
 
-public abstract class AbstractModule implements bot.interfaces.IModule {
+public abstract class AbstractModule implements interfaces.IModule {
     
     // Abstract class for creating commands module
     

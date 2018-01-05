@@ -1,4 +1,6 @@
-package modules;
+package modules.Blindtest;
+
+import modules.AbstractModule;
 
 public class BlindtestModule extends AbstractModule {
 
