@@ -1,20 +1,27 @@
 package bot;
 
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.api.events.EventDispatcher;
 
 public class Main {
-    
+
     public static void main(String[] args) {
+
+	if (args.length != 1) {
+	    System.out.println("Please enter the bots token as the first argument e.g java -jar watanabot-1.0.jar <token>");
+	    return;
+	}
 	
-	String token = "";
-	
-	IDiscordClient client = Example.createClient(token, true); // Gets the client object (from the first example)
-	EventDispatcher dispatcher = client.getDispatcher(); // Gets the EventDispatcher instance for this client
-							     // instance
-	dispatcher.registerListener(new AnnotationListener()); // Registers the @EventSubscriber example class from above
-	SimpleCommand cmd = new SimpleCommand();
-	cmd.enable(client);
+	// Initializing commandHandler
+	CommandHandler commandHandler = new CommandHandler();
+
+	IDiscordClient cli = BotUtils.getBuiltDiscordClient(args[0]);
+
+	// Register a listener via the EventSubscriber annotation which allows for organisation and delegation of events
+        cli.getDispatcher().registerListener(commandHandler);
+
+        // Only login after all events are registered otherwise some may be missed.
+        cli.login();
+
     }
 
 }
