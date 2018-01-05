@@ -22,4 +22,5 @@ public abstract class AbstractModule implements bot.interfaces.IModule {
     public Map<String, ICommand> getMapCommands () {
 	return commands;
     }
+    
 }

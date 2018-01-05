@@ -1,17 +1,17 @@
-package bot;
+package bot.threads;
 
 import java.util.List;
 
-import bot.interfaces.IModule;
+import modules.AbstractModule;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public class ThreadCommand implements Runnable {
     
-    IModule module;
+    AbstractModule module;
     MessageReceivedEvent event;
     List<String> argTab;
     
-    public ThreadCommand(IModule module, MessageReceivedEvent event, List<String> argTab) {
+    public ThreadCommand(AbstractModule module, MessageReceivedEvent event, List<String> argTab) {
 	this.module = module;
 	this.event = event;
 	this.argTab = argTab;
@@ -19,7 +19,7 @@ public class ThreadCommand implements Runnable {
 
     @Override
     public void run() {
-	module.getCommands().get(argTab.get(0)).runCommand(event, argTab);
+	module.getMapCommands().get(argTab.get(0)).runCommand(event, argTab);
     }
 
 }

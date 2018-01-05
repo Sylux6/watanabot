@@ -3,6 +3,7 @@ package bot;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RequestBuffer;
 
@@ -35,6 +36,11 @@ public class BotUtils {
 	    }
 	});
 	
+    }
+    
+    // Returns emoji syntax for message
+    static public String getEmoji(IGuild guild, String emoji) {
+	return "<:"+emoji+":"+guild.getEmojiByName(emoji).getLongID()+">";
     }
 
 }

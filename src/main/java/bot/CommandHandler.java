@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import bot.interfaces.IModule;
+import bot.threads.ThreadCommand;
+import bot.threads.ThreadReaction;
+import modules.AbstractModule;
 import modules.GeneralModule;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
@@ -16,7 +18,7 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 public class CommandHandler {
 
     // A map of modules mapping from module name to the map of commands
-    private Map<String, IModule> moduleMap;
+    private Map<String, AbstractModule> moduleMap;
     
     // Thread pool
     final ExecutorService service = Executors.newFixedThreadPool(100);
@@ -41,8 +43,10 @@ public class CommandHandler {
 
 	// Check if the first arg (the command) starts with the prefix defined in the
 	// utils class
-	if (!tmp.get(0).startsWith(BotUtils.BOT_PREFIX))
+	if (!tmp.get(0).startsWith(BotUtils.BOT_PREFIX)) {
+	    service.execute(new ThreadReaction(event));
 	    return;
+	}
 
 	List<String> argTab;
 
@@ -54,7 +58,7 @@ public class CommandHandler {
 	}
 
 	// Get the module map of commands
-	IModule module = moduleMap.get(argTab.get(0));
+	AbstractModule module = moduleMap.get(argTab.get(0));
 
 	// No specific module found
 	if (module == null) {
@@ -66,7 +70,8 @@ public class CommandHandler {
 	}
 	
 	// Calling the command
-	if (module.getCommands().containsKey(argTab.get(0)))
+	if (module.getMapCommands().containsKey(argTab.get(0)))
 	    service.execute(new ThreadCommand(module, event, argTab));
     }
+    
 }
