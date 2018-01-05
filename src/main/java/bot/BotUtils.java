@@ -10,7 +10,8 @@ public class BotUtils {
 
     // Constant prefix --CHANGE HERE--
     static String BOT_PREFIX = "o7";
-
+    static int PREFIX_LENGTH = BOT_PREFIX.length();
+    
     // Handles the creation and getting of a IDiscordClient object for a token
     static IDiscordClient getBuiltDiscordClient(String token) {
 
@@ -27,7 +28,7 @@ public class BotUtils {
     static public void sendMessage(IChannel channel, String message) {
 	RequestBuffer.request(() -> {
 	    try {
-		channel.sendMessage(" "+message); // Message starts with blankspace to avoid conflicts
+		channel.sendMessage(message); // Message starts with blankspace to avoid conflicts
 	    } catch (DiscordException e) {
 		System.err.println("Message could not be sent with error: ");
 		e.printStackTrace();

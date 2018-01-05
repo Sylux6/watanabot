@@ -27,12 +27,18 @@ public class GeneralModule extends AbstractModule {
 	    BotUtils.sendMessage(event.getChannel(), "pong");
 	});
 	
-	commands.put("orvus", (event, args) -> {
-	    BotUtils.sendMessage(event.getChannel(), "@orvus#7455");
-	});
-	
 	commands.put("roll", (event, args) -> {
 	    BotUtils.sendMessage(event.getChannel(), ""+roll());
+	});
+	
+	commands.put("wait", (event, args) -> {
+	    try {
+		Thread.sleep(5000);
+	    } catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	    BotUtils.sendMessage(event.getChannel(), "waited 5 sec");
 	});
 
     }
@@ -44,5 +50,6 @@ public class GeneralModule extends AbstractModule {
 	rand.setSeed(System.currentTimeMillis());
 	return Math.abs((rand.nextInt()%101));
     }
+
 
 }
