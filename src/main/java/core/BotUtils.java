@@ -10,8 +10,8 @@ import sx.blah.discord.util.RequestBuffer;
 public class BotUtils {
 
     // Constant prefix --CHANGE HERE--
-    static String BOT_PREFIX = "o7";
-    static int PREFIX_LENGTH = BOT_PREFIX.length();
+    static public String BOT_PREFIX = "o7";
+    static public int PREFIX_LENGTH = BOT_PREFIX.length();
     
     // Handles the creation and getting of a IDiscordClient object for a token
     static IDiscordClient getBuiltDiscordClient(String token) {
