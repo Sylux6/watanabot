@@ -117,21 +117,21 @@ public class MusicModule extends AbstractModule {
 	});
 
 	commands.put("list", (event, args) -> {
-	    StringBuilder message = new StringBuilder("Tracklist: \n");
+	    StringBuilder message = new StringBuilder("**Tracklist:**\n");
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    List<AudioTrack> tracklist = musicManager.scheduler.getTracklist();
 	    int i = 0;
 	    for (AudioTrack t : tracklist) {
 		if (i == 5) {
-		    message.append(tracklist.size() - i + " more...");
+		    message.append("and **" + (tracklist.size() - i) + "** more...");
 		    break;
 		}
-		message.append(i+". "+t.getInfo().title+"\n");
+		message.append("**" + (i + 1) + ".** " + t.getInfo().title + "\n");
 		i++;
 	    }
 	    BotUtils.sendMessage(event.getChannel(), message.toString());
 	});
-	
+
 	commands.put("shuffle", (event, args) -> {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.scheduler.shuffle();
@@ -146,9 +146,9 @@ public class MusicModule extends AbstractModule {
 
 	if (musicManager == null) {
 	    musicManager = new GuildMusicManager(playerManager);
+	    musicManager.player.setVolume(50);
 	    musicManagers.put(guildId, musicManager);
 	}
-	musicManager.player.setVolume(50);
 
 	guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
 
