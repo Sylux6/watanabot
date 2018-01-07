@@ -7,6 +7,7 @@ import java.util.List;
 import core.BotUtils;
 import core.CommandHandler;
 import modules.AbstractModule;
+import modules.picture.PictureModule;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import threads.ThreadCommand;
@@ -62,7 +63,10 @@ public class MessageListener extends ListenerAdapter {
 	}
 
 	// Calling the command
-	if (module.getMapCommands().containsKey(argTab.get(0)))
+	if (module.getMapCommands().containsKey(argTab.get(0))) {
 	    CommandHandler.service.execute(new ThreadCommand(module, event, argTab));
+	} else if (module instanceof PictureModule) { // Getting image by default if unknown command
+	    ((PictureModule) module).getByDefault(event, argTab);
+	}
     }
 }

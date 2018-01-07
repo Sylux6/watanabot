@@ -17,8 +17,7 @@ public class Main {
 	if (args.length != 1) {
 	    System.out.println("Please enter the bot token as the first ");
 	    return;
-	}
-	
+	}	
 	
 	// Preparing modules
 	CommandHandler modules = new CommandHandler();
