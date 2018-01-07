@@ -19,4 +19,9 @@ public class BlindtestModule extends AbstractModule {
 	
     }
 
+    @Override
+    public String getName() {
+	return "(b)lindtest";
+    }
+
 }

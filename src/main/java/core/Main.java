@@ -5,7 +5,7 @@ import javax.security.auth.login.LoginException;
 import core.listeners.MessageListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.RichPresence;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 public class Main {
@@ -24,7 +24,7 @@ public class Main {
 	// Building bot
 	new JDABuilder(AccountType.BOT).setToken(args[0])
 		.addEventListener(new MessageListener())
-		.setGame(RichPresence.playing("with Chika-chan"))
+		.setGame(Game.playing("with Chika-chan"))
 		.buildBlocking();
     }	
 

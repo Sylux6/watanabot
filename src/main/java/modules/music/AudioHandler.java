@@ -31,7 +31,7 @@ public class AudioHandler implements AudioLoadResultHandler {
     public void playlistLoaded(AudioPlaylist playlist) {
 	AudioTrack track = playlist.getSelectedTrack();
 
-	if (track == null) {
+	if (track != null) {
 	    // User picked a track from a playlist: only load this one
 	    track = playlist.getTracks().get(0);
 	    musicManager.scheduler.queue(track);

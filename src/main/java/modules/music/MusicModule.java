@@ -1,11 +1,13 @@
 package modules.music;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import modules.AbstractModule;
 import net.dv8tion.jda.core.entities.Guild;
@@ -40,15 +42,45 @@ public class MusicModule extends AbstractModule {
 	});
 
 	commands.put("leave", (event, args) -> {
-	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
-	    AudioManager audioManager = event.getGuild().getAudioManager();
-	    musicManager.player.destroy();
-	    audioManager.closeAudioConnection();
+	    event.getGuild().getAudioManager().closeAudioConnection();
+	    getGuildAudioPlayer(event.getGuild()).player.destroy();
 	    BotUtils.sendMessage(event.getChannel(), "Bye bye!~ (> ᴗ •)ゞ");
 	});
 
+	commands.put("pause", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    musicManager.player.setPaused(true);
+	    BotUtils.sendMessage(event.getChannel(), "Pause...");
+	});
+
+	commands.put("resume", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    musicManager.player.setPaused(false);
+	    BotUtils.sendMessage(event.getChannel(), "... Resume");
+	});
+
+	commands.put("volume", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    if (args.size() < 2) {
+		// Setting the volume to 50 by default
+		musicManager.player.setVolume(50);
+		BotUtils.sendMessage(event.getChannel(), "Volume set to 50%");
+		return;
+	    }
+	    try {
+		int volume = Integer.valueOf(args.get(1));
+		musicManager.player.setVolume(volume);
+		BotUtils.sendMessage(event.getChannel(), "Volume set to " + volume + "%");
+	    } catch (NumberFormatException e) {
+		musicManager.player.setVolume(50);
+		BotUtils.sendMessage(event.getChannel(), "Unknown value: volume set to 50%");
+	    }
+	});
+
 	commands.put("clear", (event, args) -> {
-	    // TODO
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    musicManager.scheduler.purgeQueue();
+	    BotUtils.sendMessage(event.getChannel(), "Tracklist has been cleared");
 	});
 
 	commands.put("play", (event, args) -> {
@@ -84,6 +116,28 @@ public class MusicModule extends AbstractModule {
 		    "Playing next track: " + musicManager.player.getPlayingTrack().getInfo().title);
 	});
 
+	commands.put("list", (event, args) -> {
+	    StringBuilder message = new StringBuilder("Tracklist: \n");
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    List<AudioTrack> tracklist = musicManager.scheduler.getTracklist();
+	    int i = 0;
+	    for (AudioTrack t : tracklist) {
+		if (i == 5) {
+		    message.append(tracklist.size() - i + " more...");
+		    break;
+		}
+		message.append(i+". "+t.getInfo().title+"\n");
+		i++;
+	    }
+	    BotUtils.sendMessage(event.getChannel(), message.toString());
+	});
+	
+	commands.put("shuffle", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    musicManager.scheduler.shuffle();
+	    BotUtils.sendMessage(event.getChannel(), "Tracklist has been shuffled");
+	});
+
     }
 
     private synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
@@ -99,6 +153,11 @@ public class MusicModule extends AbstractModule {
 	guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
 
 	return musicManager;
+    }
+
+    @Override
+    public String getName() {
+	return "(m)usic";
     }
 
 }
