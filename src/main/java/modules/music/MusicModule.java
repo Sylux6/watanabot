@@ -93,6 +93,8 @@ public class MusicModule extends AbstractModule {
 		return;
 	    }
 
+	    // Check if bot is not playing blindtest
+
 	    // Check if bot is in voiceChannel
 	    if (!audioManager.isConnected()) {
 		BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
@@ -140,7 +142,7 @@ public class MusicModule extends AbstractModule {
 
     }
 
-    private synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
+    public synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
 	long guildId = Long.parseLong(guild.getId());
 	GuildMusicManager musicManager = musicManagers.get(guildId);
 
