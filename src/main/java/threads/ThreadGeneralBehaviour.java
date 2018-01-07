@@ -1,8 +1,8 @@
 package threads;
 
 
-import core.BotUtils;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import utils.BotUtils;
 
 public class ThreadGeneralBehaviour implements Runnable {
 
@@ -17,17 +17,23 @@ public class ThreadGeneralBehaviour implements Runnable {
     public void run() {
 	message = event.getMessage().getContentDisplay();
 
-	// Let's go for the if... else if...
+	// Let's go for matching all possible cases
+	// We don't use else if since we want to match multiple cases
 
 	if (message.matches("(.*(?i)yousoro.*)|(.*sylux6Yo.*)")) {
 	    if (!BotUtils.reactMessage(event.getMessage(), "yousoro")) {
 		event.getMessage().addReaction("\uD83D\uDC99").queue();
 	    }
 	}
+	
+	if (message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)")) {
+	    BotUtils.sendMessage(event.getChannel(), "わたし？");
+	}
 
-	else if (message.matches(".*(?i)lewd.*")) {
+	if (message.matches(".*(?i)lewd.*")) {
 	    BotUtils.sendMessage(event.getChannel(), "I'm not lewd!");
 	}
+	
 
     }
 

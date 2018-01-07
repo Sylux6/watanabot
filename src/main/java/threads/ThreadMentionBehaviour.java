@@ -1,7 +1,7 @@
 package threads;
 
-import core.BotUtils;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import utils.BotUtils;
 
 public class ThreadMentionBehaviour extends ThreadGeneralBehaviour {
 

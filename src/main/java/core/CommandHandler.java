@@ -17,7 +17,7 @@ public class CommandHandler {
     static public Map<String, AbstractModule> moduleMap = new HashMap<>();
     
     // Thread pool
-    static final public ExecutorService service = Executors.newFixedThreadPool(100);
+    static final public ExecutorService service = Executors.newFixedThreadPool(50);
 
     public CommandHandler() {
 
@@ -25,6 +25,11 @@ public class CommandHandler {
 	moduleMap.put("music", new MusicModule());
 	moduleMap.put("blindtest", new BlindtestModule());
 	moduleMap.put("picture", new PictureModule());
+	
+	// alias
+	moduleMap.put("m", moduleMap.get("music"));
+	moduleMap.put("b", moduleMap.get("blindtest"));
+	moduleMap.put("p", moduleMap.get("picture"));
     }
     
 }

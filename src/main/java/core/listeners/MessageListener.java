@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import core.BotUtils;
 import core.CommandHandler;
 import modules.AbstractModule;
+import modules.picture.PictureModule;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import threads.ThreadCommand;
 import threads.ThreadGeneralBehaviour;
 import threads.ThreadMentionBehaviour;
+import threads.ThreadPictureDefaultBehaviour;
+import utils.BotUtils;
 
 public class MessageListener extends ListenerAdapter {
 
@@ -23,7 +25,7 @@ public class MessageListener extends ListenerAdapter {
 	    return;
 
 	// Get all elements of the received message separated by blankspaces
-	List<String> tmp = new ArrayList<>(Arrays.asList(event.getMessage().getContentDisplay().split("\\s+")));
+	List<String> tmp = new ArrayList<String>(Arrays.asList(event.getMessage().getContentDisplay().split("\\s+")));
 
 	// First ensure at least the command and prefix is present, the arg length can
 	// be handled by your command func
@@ -62,7 +64,10 @@ public class MessageListener extends ListenerAdapter {
 	}
 
 	// Calling the command
-	if (module.getMapCommands().containsKey(argTab.get(0)))
+	if (module.getMapCommands().containsKey(argTab.get(0))) {
 	    CommandHandler.service.execute(new ThreadCommand(module, event, argTab));
+	} else if (module instanceof PictureModule) { // Getting image by default if unknown command
+	    CommandHandler.service.execute(new ThreadPictureDefaultBehaviour(event, argTab));
+	}
     }
 }

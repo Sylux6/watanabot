@@ -1,5 +1,8 @@
 package modules.music;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -54,26 +57,26 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     @Override
-    public void onPlayerPause(AudioPlayer player) {
-	// Player was paused
-    }
-
-    @Override
-    public void onPlayerResume(AudioPlayer player) {
-	// Player was resumed
-    }
-
-    @Override
-    public void onTrackStart(AudioPlayer player, AudioTrack track) {
-	// A track started playing
-    }
-
-    @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
 	// Only start the next track if the end reason is suitable for it (FINISHED or
 	// LOAD_FAILED)
 	if (endReason.mayStartNext) {
 	    nextTrack();
 	}
+    }
+
+    synchronized public void purgeQueue() {
+	queue.clear();
+    }
+
+    public List<AudioTrack> getTracklist() {
+	return new ArrayList<AudioTrack>(queue);
+    }
+
+    synchronized public void shuffle() {
+	ArrayList<AudioTrack> trackList = new ArrayList<>(queue);
+	Collections.shuffle(trackList);
+	queue.clear();
+	queue.addAll(trackList);
     }
 }
