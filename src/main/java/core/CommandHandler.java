@@ -17,7 +17,7 @@ public class CommandHandler {
     static public Map<String, AbstractModule> moduleMap = new HashMap<>();
     
     // Thread pool
-    static final public ExecutorService service = Executors.newFixedThreadPool(100);
+    static final public ExecutorService service = Executors.newFixedThreadPool(50);
 
     public CommandHandler() {
 

@@ -5,8 +5,8 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import core.BotUtils;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import utils.BotUtils;
 
 public class AudioHandler implements AudioLoadResultHandler {
 
@@ -32,13 +32,18 @@ public class AudioHandler implements AudioLoadResultHandler {
 	AudioTrack track = playlist.getSelectedTrack();
 
 	if (track == null) {
+	    // User picked a track from a playlist: only load this one
 	    track = playlist.getTracks().get(0);
+	    musicManager.scheduler.queue(track);
+	    BotUtils.sendMessage(channel, "Adding to queue " + track.getInfo().title + " (first track of playlist "
+		    + playlist.getName() + ")");
+	} else {
+	    // Load all the tracks from the playlist
+	    for (AudioTrack t : playlist.getTracks())
+		musicManager.scheduler.queue(t);
+
+	    BotUtils.sendMessage(channel, "Adding to queue all tracks from playlist " + playlist.getName());
 	}
-
-	BotUtils.sendMessage(channel,
-		"Adding to queue " + track.getInfo().title + " (first track of playlist " + playlist.getName() + ")");
-
-	musicManager.scheduler.queue(track);
     }
 
     @Override

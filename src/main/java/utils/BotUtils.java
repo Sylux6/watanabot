@@ -1,4 +1,4 @@
-package core;
+package utils;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class BotUtils {
     }
     
     // Function for sending message embed in the specified channel
-    static public void snedMessageEmbed(MessageChannel channel, MessageEmbed message) {
+    static public void sendMessageEmbed(MessageChannel channel, MessageEmbed message) {
 	channel.sendMessage(message).queue();
     }
     

@@ -1,11 +1,9 @@
 package modules;
 
-import java.util.Collections;
 import java.util.Random;
 
-import core.BotUtils;
-import net.kodehawa.lib.imageboards.DefaultImageBoards;
-import net.kodehawa.lib.imageboards.entities.Rating;
+import modules.picture.PictureModule;
+import utils.BotUtils;
 
 public class GeneralModule extends AbstractModule {
 
@@ -17,9 +15,10 @@ public class GeneralModule extends AbstractModule {
 
 	commands.put("roll", (event, args) -> {
 	    if (BotUtils.yousoroEmojiExists(event.getGuild()))
-		BotUtils.sendMessage(event.getChannel(), roll() + " " + BotUtils.getEmojiMessage(event.getGuild(), "yousoro"));
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " " + roll() + " "
+			+ BotUtils.getEmojiMessage(event.getGuild(), "yousoro"));
 	    else
-		BotUtils.sendMessage(event.getChannel(), roll() + "");
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " " + roll() + "");
 	});
 
 	commands.put("wait", (event, args) -> {
@@ -32,33 +31,27 @@ public class GeneralModule extends AbstractModule {
 	});
 
 	commands.put("nya", (event, args) -> {
-	    DefaultImageBoards.DANBOORU.search("nekomimi").async(images -> {
-		int i = 0;
-		Collections.shuffle(images);
-		while (!images.get(i).getRating().equals(Rating.SAFE))
-		    i++;
-		BotUtils.sendMessage(event.getChannel(), images.get(i).getURL());
-	    });
+	    PictureModule.getImage(event, "nekomimi");
 	});
-	
+
 	commands.put("mukyu", (event, args) -> {
-	    DefaultImageBoards.DANBOORU.search("patchouli_knowledge").async(images -> {
-		int i = 0;
-		Collections.shuffle(images);
-		while (!images.get(i).getRating().equals(Rating.SAFE))
-		    i++;
-		BotUtils.sendMessage(event.getChannel(), images.get(i).getURL());
-	    });
+	    PictureModule.getImage(event, "patchouli_knowledge");
 	});
-	
+
 	commands.put("yousoro", (event, args) -> {
-	    DefaultImageBoards.DANBOORU.search("watanabe_you").async(images -> {
-		int i = 0;
-		Collections.shuffle(images);
-		while (!images.get(i).getRating().equals(Rating.SAFE))
-		    i++;
-		BotUtils.sendMessage(event.getChannel(), images.get(i).getURL());
-	    });
+	    PictureModule.getImage(event, "watanabe_you");
+	});
+
+	commands.put("kanan", (event, args) -> {
+	    PictureModule.getImage(event, "matsuura_kanan");
+	});
+
+	commands.put("zura", (event, args) -> {
+	    PictureModule.getImage(event, "kunikida_hanamaru ");
+	});
+
+	commands.put("ganbaruby", (event, args) -> {
+	    PictureModule.getImage(event, "kurosawa_ruby");
 	});
 
     }
