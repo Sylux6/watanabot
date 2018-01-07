@@ -1,3 +1,5 @@
 # watanabot
 
-based on https://github.com/austinv11/Discord4J
+A discord bot using the Java library "JDA" by DV8FromTheWorld and Kantenkugel.
+
+Yousoro!~ (> ᴗ •)ゞ

@@ -15,9 +15,6 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
     maven {
-        url  "https://jitpack.io"
-    }
-    maven {
         url  "https://dl.bintray.com/kodehawa/maven" 
     }
 }
@@ -32,7 +29,10 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     
-    compile "com.github.austinv11:Discord4J:2.9.3"
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.+'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.+'
+    
+    compile 'net.dv8tion:JDA:3.4.0_317'
     compile 'com.sedmelluq:lavaplayer:1.2.45'
     compile 'net.kodehawa:imageboard-api:2.0'
 }

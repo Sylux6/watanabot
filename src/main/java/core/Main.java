@@ -1,31 +1,34 @@
 package core;
 
-import core.listeners.MentionListener;
+import javax.security.auth.login.LoginException;
+
 import core.listeners.MessageListener;
-import sx.blah.discord.api.IDiscordClient;
+import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.RichPresence;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+	    throws LoginException, RateLimitedException, IllegalArgumentException, InterruptedException {
 
 	if (args.length != 1) {
 	    System.out.println("Please enter the bot token as the first ");
 	    return;
 	}
-
-
-	IDiscordClient cli = BotUtils.getBuiltDiscordClient(args[0]);
-
-	// Register a listener via the EventSubscriber annotation which allows for
-	// organisation and delegation of events
-	cli.getDispatcher().registerListener(new CommandHandler());
-	cli.getDispatcher().registerListener(new MessageListener());
-	cli.getDispatcher().registerListener(new MentionListener());
+	
+	
+	// Preparing modules
+	CommandHandler modules = new CommandHandler();
 	
 
-	// Only login after all events are registered otherwise some may be missed.
-	cli.changePlayingText("with Chika");
-	cli.login();
-    }
+	// Building bot
+	JDA api = new JDABuilder(AccountType.BOT).setToken(args[0])
+		.addEventListener(new MessageListener())
+		.setGame(RichPresence.playing("with Chika-chan"))
+		.buildBlocking();
+    }	
 
 }

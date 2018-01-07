@@ -17,7 +17,7 @@ public class GeneralModule extends AbstractModule {
 
 	commands.put("roll", (event, args) -> {
 	    if (BotUtils.yousoroEmojiExists(event.getGuild()))
-		BotUtils.sendMessage(event.getChannel(), roll() + " " + BotUtils.getEmoji(event.getGuild(), "yousoro"));
+		BotUtils.sendMessage(event.getChannel(), roll() + " " + BotUtils.getEmojiMessage(event.getGuild(), "yousoro"));
 	    else
 		BotUtils.sendMessage(event.getChannel(), roll() + "");
 	});
@@ -32,7 +32,27 @@ public class GeneralModule extends AbstractModule {
 	});
 
 	commands.put("nya", (event, args) -> {
-	    DefaultImageBoards.DANBOORU.search(100, "nekomimi").async(images -> {
+	    DefaultImageBoards.DANBOORU.search("nekomimi").async(images -> {
+		int i = 0;
+		Collections.shuffle(images);
+		while (!images.get(i).getRating().equals(Rating.SAFE))
+		    i++;
+		BotUtils.sendMessage(event.getChannel(), images.get(i).getURL());
+	    });
+	});
+	
+	commands.put("mukyu", (event, args) -> {
+	    DefaultImageBoards.DANBOORU.search("patchouli_knowledge").async(images -> {
+		int i = 0;
+		Collections.shuffle(images);
+		while (!images.get(i).getRating().equals(Rating.SAFE))
+		    i++;
+		BotUtils.sendMessage(event.getChannel(), images.get(i).getURL());
+	    });
+	});
+	
+	commands.put("yousoro", (event, args) -> {
+	    DefaultImageBoards.DANBOORU.search("watanabe_you").async(images -> {
 		int i = 0;
 		Collections.shuffle(images);
 		while (!images.get(i).getRating().equals(Rating.SAFE))

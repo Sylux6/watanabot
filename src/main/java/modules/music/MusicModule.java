@@ -1,104 +1,107 @@
 package modules.music;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sound.sampled.UnsupportedAudioFileException;
-
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import core.BotUtils;
 import modules.AbstractModule;
-import sx.blah.discord.handle.obj.IVoiceChannel;
-import sx.blah.discord.util.audio.AudioPlayer;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.managers.AudioManager;
 
 public class MusicModule extends AbstractModule {
 
-    private AudioPlayerManager playerManager;
-    private Map<String, AudioHandler> audioPlayers;
+    private final AudioPlayerManager playerManager;
+    private final Map<Long, GuildMusicManager> musicManagers;
 
     public MusicModule() {
 	super();
+	musicManagers = new HashMap<>();
 	playerManager = new DefaultAudioPlayerManager();
-	audioPlayers = new HashMap<>();
 	AudioSourceManagers.registerRemoteSources(playerManager);
-
+	AudioSourceManagers.registerLocalSource(playerManager);
     }
 
     @Override
     public void populate() {
 	commands.put("join", (event, args) -> {
-	    IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild())
-		    .getChannel();
+	    AudioManager audioManager = event.getGuild().getAudioManager();
+
 	    // Check if bot is not currently in use
-	    if (botVoiceChannel != null) {
-		BotUtils.sendMessage(event.getChannel(), "I'm already in a voice channel. Stealing is bad!");
+	    if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
+		BotUtils.sendMessage(event.getChannel(), "I am already in a voice channel. Stealing is bad!");
 		return;
 	    }
-	    // Creating AudioPlayer
-//	    AudioPlayer player = playerManager.createPlayer();
-//	    TrackScheduler trackScheduler = new TrackScheduler(player);
-//	    player.addListener(trackScheduler);
-	    audioPlayers.put(event.getChannel().getStringID(), null);
-
-	    IVoiceChannel userVoiceChannel = event.getAuthor().getVoiceStateForGuild(event.getGuild()).getChannel();
-	    if (userVoiceChannel == null)
-		return;
-	    userVoiceChannel.join();
+	    audioManager.openAudioConnection(event.getMember().getVoiceState().getChannel());
+	    BotUtils.sendMessage(event.getChannel(), "Ohayousoro!~ (> ᴗ •)ゞ");
 	});
 
 	commands.put("leave", (event, args) -> {
-	    IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild())
-		    .getChannel();
-	    if (botVoiceChannel == null) {
-		System.out.println("NULL");
-		return;
-	    }
-	    
-	    audioPlayers.remove(event.getGuild().getStringID());
-	    botVoiceChannel.leave();
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    AudioManager audioManager = event.getGuild().getAudioManager();
+	    musicManager.player.destroy();
+	    audioManager.closeAudioConnection();
+	    BotUtils.sendMessage(event.getChannel(), "Bye bye!~ (> ᴗ •)ゞ");
+	});
 
+	commands.put("clear", (event, args) -> {
+	    // TODO
 	});
 
 	commands.put("play", (event, args) -> {
-	    // No identifier song found
-	    if (args.size() < 2)
-		return;
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    AudioManager audioManager = event.getGuild().getAudioManager();
 
-	    IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild())
-		    .getChannel();
-
-	    if (botVoiceChannel == null) {
-		BotUtils.sendMessage(event.getChannel(), "I'm not in a voice channel");
+	    // Check if url is here
+	    if (args.size() < 2) {
+		BotUtils.sendMessage(event.getChannel(), "I do not know what to play for you");
 		return;
 	    }
 
-
-	    // Get the AudioPlayer object for the guild
-	    AudioPlayer audioP = AudioPlayer.getAudioPlayerForGuild(event.getGuild());
-
-	    // Find a song given the search term
-	    File song = new File(args.get(1));
-
-	    // Stop the playing track
-	    audioP.clear();
-
-	    // Play the found song
-	    try {
-		audioP.queue(song);
-	    } catch (IOException | UnsupportedAudioFileException e) {
-		BotUtils.sendMessage(event.getChannel(), "There was an issue playing that song.");
-		e.printStackTrace();
+	    // Check if bot is in voiceChannel
+	    if (!audioManager.isConnected()) {
+		BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
+		return;
 	    }
 
-	    BotUtils.sendMessage(event.getChannel(), "Now playing: " + song.getName());
-
+	    playerManager.loadItemOrdered(musicManager, args.get(1),
+		    new AudioHandler(musicManager, event.getChannel(), args.get(1)));
 	});
 
+	commands.put("stop", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    musicManager.player.stopTrack();
+	    BotUtils.sendMessage(event.getChannel(), "Stop playing");
+	});
+
+	commands.put("next", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    musicManager.scheduler.nextTrack();
+	    BotUtils.sendMessage(event.getChannel(),
+		    "Playing next track: " + musicManager.player.getPlayingTrack().getInfo().title);
+	});
+
+    }
+
+    private synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
+	long guildId = Long.parseLong(guild.getId());
+	GuildMusicManager musicManager = musicManagers.get(guildId);
+
+	if (musicManager == null) {
+	    musicManager = new GuildMusicManager(playerManager);
+	    musicManagers.put(guildId, musicManager);
+	}
+
+	guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
+
+	return musicManager;
     }
 
 }

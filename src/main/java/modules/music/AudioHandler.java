@@ -5,40 +5,50 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import core.BotUtils;
+import net.dv8tion.jda.core.entities.MessageChannel;
+
 public class AudioHandler implements AudioLoadResultHandler {
 
-    private TrackScheduler trackScheduler;
+    private GuildMusicManager musicManager;
+    private MessageChannel channel;
+    private String track;
 
-    public AudioHandler(TrackScheduler trackScheduler) {
-	this.trackScheduler = trackScheduler;
-    }
-
-    public TrackScheduler getTrackScheduler() {
-	return trackScheduler;
+    public AudioHandler(GuildMusicManager musicManager, MessageChannel channel, String track) {
+	super();
+	this.musicManager = musicManager;
+	this.channel = channel;
+	this.track = track;
     }
 
     @Override
     public void trackLoaded(AudioTrack track) {
-	trackScheduler.queue(track);
+	BotUtils.sendMessage(channel, "Adding to queue " + track.getInfo().title);
+	musicManager.scheduler.queue(track);
     }
 
     @Override
     public void playlistLoaded(AudioPlaylist playlist) {
-	for (AudioTrack track : playlist.getTracks()) {
-	    trackScheduler.queue(track);
+	AudioTrack track = playlist.getSelectedTrack();
+
+	if (track == null) {
+	    track = playlist.getTracks().get(0);
 	}
+
+	BotUtils.sendMessage(channel,
+		"Adding to queue " + track.getInfo().title + " (first track of playlist " + playlist.getName() + ")");
+
+	musicManager.scheduler.queue(track);
     }
 
     @Override
     public void noMatches() {
-	// TODO Auto-generated method stub
-
+	BotUtils.sendMessage(channel, "Nothing found by " + track);
     }
 
     @Override
     public void loadFailed(FriendlyException exception) {
-	// TODO Auto-generated method stub
-
+	BotUtils.sendMessage(channel, "Could not play: " + exception.getMessage());
     }
 
 }

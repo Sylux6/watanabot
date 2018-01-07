@@ -8,13 +8,12 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
+/**
+ * This class schedules tracks for the audio player. It contains the queue of
+ * tracks.
+ */
 public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
-    
-    public AudioPlayer getPlayer() {
-        return player;
-    }
-
     private final BlockingQueue<AudioTrack> queue;
 
     /**
@@ -52,6 +51,21 @@ public class TrackScheduler extends AudioEventAdapter {
 	// giving null to startTrack, which is a valid argument and will simply stop the
 	// player.
 	player.startTrack(queue.poll(), false);
+    }
+
+    @Override
+    public void onPlayerPause(AudioPlayer player) {
+	// Player was paused
+    }
+
+    @Override
+    public void onPlayerResume(AudioPlayer player) {
+	// Player was resumed
+    }
+
+    @Override
+    public void onTrackStart(AudioPlayer player, AudioTrack track) {
+	// A track started playing
     }
 
     @Override

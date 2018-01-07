@@ -7,18 +7,23 @@ import java.util.List;
 import core.BotUtils;
 import core.CommandHandler;
 import modules.AbstractModule;
-import sx.blah.discord.api.events.EventSubscriber;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import threads.ThreadCommand;
-import threads.ThreadReaction;
+import threads.ThreadGeneralBehaviour;
+import threads.ThreadMentionBehaviour;
 
-public class MessageListener {
+public class MessageListener extends ListenerAdapter {
 
-    @EventSubscriber
+    @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-	
+
+	// Ignore messages from BOT
+	if (event.getMessage().getAuthor().isBot())
+	    return;
+
 	// Get all elements of the received message separated by blankspaces
-	List<String> tmp = new ArrayList<>(Arrays.asList(event.getMessage().getContent().split("\\s+")));
+	List<String> tmp = new ArrayList<>(Arrays.asList(event.getMessage().getContentDisplay().split("\\s+")));
 
 	// First ensure at least the command and prefix is present, the arg length can
 	// be handled by your command func
@@ -28,7 +33,10 @@ public class MessageListener {
 	// Check if the first arg (the command) starts with the prefix defined in the
 	// utils class
 	if (!tmp.get(0).startsWith(BotUtils.BOT_PREFIX)) {
-	    CommandHandler.service.execute(new ThreadReaction(event));
+	    if (event.getMessage().getMentionedUsers().contains(event.getJDA().getSelfUser()))
+		CommandHandler.service.execute(new ThreadMentionBehaviour(event));
+	    else
+		CommandHandler.service.execute(new ThreadGeneralBehaviour(event));
 	    return;
 	}
 
@@ -52,7 +60,7 @@ public class MessageListener {
 		return;
 	    argTab.remove(0); // Module name removed
 	}
-	
+
 	// Calling the command
 	if (module.getMapCommands().containsKey(argTab.get(0)))
 	    CommandHandler.service.execute(new ThreadCommand(module, event, argTab));
