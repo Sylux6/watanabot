@@ -67,6 +67,7 @@ public class BlindtestModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), "I'm currently playing music");
 		return;
 	    }
+	    
 	    instance = new BlindtestInstance(event.getAuthor());
 	    instances.put(Long.parseLong(event.getGuild().getId()), instance);
 	    instance.setState(BlindtestState.PREPARING);

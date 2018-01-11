@@ -1,9 +1,12 @@
 package modules;
 
+import java.util.List;
 import java.util.Random;
 
 import core.CommandHandler;
 import modules.picture.PictureModule;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.kodehawa.lib.imageboards.entities.Rating;
 import utils.BotUtils;
 import utils.EmbedUtils;
@@ -86,6 +89,7 @@ public class GeneralModule extends AbstractModule {
 	    PictureModule.getImage(event, "kurosawa_ruby",
 		    event.getTextChannel().isNSFW() ? Rating.EXPLICIT : Rating.SAFE);
 	});
+	
 
     }
 

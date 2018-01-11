@@ -19,6 +19,7 @@ repositories {
     }
 }
 
+
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
@@ -35,5 +36,7 @@ dependencies {
     compile 'net.dv8tion:JDA:3.4.0_317'
     compile 'com.sedmelluq:lavaplayer:1.2.45'
     compile 'net.kodehawa:imageboard-api:2.0'
+    
+    compile 'org.xerial:sqlite-jdbc:3.8.11.2'
 }
 

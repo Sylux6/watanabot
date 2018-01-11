@@ -22,6 +22,10 @@ public class BotUtils {
 	channel.sendMessage(message).queue();
     }
     
+    static public void sendMessage(MessageChannel channel, Message message) {
+	channel.sendMessage(message).queue();
+    }
+    
     // Function for sending message embed in the specified channel
     static public void sendMessageEmbed(MessageChannel channel, MessageEmbed message) {
 	channel.sendMessage(message).queue();
