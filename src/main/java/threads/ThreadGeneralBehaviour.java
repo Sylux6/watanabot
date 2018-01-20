@@ -29,10 +29,11 @@ public class ThreadGeneralBehaviour implements Runnable {
 	if (message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)")) {
 	    BotUtils.sendMessage(event.getChannel(), "わたし？");
 	}
-
-	if (message.matches(".*(?i)lewd.*")) {
-	    BotUtils.sendMessage(event.getChannel(), "I'm not lewd!");
-	}
+	
+	//TODO: we should avoid lewd spam (disabled for now)
+//	if (message.matches(".*(?i)lewd.*")) {
+//	    BotUtils.sendMessage(event.getChannel(), "I'm not lewd!");
+//	}
 	
 
     }

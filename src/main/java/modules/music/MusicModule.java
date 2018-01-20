@@ -8,6 +8,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import modules.AbstractModule;
 import net.dv8tion.jda.core.entities.Guild;
@@ -30,6 +31,7 @@ public class MusicModule extends AbstractModule {
     @Override
     public void populate() {
 	commands.put("join", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    AudioManager audioManager = event.getGuild().getAudioManager();
 
 	    // Check if bot is not currently in use
@@ -39,6 +41,7 @@ public class MusicModule extends AbstractModule {
 	    }
 	    audioManager.openAudioConnection(event.getMember().getVoiceState().getChannel());
 	    BotUtils.sendMessage(event.getChannel(), "Ohayousoro!~ (> ᴗ •)ゞ");
+	    
 	});
 
 	commands.put("leave", (event, args) -> {

@@ -17,7 +17,7 @@ public class Main {
 	    throws LoginException, RateLimitedException, IllegalArgumentException, InterruptedException {
 
 	if (args.length != 1) {
-	    System.out.println("Please enter the bot token as the first ");
+	    System.out.println("Please enter the bot token in argument");
 	    return;
 	}	
 	

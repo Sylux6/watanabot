@@ -25,6 +25,17 @@ public class PictureModule extends AbstractModule {
 	    else
 		BotUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
 	});
+	
+	commands.put("questionable", (event, args) -> {
+	    if (args.size() < 2) {
+		BotUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
+		return;
+	    }
+	    if (event.getTextChannel().isNSFW())
+		getImage(event, String.join(" ", args.subList(1, args.size())), Rating.QUESTIONABLE);
+	    else
+		BotUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
+	});	
 
 	commands.put("safe", (event, args) -> {
 	    if (args.size() < 2) {
@@ -66,6 +77,12 @@ public class PictureModule extends AbstractModule {
 				    images.get(0).getTag_string_character() + " drawn by "
 					    + images.get(0).getTag_string_artist() + " - Danbooru",
 				    images.get(0).getURL(), images.get(0).getTags(), images.get(0).getURL()));
+		} else if (rating == Rating.EXPLICIT) { // If no explicit image has been found, try again with
+							// questionable rating
+		    getImage(event, search, Rating.QUESTIONABLE);
+		} else if (rating == Rating.EXPLICIT) { // If no questionable image has been found, try again with safe
+							// rating
+		    getImage(event, search, Rating.SAFE);
 		} else
 		    BotUtils.sendMessage(event.getChannel(), "I can't find");
 	    });
