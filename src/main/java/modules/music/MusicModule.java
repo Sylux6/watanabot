@@ -8,9 +8,11 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import modules.AbstractModule;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.managers.AudioManager;
 import utils.BotUtils;
 
@@ -30,6 +32,7 @@ public class MusicModule extends AbstractModule {
     @Override
     public void populate() {
 	commands.put("join", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    AudioManager audioManager = event.getGuild().getAudioManager();
 
 	    // Check if bot is not currently in use
@@ -39,27 +42,36 @@ public class MusicModule extends AbstractModule {
 	    }
 	    audioManager.openAudioConnection(event.getMember().getVoiceState().getChannel());
 	    BotUtils.sendMessage(event.getChannel(), "Ohayousoro!~ (> ᴗ •)ゞ");
+	    
 	});
 
 	commands.put("leave", (event, args) -> {
+	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager()))
+		return;
 	    event.getGuild().getAudioManager().closeAudioConnection();
 	    getGuildAudioPlayer(event.getGuild()).player.destroy();
 	    BotUtils.sendMessage(event.getChannel(), "Bye bye!~ (> ᴗ •)ゞ");
 	});
 
 	commands.put("pause", (event, args) -> {
+	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager()))
+		return;
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.player.setPaused(true);
 	    BotUtils.sendMessage(event.getChannel(), "Pause...");
 	});
 
 	commands.put("resume", (event, args) -> {
+	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager()))
+		return;
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.player.setPaused(false);
 	    BotUtils.sendMessage(event.getChannel(), "... Resume");
 	});
 
 	commands.put("volume", (event, args) -> {
+	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager()))
+		return;
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    if (args.size() < 2) {
 		// Setting the volume to 50 by default
@@ -78,12 +90,16 @@ public class MusicModule extends AbstractModule {
 	});
 
 	commands.put("clear", (event, args) -> {
+	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager()))
+		return;
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.scheduler.purgeQueue();
 	    BotUtils.sendMessage(event.getChannel(), "Tracklist has been cleared");
 	});
 
 	commands.put("play", (event, args) -> {
+	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager()))
+		return;
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    AudioManager audioManager = event.getGuild().getAudioManager();
 
@@ -92,6 +108,8 @@ public class MusicModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), "I do not know what to play for you");
 		return;
 	    }
+
+	    // Check if bot is not playing blindtest
 
 	    // Check if bot is in voiceChannel
 	    if (!audioManager.isConnected()) {
@@ -117,21 +135,21 @@ public class MusicModule extends AbstractModule {
 	});
 
 	commands.put("list", (event, args) -> {
-	    StringBuilder message = new StringBuilder("Tracklist: \n");
+	    StringBuilder message = new StringBuilder("**Tracklist:**\n");
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    List<AudioTrack> tracklist = musicManager.scheduler.getTracklist();
 	    int i = 0;
 	    for (AudioTrack t : tracklist) {
 		if (i == 5) {
-		    message.append(tracklist.size() - i + " more...");
+		    message.append("and **" + (tracklist.size() - i) + "** more...");
 		    break;
 		}
-		message.append(i+". "+t.getInfo().title+"\n");
+		message.append("**" + (i + 1) + ".** " + t.getInfo().title + "\n");
 		i++;
 	    }
 	    BotUtils.sendMessage(event.getChannel(), message.toString());
 	});
-	
+
 	commands.put("shuffle", (event, args) -> {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.scheduler.shuffle();
@@ -139,16 +157,22 @@ public class MusicModule extends AbstractModule {
 	});
 
     }
+    
+    private boolean isInVoiceChannel(Member author, AudioManager audioManager) {
+	if (author.getVoiceState().getChannel() == null || audioManager.getConnectedChannel() == null)
+	    return false;
+	return author.getVoiceState().getChannel().equals(audioManager.getConnectedChannel());
+    }
 
-    private synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
+    public synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
 	long guildId = Long.parseLong(guild.getId());
 	GuildMusicManager musicManager = musicManagers.get(guildId);
 
 	if (musicManager == null) {
 	    musicManager = new GuildMusicManager(playerManager);
+	    musicManager.player.setVolume(50);
 	    musicManagers.put(guildId, musicManager);
 	}
-	musicManager.player.setVolume(50);
 
 	guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
 

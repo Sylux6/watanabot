@@ -23,7 +23,7 @@ public abstract class AbstractModule implements interfaces.IModule {
     }
 
     public String getHelp() {
-	StringBuilder help = new StringBuilder("**" + getName() + " module commands list**:\n");
+	StringBuilder help = new StringBuilder("**" + getName() + " module commands list:**\n");
 	for (String s : commands.keySet()) {
 	    help.append("- **" + s + "**\n");
 	}

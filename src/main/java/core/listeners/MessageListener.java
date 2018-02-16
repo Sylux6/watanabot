@@ -6,6 +6,8 @@ import java.util.List;
 
 import core.CommandHandler;
 import modules.AbstractModule;
+import modules.blindtest.BlindtestModule;
+import modules.music.MusicModule;
 import modules.picture.PictureModule;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -52,15 +54,24 @@ public class MessageListener extends ListenerAdapter {
 	}
 
 	// Get the module map of commands
-	AbstractModule module = CommandHandler.moduleMap.get(argTab.get(0));
+	AbstractModule module;
 
 	// No specific module found
-	if (module == null) {
-	    module = CommandHandler.moduleMap.get("general"); // Taking general module by default
+	if ((module = CommandHandler.moduleMap.get(argTab.get(0))) == null) {
+	    module = CommandHandler.moduleMap.get("general"); // Take general module by default
+//	    return;
 	} else {
 	    if (argTab.size() < 2) // Message contains at least <module> <command>
 		return;
 	    argTab.remove(0); // Module name removed
+	}
+	
+	if (module instanceof MusicModule) { // Block MusicModule commands if Blindtest is running
+	    BlindtestModule blindtestModule = (BlindtestModule) CommandHandler.moduleMap.get("blindtest");
+	    if (blindtestModule.getBlindtestInstance(event.getGuild()) != null) {
+		BotUtils.sendMessage(event.getChannel(), "A blindtest game is running");
+		return;
+	    }
 	}
 
 	// Calling the command

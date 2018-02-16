@@ -1,7 +1,5 @@
 package modules;
 
-import java.util.Random;
-
 import core.CommandHandler;
 import modules.picture.PictureModule;
 import net.kodehawa.lib.imageboards.entities.Rating;
@@ -86,15 +84,15 @@ public class GeneralModule extends AbstractModule {
 	    PictureModule.getImage(event, "kurosawa_ruby",
 		    event.getTextChannel().isNSFW() ? Rating.EXPLICIT : Rating.SAFE);
 	});
+	
 
     }
 
     // Auxiliar functions:
 
     private int roll() {
-	Random rand = new Random();
-	rand.setSeed(System.currentTimeMillis());
-	return Math.abs((rand.nextInt() % 100)) + 1;
+	BotUtils.random.setSeed(System.currentTimeMillis());
+	return Math.abs((BotUtils.random.nextInt() % 100)) + 1;
     }
 
     @Override
