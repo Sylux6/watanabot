@@ -3,6 +3,7 @@ package modules.llsif;
 import java.util.concurrent.TimeUnit;
 
 import modules.AbstractModule;
+import modules.llsif.entity.Idol;
 import okhttp3.OkHttpClient;
 import utils.BotUtils;
 
@@ -20,8 +21,18 @@ public class LLModule extends AbstractModule {
 
     @Override
     public void populate() {
-	commands.put("scout", (event, args) -> {
-	    BotUtils.sendMessage(event.getChannel(), "test scout");
+	commands.put("info", (event, args) -> {
+	    if (args.size() < 2)
+		return;
+	    for (Idol i : Idol.values()) {
+		for (int j = 1; j < args.size(); j++) {
+		    if (i.toString().matches("(.*(?i)"+args.get(j)+" .*)")) {
+			BotUtils.sendMessageEmbed(event.getChannel(), i.toEmbed());
+			return;
+		    }
+		}
+	    }
+	    BotUtils.sendMessage(event.getChannel(), "Idol not found");
 	});
 	
     }

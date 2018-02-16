@@ -54,11 +54,12 @@ public class MessageListener extends ListenerAdapter {
 	}
 
 	// Get the module map of commands
-	AbstractModule module = CommandHandler.moduleMap.get(argTab.get(0));
+	AbstractModule module;
 
 	// No specific module found
-	if (module == null) {
+	if ((module = CommandHandler.moduleMap.get(argTab.get(0))) == null) {
 //	    module = CommandHandler.moduleMap.get("general"); // Take general module by default
+	    return;
 	} else {
 	    if (argTab.size() < 2) // Message contains at least <module> <command>
 		return;
