@@ -511,7 +511,7 @@ public enum Idol {
 		.setDescription("CV. "+cv_name+" ("+cv_nickname+")")
 		.addField("Birthday", birthday+" ("+astro+")", true)
 		.addField("Blood Type", blood, true)
-		.addField("Height", String.valueOf(heigth), true)
+		.addField("Height", heigth+" cm", true)
 		.addField("Three Sizes", measurements, true)
 		.addField("Favorite Food", favorite_food, true)
 		.addField("Disliked Food", least_favorite_food, true)

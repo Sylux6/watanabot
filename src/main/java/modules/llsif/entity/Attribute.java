@@ -4,5 +4,4 @@ public enum Attribute {
     SMILE,
     PURE,
     COOL,
-    ALL,
 }

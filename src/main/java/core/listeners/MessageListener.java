@@ -36,13 +36,13 @@ public class MessageListener extends ListenerAdapter {
 
 	// Check if the first arg (the command) starts with the prefix defined in the
 	// utils class
-//	if (!tmp.get(0).startsWith(BotUtils.BOT_PREFIX)) {
-//	    if (event.getMessage().getMentionedUsers().contains(event.getJDA().getSelfUser()))
-//		CommandHandler.service.execute(new ThreadMentionBehaviour(event));
-//	    else
-//		CommandHandler.service.execute(new ThreadGeneralBehaviour(event));
-//	    return;
-//	}
+	if (!tmp.get(0).startsWith(BotUtils.BOT_PREFIX)) {
+	    if (event.getMessage().getMentionedUsers().contains(event.getJDA().getSelfUser()))
+		CommandHandler.service.execute(new ThreadMentionBehaviour(event));
+	    else
+		CommandHandler.service.execute(new ThreadGeneralBehaviour(event));
+	    return;
+	}
 
 	List<String> argTab;
 
@@ -58,8 +58,8 @@ public class MessageListener extends ListenerAdapter {
 
 	// No specific module found
 	if ((module = CommandHandler.moduleMap.get(argTab.get(0))) == null) {
-//	    module = CommandHandler.moduleMap.get("general"); // Take general module by default
-	    return;
+	    module = CommandHandler.moduleMap.get("general"); // Take general module by default
+//	    return;
 	} else {
 	    if (argTab.size() < 2) // Message contains at least <module> <command>
 		return;
