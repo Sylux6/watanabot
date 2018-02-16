@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.List;
+import java.util.Random;
 
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
@@ -10,10 +11,14 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 
 public class BotUtils {
+    
+    // RNG
+    static public Random random = new Random();
 
-    // Constant prefix --CHANGE HERE--
+    // CONSTANTS
     static public String BOT_PREFIX = "o7";
     static public int PREFIX_LENGTH = BOT_PREFIX.length();
+    static public int NB_THREAD = 50;
     
     // Bot functions:
     

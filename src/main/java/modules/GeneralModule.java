@@ -1,12 +1,7 @@
 package modules;
 
-import java.util.List;
-import java.util.Random;
-
 import core.CommandHandler;
 import modules.picture.PictureModule;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.kodehawa.lib.imageboards.entities.Rating;
 import utils.BotUtils;
 import utils.EmbedUtils;
@@ -96,9 +91,8 @@ public class GeneralModule extends AbstractModule {
     // Auxiliar functions:
 
     private int roll() {
-	Random rand = new Random();
-	rand.setSeed(System.currentTimeMillis());
-	return Math.abs((rand.nextInt() % 100)) + 1;
+	BotUtils.random.setSeed(System.currentTimeMillis());
+	return Math.abs((BotUtils.random.nextInt() % 100)) + 1;
     }
 
     @Override

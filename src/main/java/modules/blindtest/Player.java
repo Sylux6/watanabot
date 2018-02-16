@@ -1,4 +1,4 @@
-package modules.Blindtest;
+package modules.blindtest;
 
 import net.dv8tion.jda.core.entities.User;
 

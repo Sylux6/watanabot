@@ -1,4 +1,4 @@
-package modules.Blindtest;
+package modules.blindtest;
 
 public enum BlindtestState {
     PREPARING,

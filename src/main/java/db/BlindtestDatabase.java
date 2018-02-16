@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class BlindtestDatabase {
 
-    static final String DB_NAME = "blindtest.db";
+    static final String DB_NAME = "watanabot.db";
 
 
     public void init() throws IOException {
