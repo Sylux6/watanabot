@@ -1,6 +1,5 @@
 package modules.llsif;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.json.JSONArray;
@@ -43,7 +42,7 @@ public class LLModule extends AbstractModule {
 	    String unit;
 	    String rarity;
 	    int roll;
-	    int count;
+	    int count = 0;
 	    
 	    if (args.size() < 2) {
 		BotUtils.sendMessage(event.getChannel(), "u's / aqours argument missing");
@@ -79,11 +78,7 @@ public class LLModule extends AbstractModule {
 		count = json.getInt("count");
 		roll = BotUtils.random.nextInt(count)+1;
 		
-//		System.out.println(count);
-//		System.out.println(roll);
-//		System.out.println(Math.round(roll/10));
-		
-		json = JsonUtils.stringToJson(HttpRequest.getRequest("https://schoolido.lu/api/cards/?idol_main_unit="+unit+"&rarity="+rarity+"&page="+Math.round(roll/10)));
+		json = JsonUtils.stringToJson(HttpRequest.getRequest("https://schoolido.lu/api/cards/?idol_main_unit="+unit+"&rarity="+rarity+"&page="+(int)Math.ceil((double)roll/10)));
 		
 		jsonArray = json.getJSONArray("results");
 		roll = BotUtils.random.nextInt(jsonArray.length());
@@ -92,6 +87,7 @@ public class LLModule extends AbstractModule {
 		BotUtils.sendMessageEmbed(event.getChannel(), c.toEmbed());
 	    } catch (IOException e) {
 		e.printStackTrace();
+		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
 	    }
 	    
 	});
