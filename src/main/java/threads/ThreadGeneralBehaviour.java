@@ -30,7 +30,7 @@ public class ThreadGeneralBehaviour implements Runnable {
 	    BotUtils.sendMessage(event.getChannel(), "わたし？");
 	}
 	
-	else if (message.matches("(?i).*hello.*|.*hi +.*|.*ohayo.*|.*good +morning.*")) {
+	else if (message.matches("(?i).*hello.*|.*ohayo.*|.*good +morning.*")) {
 	    BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Ohayousoro! (> ᴗ •)ゞ");
 	}
 	
