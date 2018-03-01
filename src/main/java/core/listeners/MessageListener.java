@@ -66,13 +66,13 @@ public class MessageListener extends ListenerAdapter {
 	    argTab.remove(0); // Module name removed
 	}
 	
-	if (module instanceof MusicModule) { // Block MusicModule commands if Blindtest is running
-	    BlindtestModule blindtestModule = (BlindtestModule) CommandHandler.moduleMap.get("blindtest");
-	    if (blindtestModule.getBlindtestInstance(event.getGuild()) != null) {
-		BotUtils.sendMessage(event.getChannel(), "A blindtest game is running");
-		return;
-	    }
-	}
+//	if (module instanceof MusicModule) { // Block MusicModule commands if Blindtest is running
+//	    BlindtestModule blindtestModule = (BlindtestModule) CommandHandler.moduleMap.get("blindtest");
+//	    if (blindtestModule.getBlindtestInstance(event.getGuild()) != null) {
+//		BotUtils.sendMessage(event.getChannel(), "A blindtest game is running");
+//		return;
+//	    }
+//	}
 
 	// Calling the command
 	if (module.getMapCommands().containsKey(argTab.get(0))) {

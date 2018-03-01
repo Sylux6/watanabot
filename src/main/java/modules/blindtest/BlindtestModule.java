@@ -78,8 +78,13 @@ public class BlindtestModule extends AbstractModule {
 
 	commands.put("join", (event, args) -> {
 	    BlindtestInstance instance = getBlindtestInstance(event.getGuild());
+	    
 	    if (instance == null) {
 		BotUtils.sendMessage(event.getChannel(), "No blindtest game found");
+		return;
+	    }
+	    if (!MusicModule.isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " You are not in the voice channel");
 		return;
 	    }
 	    if (instance.getState() != BlindtestState.PREPARING && instance.getState() != BlindtestState.SCORING) {

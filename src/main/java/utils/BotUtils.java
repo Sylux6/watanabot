@@ -20,9 +20,13 @@ public class BotUtils {
     static public int PREFIX_LENGTH = BOT_PREFIX.length();
     static public int NB_THREAD = 50;
     
-    // Bot functions:
+    /////////////////////////////////////////////
+    ////////      FUNCTIONS         /////////////
+    /////////////////////////////////////////////
     
-    // Function for sending message in the specified channel
+    
+    ///////// SENDING MESSAGE FUNCTION ////////
+    
     static public void sendMessage(MessageChannel channel, String message) {
 	channel.sendMessage(message).queue();
     }
@@ -31,10 +35,25 @@ public class BotUtils {
 	channel.sendMessage(message).queue();
     }
     
-    // Function for sending message embed in the specified channel
-    static public void sendMessageEmbed(MessageChannel channel, MessageEmbed message) {
+    static public void sendMessage(MessageChannel channel, MessageEmbed message) {
 	channel.sendMessage(message).queue();
     }
+    
+    ///////// EDITING MESSAGE FUNCTION ////////
+    
+    static public void editMessage(Message oldMessage, String newMessage) {
+	oldMessage.editMessage(newMessage).queue();
+    }
+    
+    static public void editMessage(Message oldMessage, Message newMessage) {
+	oldMessage.editMessage(newMessage).queue();
+    }
+    
+    static public void editMessage(Message oldMessage, MessageEmbed newMessage) {
+	oldMessage.editMessage(newMessage).queue();
+    }
+    
+    
     
     // Function for reacting to a message for a given String emote
     // returns true on success
@@ -52,7 +71,7 @@ public class BotUtils {
 	return !guild.getEmotesByName("yousoro", true).isEmpty();
     }
     
-    // Return emoji object from guild
+    // Returns emoji object from guild
     static public Emote getEmote(Guild guild, String name, boolean ignoreCase) {
 	List<Emote> emote = guild.getEmotesByName(name, ignoreCase);
 	if (emote.isEmpty())

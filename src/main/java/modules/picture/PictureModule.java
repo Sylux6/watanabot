@@ -72,7 +72,7 @@ public class PictureModule extends AbstractModule {
 		// nsfw filter
 		if (!images.isEmpty()) {
 		    Collections.shuffle(images);
-		    BotUtils.sendMessageEmbed(event.getChannel(),
+		    BotUtils.sendMessage(event.getChannel(),
 			    EmbedUtils.buildEmbedImage(
 				    images.get(0).getTag_string_character() + " drawn by "
 					    + images.get(0).getTag_string_artist() + " - Danbooru",

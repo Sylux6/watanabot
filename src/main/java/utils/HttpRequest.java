@@ -10,9 +10,14 @@ public class HttpRequest {
     
     private static OkHttpClient client = new OkHttpClient();
     
-    static public String getRequest(String url) throws IOException {
+    static public String getRequest(String url, String... values) throws IOException {
+	
+	StringBuilder s = new StringBuilder(url+"?");
+	for(String val : values)
+	    s.append(val+"&");
+	
 	Request request = new Request.Builder()
-		.url(url)
+		.url(s.toString())
 		.build();
 	
 	Response response =  client.newCall(request).execute();

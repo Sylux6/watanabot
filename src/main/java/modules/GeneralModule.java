@@ -29,7 +29,7 @@ public class GeneralModule extends AbstractModule {
 	commands.put("module", (event, args) -> {
 	    StringBuilder help = new StringBuilder("**Module list:**\n");
 	    for (String s : CommandHandler.moduleMap.keySet()) {
-		help.append("- **" + s + "**\n");
+		help.append("- `" + s + "`\n");
 	    }
 	    BotUtils.sendMessage(event.getChannel(), help.toString());
 	});
@@ -43,7 +43,7 @@ public class GeneralModule extends AbstractModule {
 	});
 
 	commands.put("lewd", (event, args) -> {
-	    BotUtils.sendMessageEmbed(event.getChannel(),
+	    BotUtils.sendMessage(event.getChannel(),
 		    EmbedUtils.buildEmbedImageOnly("https://puu.sh/yWilT/c92b12e8cd.png"));
 	});
 
