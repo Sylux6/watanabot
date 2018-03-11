@@ -25,13 +25,13 @@ public class CommandHandler {
 
 	moduleMap.put("general", new GeneralModule());
 	moduleMap.put("music", new MusicModule());
-//	moduleMap.put("blindtest", new BlindtestModule());
+	moduleMap.put("blindtest", new BlindtestModule());
 	moduleMap.put("picture", new PictureModule());
 	moduleMap.put("llsif", new LLModule());
 
 	// alias
 	moduleMap.put("m", moduleMap.get("music"));
-//	moduleMap.put("b", moduleMap.get("blindtest"));
+	moduleMap.put("b", moduleMap.get("blindtest"));
 	moduleMap.put("p", moduleMap.get("picture"));
 	moduleMap.put("ll", moduleMap.get("llsif"));
     }

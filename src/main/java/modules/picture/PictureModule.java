@@ -72,7 +72,7 @@ public class PictureModule extends AbstractModule {
 		// nsfw filter
 		if (!images.isEmpty()) {
 		    Collections.shuffle(images);
-		    BotUtils.sendMessageEmbed(event.getChannel(),
+		    BotUtils.sendMessage(event.getChannel(),
 			    EmbedUtils.buildEmbedImage(
 				    images.get(0).getTag_string_character() + " drawn by "
 					    + images.get(0).getTag_string_artist() + " - Danbooru",
@@ -84,10 +84,10 @@ public class PictureModule extends AbstractModule {
 							// rating
 		    getImage(event, search, Rating.SAFE);
 		} else
-		    BotUtils.sendMessage(event.getChannel(), "I can't find");
+		    BotUtils.sendMessage(event.getChannel(), "No results");
 	    });
-	} catch (QueryParseException e) {
-	    BotUtils.sendMessage(event.getChannel(), "I can't find");
+	} catch (Exception e) {
+	    BotUtils.sendMessage(event.getChannel(), "No results");
 	}
     }
 
