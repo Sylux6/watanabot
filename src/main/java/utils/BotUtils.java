@@ -3,6 +3,9 @@ package utils;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -19,6 +22,9 @@ public class BotUtils {
     static public String BOT_PREFIX = "o7";
     static public int PREFIX_LENGTH = BOT_PREFIX.length();
     static public int NB_THREAD = 50;
+    
+    // Logger 
+    static public Logger logger = LoggerFactory.getLogger("Watanabot");
     
     /////////////////////////////////////////////
     ////////      FUNCTIONS         /////////////

@@ -44,10 +44,6 @@ public class MusicModule extends AbstractModule {
 	});
 
 	commands.put("leave", (event, args) -> {
-	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
-		return;
-	    }
 	    event.getGuild().getAudioManager().closeAudioConnection();
 	    getGuildAudioPlayer(event.getGuild()).player.destroy();
 	    BotUtils.sendMessage(event.getChannel(), "Bye bye!~ (> ᴗ •)ゞ");
@@ -105,6 +101,29 @@ public class MusicModule extends AbstractModule {
 	    BotUtils.sendMessage(event.getChannel(), "Tracklist has been cleared");
 	});
 
+	commands.put("queue", (event, args) -> {
+	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
+		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+		return;
+	    }
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    AudioManager audioManager = event.getGuild().getAudioManager();
+
+	    // Check if bot is in voiceChannel
+	    if (!audioManager.isConnected()) {
+		BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
+		return;
+	    }
+
+	    if (args.size() < 2) {
+		BotUtils.sendMessage(event.getChannel(), "No music found");
+		return;
+	    }
+	    
+	    playerManager.loadItemOrdered(musicManager, args.get(1),
+		    new AudioHandler(musicManager, event.getChannel(), args.get(1)));
+	});
+	
 	commands.put("play", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
 		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
@@ -113,20 +132,23 @@ public class MusicModule extends AbstractModule {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    AudioManager audioManager = event.getGuild().getAudioManager();
 
-	    // Check if url is here
-	    if (args.size() < 2) {
-		BotUtils.sendMessage(event.getChannel(), "I do not know what to play for you");
-		return;
-	    }
-
-	    // Check if bot is not playing blindtest
-
 	    // Check if bot is in voiceChannel
 	    if (!audioManager.isConnected()) {
 		BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
 		return;
 	    }
 
+	    if (args.size() == 1 && musicManager.scheduler.getTracklist().size() > 1) {
+		musicManager.player.startTrack(musicManager.scheduler.getTracklist().get(0), true);
+		return;
+	    }
+	    else if (args.size() < 2) {
+		BotUtils.sendMessage(event.getChannel(), "No music found");
+		return;
+	    }
+	    
+	    musicManager.player.stopTrack();
+	    musicManager.scheduler.purgeQueue();
 	    playerManager.loadItemOrdered(musicManager, args.get(1),
 		    new AudioHandler(musicManager, event.getChannel(), args.get(1)));
 	});
@@ -164,6 +186,12 @@ public class MusicModule extends AbstractModule {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.scheduler.shuffle();
 	    BotUtils.sendMessage(event.getChannel(), "Tracklist has been shuffled");
+	});
+	
+	commands.put("now", (event, args) -> {
+	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+	    AudioTrack now = musicManager.player.getPlayingTrack();
+	    BotUtils.sendMessage(event.getChannel(), "You are listening to **"+now.getInfo().title+"**");
 	});
 
     }

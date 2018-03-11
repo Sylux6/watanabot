@@ -1,21 +1,20 @@
 package core;
 
-import java.io.IOException;
-
 import javax.security.auth.login.LoginException;
 
 import core.listeners.MessageListener;
-import db.BlindtestDatabase;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import utils.BotUtils;
+import utils.DBUtils;
 
 public class Main {
 
     public static void main(String[] args)
 	    throws LoginException, RateLimitedException, IllegalArgumentException, InterruptedException {
-
+	
 	if (args.length != 1) {
 	    System.out.println("Please enter the bot token in argument");
 	    return;
@@ -30,12 +29,9 @@ public class Main {
 		.setGame(Game.playing("with Chika-chan"))
 		.buildBlocking();
 	
-	try {
-	    new BlindtestDatabase().init();
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+	// Database initialization
+	DBUtils.initDB();
+	
     }	
 
 }

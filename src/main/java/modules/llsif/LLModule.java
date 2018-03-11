@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import modules.AbstractModule;
 import modules.llsif.entity.Card;
 import modules.llsif.entity.Idol;
+import net.dv8tion.jda.core.entities.User;
 import utils.BotUtils;
 import utils.HttpRequest;
 import utils.JsonUtils;
@@ -15,6 +16,7 @@ import utils.JsonUtils;
 public class LLModule extends AbstractModule {
 
     private final String api_card_url = "https://schoolido.lu/api/cards/";
+    private final String api_cardid_url = "http://schoolido.lu/api/cardids/";
 
     public LLModule() {
 	super();
@@ -40,12 +42,10 @@ public class LLModule extends AbstractModule {
 	commands.put("hscout", (event, args) -> {
 	    BotUtils.random.setSeed(System.currentTimeMillis());
 	    Card c;
-	    JSONObject json;
 	    JSONArray jsonArray;
 	    String unit;
 	    String rarity;
 	    int roll;
-	    int count = 0;
 
 	    if (args.size() < 2) {
 		BotUtils.sendMessage(event.getChannel(), "u's / aqours argument missing");
@@ -78,33 +78,87 @@ public class LLModule extends AbstractModule {
 
 	    try {
 		// 1st request
-		json = JsonUtils.stringToJson(
-			HttpRequest.getRequest(api_card_url, "idol_main_unit=" + unit, "rarity=" + rarity));
+		jsonArray = JsonUtils.stringToJsonArray(
+			HttpRequest.getRequest(api_cardid_url, "idol_main_unit=" + unit, "rarity=" + rarity));
+				
+		c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
 
-		// get number of results & rolling
-		count = json.getInt("count");
-		roll = BotUtils.random.nextInt(count) + 1;
-
-		// get the right number page
-		json = JsonUtils.stringToJson(HttpRequest.getRequest(api_card_url, "idol_main_unit=" + unit,
-			"rarity=" + rarity, "page=" + (int) Math.ceil((double) roll / 10)));
-
-		// take the roll-th card
-		jsonArray = json.getJSONArray("results");
-		json = jsonArray.getJSONObject(roll - (((int) Math.ceil((double) roll / 10)) - 1) * 10);
-
-		// build card instance
-		c = new Card(json, event.getAuthor().getName());
-
-		// send result
-		BotUtils.sendMessage(event.getChannel(), c.toEmbed());
-	    } catch (IOException e) {
-		e.printStackTrace();
+		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+	    } catch (Exception e) {
+		BotUtils.logger.error("", e);
 		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
 	    }
 
 	});
+	
+	commands.put("id", (event, args) -> {
+	    if (args.size() < 2) {
+		BotUtils.sendMessage(event.getChannel(), "ID card missing");
+		return;
+	    }
+	    
+	    Card c = getCardByID(Integer.valueOf(args.get(1)), event.getAuthor());
+	    
+	    if (c == null) {
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Not found");
+	    }
+	    else {		
+		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+	    }
+	});
+	
+	commands.put("iid", (event, args) -> {
+	    if (args.size() < 2) {
+		BotUtils.sendMessage(event.getChannel(), "ID card missing");
+		return;
+	    }
+	    
+	    Card c = getCardByID(Integer.valueOf(args.get(1)), event.getAuthor());
+	    
+	    if (c == null) {
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Not found");
+	    }
+	    else {		
+		BotUtils.sendMessage(event.getChannel(), c.toEmbed(true));
+	    }
+	});
+	
+	commands.put("search", (event, args) -> {
+	    BotUtils.random.setSeed(System.currentTimeMillis());
+	    if (args.size() < 2) {
+		BotUtils.sendMessage(event.getChannel(), "search term missing");
+		return;
+	    }
+	    
+	    try {
+		StringBuilder terms = new StringBuilder();
+		for (int i = 1; i < args.size(); i++)
+		    terms.append(args.get(i)+" ");
+		JSONArray jsonArray = JsonUtils.stringToJsonArray(HttpRequest.getRequest(api_cardid_url, "search=" + terms.toString()));
+		if (jsonArray.length() == 0) {
+		    BotUtils.sendMessage(event.getChannel(), "No results");
+		    return;
+		}
+		Card c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
+		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+	    } catch (Exception e) {
+		BotUtils.logger.error("", e);
+		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+	    }
+	});
 
+    }
+    
+    private Card getCardByID(int id, User user) {
+	try {
+	    JSONObject json = JsonUtils.stringToJsonObject(HttpRequest.getRequest(api_card_url+"/"+Integer.valueOf(id)));
+	    if (json.has("detail"))
+		return null;
+	    return new Card(json, user);
+	} catch (IOException e) {
+	    BotUtils.logger.error("", e);
+	    return null;
+	}
     }
 
     @Override

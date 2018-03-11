@@ -9,12 +9,14 @@ public class BlindtestInstance {
     private BlindtestState state;
     HashMap<Long, Player> players; // list of players
     private User owner;
+    private int limit;
     
-    public BlindtestInstance(User owner) {
+    public BlindtestInstance(User owner, int limit) {
 	this.players = new HashMap<>();
 	this.state = BlindtestState.IDLE;
 	this.owner = owner;
 	this.players.put(Long.parseLong(owner.getId()), new Player(owner));
+	this.limit = limit;
     }
 
     public BlindtestState getState() {
@@ -52,6 +54,9 @@ public class BlindtestInstance {
 		owner = players.get(l).getUser();
 		break;
 	    }
+	}
+	else if (players.isEmpty()) {
+	    owner = null;
 	}
 	return true;
     }

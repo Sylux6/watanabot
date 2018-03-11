@@ -59,20 +59,19 @@ public class MessageListener extends ListenerAdapter {
 	// No specific module found
 	if ((module = CommandHandler.moduleMap.get(argTab.get(0))) == null) {
 	    module = CommandHandler.moduleMap.get("general"); // Take general module by default
-//	    return;
 	} else {
 	    if (argTab.size() < 2) // Message contains at least <module> <command>
 		return;
 	    argTab.remove(0); // Module name removed
 	}
 	
-//	if (module instanceof MusicModule) { // Block MusicModule commands if Blindtest is running
-//	    BlindtestModule blindtestModule = (BlindtestModule) CommandHandler.moduleMap.get("blindtest");
-//	    if (blindtestModule.getBlindtestInstance(event.getGuild()) != null) {
-//		BotUtils.sendMessage(event.getChannel(), "A blindtest game is running");
-//		return;
-//	    }
-//	}
+	if (module instanceof MusicModule) { // Block MusicModule commands if Blindtest is running
+	    BlindtestModule blindtestModule = (BlindtestModule) CommandHandler.moduleMap.get("blindtest");
+	    if (blindtestModule.getBlindtestInstance(event.getGuild()) != null) {
+		BotUtils.sendMessage(event.getChannel(), "A blindtest game is running");
+		return;
+	    }
+	}
 
 	// Calling the command
 	if (module.getMapCommands().containsKey(argTab.get(0))) {

@@ -47,15 +47,6 @@ public class GeneralModule extends AbstractModule {
 		    EmbedUtils.buildEmbedImageOnly("https://puu.sh/yWilT/c92b12e8cd.png"));
 	});
 
-	commands.put("wait", (event, args) -> {
-	    try {
-		Thread.sleep(5000);
-	    } catch (InterruptedException e) {
-		e.printStackTrace();
-	    }
-	    BotUtils.sendMessage(event.getChannel(), "waited 5 sec");
-	});
-
 	commands.put("nya", (event, args) -> {
 	    PictureModule.getImage(event, "nekomimi", event.getTextChannel().isNSFW() ? Rating.EXPLICIT : Rating.SAFE);
 	});

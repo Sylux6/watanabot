@@ -84,10 +84,10 @@ public class PictureModule extends AbstractModule {
 							// rating
 		    getImage(event, search, Rating.SAFE);
 		} else
-		    BotUtils.sendMessage(event.getChannel(), "I can't find");
+		    BotUtils.sendMessage(event.getChannel(), "No results");
 	    });
-	} catch (QueryParseException e) {
-	    BotUtils.sendMessage(event.getChannel(), "I can't find");
+	} catch (Exception e) {
+	    BotUtils.sendMessage(event.getChannel(), "No results");
 	}
     }
 
