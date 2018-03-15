@@ -34,12 +34,6 @@ public class ThreadGeneralBehaviour implements Runnable {
 	    BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Ohayousoro! (> ᴗ •)ゞ");
 	}
 	
-	//TODO: we should avoid lewd spam (disabled for now)
-//	if (message.matches(".*(?i)lewd.*")) {
-//	    BotUtils.sendMessage(event.getChannel(), "I'm not lewd!");
-//	}
-	
-
     }
 
 }

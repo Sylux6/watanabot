@@ -12,13 +12,19 @@ public class ThreadMentionBehaviour extends ThreadGeneralBehaviour {
     @Override
     public void run() {
 	message = event.getMessage().getContentDisplay();
+	StringBuilder answer = new StringBuilder(BotUtils.mentionAt(event.getAuthor()) + " ");
 
-	if (BotUtils.yousoroEmojiExists(event.getGuild())) {
-	    BotUtils.sendMessage(event.getChannel(),
-		    BotUtils.mentionAt(event.getAuthor()) + " " + BotUtils.getEmojiMessage(event.getGuild(), "yousoro"));
-	} else {
-	    BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " (> ᴗ •)ゞ");
+	if (message.matches(".*(?i)lewd.*")) {
+	    BotUtils.sendMessage(event.getChannel(), answer.append("I'm not lewd!").toString());
 	}
+	else {
+	    if (BotUtils.yousoroEmojiExists(event.getGuild())) {
+		BotUtils.sendMessage(event.getChannel(), answer.append(BotUtils.getEmojiMessage(event.getGuild(), "yousoro")).toString());
+	    } else {
+		BotUtils.sendMessage(event.getChannel(), answer.append("(> ᴗ •)ゞ").toString());
+	    }	    
+	}
+	
     }
 
 }

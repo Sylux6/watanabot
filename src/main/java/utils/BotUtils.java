@@ -11,7 +11,9 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class BotUtils {
     
@@ -19,7 +21,7 @@ public class BotUtils {
     static public Random random = new Random();
 
     // CONSTANTS
-    static public String BOT_PREFIX = "o7";
+    static public String BOT_PREFIX = "$";
     static public int PREFIX_LENGTH = BOT_PREFIX.length();
     static public int NB_THREAD = 50;
     
@@ -53,13 +55,11 @@ public class BotUtils {
     
     static public void editMessage(Message oldMessage, Message newMessage) {
 	oldMessage.editMessage(newMessage).queue();
-    }
+    }  
     
     static public void editMessage(Message oldMessage, MessageEmbed newMessage) {
 	oldMessage.editMessage(newMessage).queue();
-    }
-    
-    
+    }  
     
     // Function for reacting to a message for a given String emote
     // returns true on success

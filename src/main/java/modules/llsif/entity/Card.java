@@ -1,11 +1,12 @@
 package modules.llsif.entity;
 
+import java.awt.Color;
+
 import org.json.JSONObject;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
-import utils.BotUtils;
 
 public class Card {
     
@@ -80,6 +81,7 @@ public class Card {
 		.addField("Rarity", rarity.toString(), true)
 		.addField("Attribute", attribute.toString(), true)
 		.addField("Owner", user, false)
+		.setColor(this.attribute==Attribute.COOL?new Color(0, 187, 255):this.attribute==Attribute.PURE?new Color(0, 187, 68):new Color(238, 27, 143))
 		.build();
     }
 }
