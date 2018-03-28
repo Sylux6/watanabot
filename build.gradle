@@ -34,7 +34,7 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.+'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.+'
     
-    compile 'net.dv8tion:JDA:3.5.1_339'
+    compile 'net.dv8tion:JDA:3.5.1_353'
     compile 'com.sedmelluq:lavaplayer:1.2.56'
     compile 'net.kodehawa:imageboard-api:2.0'
     

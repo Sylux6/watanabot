@@ -36,8 +36,8 @@ public class BlindtestModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), "You're not the owner of the game");
 		return;
 	    }
-
 	    musicManager.player.destroy();
+	    BotUtils.editMessage(instance.getmainMessage(), instance.abortEmbed().build());
 	    instances.remove(Long.parseLong(event.getGuild().getId()));
 	    event.getGuild().getAudioManager().closeAudioConnection();
 	    BotUtils.sendMessage(event.getChannel(), "Game aborted");
@@ -84,7 +84,6 @@ public class BlindtestModule extends AbstractModule {
 	    instances.put(Long.parseLong(event.getGuild().getId()), instance);
 	    instance.setState(BlindtestState.PREPARING);
 	    audioManager.openAudioConnection(event.getMember().getVoiceState().getChannel());
-	    instance.updateEmbedPreparation();
 	});
 
 	commands.put("join", (event, args) -> {
@@ -105,7 +104,7 @@ public class BlindtestModule extends AbstractModule {
 	    }
 	    if (instance.addPlayer(event.getAuthor())) {
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you're in (> ᴗ •)ゞ");
-		instance.updateEmbedPreparation();
+		BotUtils.editMessage(instance.getmainMessage(), instance.updateEmbedPreparation().build());
 	    }
 	    else
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you're already in");
@@ -120,7 +119,7 @@ public class BlindtestModule extends AbstractModule {
 	    }
 	    if (event.getAuthor().equals(instance.getOwner())) {
 		instance.removePlayer(event.getAuthor());
-		instance.updateEmbedPreparation();
+		BotUtils.editMessage(instance.getmainMessage(), instance.updateEmbedPreparation().build());
 		if (instance.getOwner() == null) {
 		    MusicModule musicModule = (MusicModule) CommandHandler.moduleMap.get("music");
 		    GuildMusicManager musicManager = musicModule.getGuildAudioPlayer(event.getGuild());
@@ -153,6 +152,8 @@ public class BlindtestModule extends AbstractModule {
 	    if (instance.getState() != BlindtestState.PREPARING) {
 		BotUtils.sendMessage(event.getChannel(), "Blindtest is already running");
 	    }
+	    
+	    instance.setState(BlindtestState.PLAYING);
 	    
 	    
 	});

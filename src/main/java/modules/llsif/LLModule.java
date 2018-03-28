@@ -83,7 +83,8 @@ public class LLModule extends AbstractModule {
 				
 		c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
 
-		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+//		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+		c.toEmbed(false, event.getChannel());
 	    } catch (Exception e) {
 		BotUtils.logger.error("", e);
 		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
@@ -103,7 +104,7 @@ public class LLModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Not found");
 	    }
 	    else {		
-		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+//		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
 	    }
 	});
 	
@@ -119,7 +120,7 @@ public class LLModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Not found");
 	    }
 	    else {		
-		BotUtils.sendMessage(event.getChannel(), c.toEmbed(true));
+//		BotUtils.sendMessage(event.getChannel(), c.toEmbed(true));
 	    }
 	});
 	
@@ -140,7 +141,7 @@ public class LLModule extends AbstractModule {
 		    return;
 		}
 		Card c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
-		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+//		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
 	    } catch (Exception e) {
 		BotUtils.logger.error("", e);
 		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");

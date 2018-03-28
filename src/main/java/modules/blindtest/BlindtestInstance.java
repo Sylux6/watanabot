@@ -29,7 +29,7 @@ public class BlindtestInstance {
 	this.limit = limit;
 	this.chan = chan;
 	this.mainEmbed = new EmbedBuilder();
-	this.mainMessage = new MessageBuilder("Preparing a blindtest ...").sendTo(chan).complete();
+	this.mainMessage = new MessageBuilder(updateEmbedPreparation()).sendTo(chan).complete();
     }
 
     public BlindtestState getState() {
@@ -48,7 +48,7 @@ public class BlindtestInstance {
         return mainEmbed;
     }
     
-    public Message getmaibMessage() {
+    public Message getmainMessage() {
         return mainMessage;
     }
     
@@ -82,24 +82,27 @@ public class BlindtestInstance {
 	return true;
     }
     
-    // Panel Message
-//    public void sendMainMessage() {
-//	mainMessage.editMessage(mainEmbed.build()).queue();
-//    }
-    
-    public void updateEmbedPreparation() {
+    public EmbedBuilder updateEmbedPreparation() {
 	mainEmbed.clear();
 	StringBuilder playersList = new StringBuilder();
 	for (Long k : players.keySet()) {
 	    playersList.append(players.get(k).getUser().getName()+"\n");
 	}
-	mainEmbed.setColor(Color.CYAN)
-	.setTitle("Blindtest")
-	.appendDescription("Ohayousoro!~ (> ᴗ •)ゞ  I'm preparing a new blindtest game. Type `o7 b join` for playing")
-	.addField("Leader", owner.getName(), false)
-	.addField("Players", playersList.toString(), false);
-	BotUtils.editMessage(mainMessage, mainEmbed.build());
-	// TODO: game aborted case
+	if (owner != null) {
+	    return mainEmbed.setColor(Color.CYAN)
+	    .setTitle("Blindtest")
+	    .appendDescription("Ohayousoro!~ (> ᴗ •)ゞ  I'm preparing a new blindtest game. Type `o7 b join` for playing")
+	    .addField("Leader", owner.getName(), false)
+	    .addField("Players", playersList.toString(), false);	    
+	}
+	else 
+	    return abortEmbed();
+    }
+    
+    public EmbedBuilder abortEmbed() {
+	mainEmbed.clear();
+	return mainEmbed.setColor(Color.CYAN)
+	    .setTitle("Blindtest -ABORTED-");
     }
     
 }
