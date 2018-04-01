@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.utils.IOUtil;
+import utils.BotUtils;
 
 public class Card {
     
@@ -70,40 +71,37 @@ public class Card {
 	this.rarity = Rarity.valueOf(json.getString("rarity"));
 	this.attribute = Attribute.valueOf(json.getString("attribute").toUpperCase());
 	this.url = json.getString("website_url");
-	
-	this.img = "https:"+json.getString("card_image");
-	this.idolized_img = json.getString("card_idolized_image");
-	System.out.println(this.img);
-	// get a valid url image from kachagain.com using the id
-//	this.img = "http://kachagain.com/llsif/cards/"+id+".png";	
-//	if (json.get("card_image").equals(null))
-//	    this.idolized_img = this.img;
-//	else 
-//	    this.idolized_img = "http://kachagain.com/llsif/cards/"+id+"_t.png";
 	this.user = user.getName();
+	
+	if (json.get("card_image").equals(null))
+	    this.img = "https:"+json.getString("card_idolized_image");
+	else
+	    this.img = "https:"+json.getString("card_image");
+	this.idolized_img = "https:"+json.getString("card_idolized_image");
+	    
 	
     }
     
-    public void toEmbed(boolean idolized, MessageChannel chan) {
-	try {
-	    byte[] file = IOUtil.readFully(new URL(this.img).openStream());
-	    MessageEmbed embed = new EmbedBuilder()
-		    .setTitle(name + " (ID:"+id+")")
-		    .setImage("attachment://idol.png")
-		    .addField("Rarity", rarity.toString(), true)
-		    .addField("Attribute", attribute.toString(), true)
-		    .addField("Owner", user, false)
-		    .setColor(this.attribute==Attribute.COOL?new Color(0, 187, 255):this.attribute==Attribute.PURE?new Color(0, 187, 68):new Color(238, 27, 143))
-		    .build();
-	    MessageBuilder m = new MessageBuilder();
-	    m.setEmbed(embed);
-	    chan.sendFile(file, "idol.png", m.build()).queue();
-	} catch (MalformedURLException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+    public Message toEmbedMessage() {
+	
+	MessageEmbed embed = new EmbedBuilder()
+		.setTitle(name + " (ID:"+id+")")
+		.setImage("attachment://idol.png")
+		.addField("Rarity", rarity.toString(), true)
+		.addField("Attribute", attribute.toString(), true)
+		.addField("Owner", user, false)
+		.setColor(this.attribute==Attribute.COOL?new Color(0, 187, 255):this.attribute==Attribute.PURE?new Color(0, 187, 68):new Color(238, 27, 143))
+		.build();
+	MessageBuilder m = new MessageBuilder();
+	m.setEmbed(embed);
+	return m.build();
+    }
+    
+    public byte[] getFileImg() throws MalformedURLException, IOException {
+	return IOUtil.readFully(new URL(this.img).openStream());
+    }
+    
+    public byte[] getFileIdolizedImg() throws MalformedURLException, IOException {
+	return IOUtil.readFully(new URL(this.idolized_img).openStream());
     }
 }

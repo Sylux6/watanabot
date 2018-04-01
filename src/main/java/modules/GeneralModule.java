@@ -46,6 +46,11 @@ public class GeneralModule extends AbstractModule {
 	    BotUtils.sendMessage(event.getChannel(),
 		    EmbedUtils.buildEmbedImageOnly("https://puu.sh/yWilT/c92b12e8cd.png"));
 	});
+	
+	commands.put("hentai", (event, args) -> {
+	    BotUtils.sendMessage(event.getChannel(),
+		    EmbedUtils.buildEmbedImageOnly("http://puu.sh/zTTKM/266bfeb83c.png"));
+	});
 
 	commands.put("nya", (event, args) -> {
 	    PictureModule.getImage(event, "nekomimi", event.getTextChannel().isNSFW() ? Rating.EXPLICIT : Rating.SAFE);

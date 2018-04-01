@@ -1,6 +1,7 @@
 package modules.llsif;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -83,8 +84,7 @@ public class LLModule extends AbstractModule {
 				
 		c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
 
-//		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
-		c.toEmbed(false, event.getChannel());
+		BotUtils.sendFile(event.getChannel(), c.getFileImg(), "idol.png", c.toEmbedMessage());
 	    } catch (Exception e) {
 		BotUtils.logger.error("", e);
 		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
@@ -104,7 +104,13 @@ public class LLModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Not found");
 	    }
 	    else {		
-//		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+		try {
+		    BotUtils.sendFile(event.getChannel(), c.getFileImg(), "idol.png", c.toEmbedMessage());
+		} catch (MalformedURLException e) {
+		    BotUtils.logger.error("", e);
+		} catch (IOException e) {
+		    BotUtils.logger.error("", e);
+		}
 	    }
 	});
 	
@@ -120,7 +126,13 @@ public class LLModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Not found");
 	    }
 	    else {		
-//		BotUtils.sendMessage(event.getChannel(), c.toEmbed(true));
+		try {
+		    BotUtils.sendFile(event.getChannel(), c.getFileIdolizedImg(), "idol.png", c.toEmbedMessage());
+		} catch (MalformedURLException e) {
+		    BotUtils.logger.error("", e);
+		} catch (IOException e) {
+		    BotUtils.logger.error("", e);
+		}
 	    }
 	});
 	
@@ -141,7 +153,7 @@ public class LLModule extends AbstractModule {
 		    return;
 		}
 		Card c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
-//		BotUtils.sendMessage(event.getChannel(), c.toEmbed(false));
+		BotUtils.sendFile(event.getChannel(), c.getFileImg(), "idol.png", c.toEmbedMessage());
 	    } catch (Exception e) {
 		BotUtils.logger.error("", e);
 		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");

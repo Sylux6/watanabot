@@ -47,6 +47,10 @@ public class BotUtils {
 	channel.sendMessage(message).queue();
     }
     
+    static public void sendFile(MessageChannel channel, byte[] file, String attachment, Message message) {
+	channel.sendFile(file, attachment, message).queue();
+    }
+    
     ///////// EDITING MESSAGE FUNCTION ////////
     
     static public void editMessage(Message oldMessage, String newMessage) {

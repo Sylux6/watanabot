@@ -7,7 +7,6 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import utils.BotUtils;
 import utils.DBUtils;
 
 public class Main {
