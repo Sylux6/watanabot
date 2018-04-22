@@ -79,6 +79,11 @@ public class Card {
 	    this.img = "https:"+json.getString("card_image");
 	this.idolized_img = "https:"+json.getString("card_idolized_image");
 	    
+	if (json.get("round_card_image").equals(null))
+	    this.round_img = "https:"+json.getString("round_card_idolized_image");
+	else
+	    this.round_img = "https:"+json.getString("round_card_image");
+	this.round_idolized_img = "https:"+json.getString("round_card_idolized_image");
 	
     }
     
@@ -92,9 +97,7 @@ public class Card {
 		.addField("Owner", user, false)
 		.setColor(this.attribute==Attribute.COOL?new Color(0, 187, 255):this.attribute==Attribute.PURE?new Color(0, 187, 68):new Color(238, 27, 143))
 		.build();
-	MessageBuilder m = new MessageBuilder();
-	m.setEmbed(embed);
-	return m.build();
+	return new MessageBuilder(embed).build();
     }
     
     public byte[] getFileImg() throws MalformedURLException, IOException {
@@ -103,5 +106,13 @@ public class Card {
     
     public byte[] getFileIdolizedImg() throws MalformedURLException, IOException {
 	return IOUtil.readFully(new URL(this.idolized_img).openStream());
+    }
+    
+    public byte[] getFileRoundImg() throws MalformedURLException, IOException {
+	return IOUtil.readFully(new URL(this.round_img).openStream());
+    }
+    
+    public byte[] getFileRoundIdolizedImg() throws MalformedURLException, IOException {
+	return IOUtil.readFully(new URL(this.round_idolized_img).openStream());
     }
 }

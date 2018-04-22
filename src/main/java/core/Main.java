@@ -7,6 +7,8 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import reminder.QuartzScheduler;
+import utils.BotUtils;
 import utils.DBUtils;
 
 public class Main {
@@ -23,7 +25,7 @@ public class Main {
 	new CommandHandler();	
 
 	// Building bot
-	new JDABuilder(AccountType.BOT).setToken(args[0])
+	BotUtils.bot = new JDABuilder(AccountType.BOT).setToken(args[0])
 		.addEventListener(new MessageListener())
 		.setGame(Game.playing("with Chika-chan"))
 		.buildBlocking();
@@ -31,6 +33,13 @@ public class Main {
 	// Database initialization
 	DBUtils.initDB();
 	
+	
+	QuartzScheduler sched = new QuartzScheduler();
+	try {
+	    sched.run();
+	} catch (Exception e) {
+	    BotUtils.logger.error("", e);
+	}
     }	
 
 }

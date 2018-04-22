@@ -1,6 +1,7 @@
 package modules.blindtest;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -8,7 +9,6 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
-import utils.BotUtils;
 
 public class BlindtestInstance {
     
@@ -20,6 +20,7 @@ public class BlindtestInstance {
     private Message mainMessage;
     private EmbedBuilder mainEmbed;
     private MessageChannel chan;
+    private ArrayList<Integer> items;
     
     public BlindtestInstance(User owner, int limit, MessageChannel chan) {
 	this.players = new HashMap<>();

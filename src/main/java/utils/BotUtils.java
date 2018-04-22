@@ -1,29 +1,39 @@
 package utils;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.utils.IOUtil;
 
 public class BotUtils {
+    
+    // Bot
+    static public JDA bot;
     
     // RNG
     static public Random random = new Random();
 
     // CONSTANTS
-    static public String BOT_PREFIX = "$";
+    static public String BOT_PREFIX = "o7";
     static public int PREFIX_LENGTH = BOT_PREFIX.length();
     static public int NB_THREAD = 50;
+    
+    // SECRET ROOM RELATED
+    static public long SRID = Long.parseLong("181478842274283520");
     
     // Logger 
     static public Logger logger = LoggerFactory.getLogger("Watanabot");
@@ -49,6 +59,13 @@ public class BotUtils {
     
     static public void sendFile(MessageChannel channel, byte[] file, String attachment, Message message) {
 	channel.sendFile(file, attachment, message).queue();
+    }
+    
+    static public void sendFileByUrl(MessageChannel channel, String message, String url) throws IOException {
+	URL url_ = new URL(url);
+	byte[] file = IOUtil.readFully(url_.openStream());
+	MessageBuilder m = new MessageBuilder(message);
+	channel.sendFile(file, FilenameUtils.getName(url_.getPath()), m.build()).queue();
     }
     
     ///////// EDITING MESSAGE FUNCTION ////////
@@ -81,6 +98,7 @@ public class BotUtils {
 	return !guild.getEmotesByName("yousoro", true).isEmpty();
     }
     
+    
     // Returns emoji object from guild
     static public Emote getEmote(Guild guild, String name, boolean ignoreCase) {
 	List<Emote> emote = guild.getEmotesByName(name, ignoreCase);
@@ -95,6 +113,13 @@ public class BotUtils {
 	if (emote == null)
 	    return "";
 	return "<:"+name+":"+emote.getId()+">";
+    }
+    
+    static public String getYousoro(Guild guild) {
+	Emote emote = getEmote(guild, "yousoro", false);
+	if (emote == null)
+	    return "(> ᴗ •)ゞ";
+	return "<:yousoro:"+emote.getId()+">";
     }
     
     // Returns mention syntax for message
