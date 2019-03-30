@@ -26,7 +26,11 @@ public class ThreadGeneralBehaviour implements Runnable {
 	    }
 	}
 	
-	if (message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)")) {
+	if (message.matches("(.*\\W+|)((?i)zensoku+ +zenshi+n+)(\\W+.*|)")) {
+	    BotUtils.sendMessage(event.getChannel(), "YOUSORO!~ (> ᴗ •)ゞ");
+	}
+	
+	else if (message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)")) {
 	    BotUtils.sendMessage(event.getChannel(), "わたし？");
 	}
 	
@@ -34,12 +38,6 @@ public class ThreadGeneralBehaviour implements Runnable {
 	    BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Ohayousoro! (> ᴗ •)ゞ");
 	}
 	
-	//TODO: we should avoid lewd spam (disabled for now)
-//	if (message.matches(".*(?i)lewd.*")) {
-//	    BotUtils.sendMessage(event.getChannel(), "I'm not lewd!");
-//	}
-	
-
     }
 
 }

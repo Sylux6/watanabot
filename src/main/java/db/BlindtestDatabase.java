@@ -85,8 +85,8 @@ public class BlindtestDatabase {
 		"ORDER BY RANDOM() LIMIT " + n);
     }
     
-    static public void databaseSize() throws SQLException {
+    static public int databaseSize() throws SQLException {
 	ResultSet rs = DBUtils.query("SELECT COUNT(*) AS total FROM blindtest_collection");
-	DBUtils.collection_size = rs.getInt("total");
+	return DBUtils.collection_size = rs.getInt("total");
     }
 }

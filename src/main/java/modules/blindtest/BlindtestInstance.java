@@ -1,7 +1,13 @@
 package modules.blindtest;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
 public class BlindtestInstance {
@@ -11,12 +17,20 @@ public class BlindtestInstance {
     private User owner;
     private int limit;
     
-    public BlindtestInstance(User owner, int limit) {
+    private Message mainMessage;
+    private EmbedBuilder mainEmbed;
+    private MessageChannel chan;
+    private ArrayList<Integer> items;
+    
+    public BlindtestInstance(User owner, int limit, MessageChannel chan) {
 	this.players = new HashMap<>();
 	this.state = BlindtestState.IDLE;
 	this.owner = owner;
 	this.players.put(Long.parseLong(owner.getId()), new Player(owner));
 	this.limit = limit;
+	this.chan = chan;
+	this.mainEmbed = new EmbedBuilder();
+	this.mainMessage = new MessageBuilder(updateEmbedPreparation()).sendTo(chan).complete();
     }
 
     public BlindtestState getState() {
@@ -29,6 +43,14 @@ public class BlindtestInstance {
 
     public User getOwner() {
         return owner;
+    }
+    
+    public EmbedBuilder getMainBuilder() {
+        return mainEmbed;
+    }
+    
+    public Message getmainMessage() {
+        return mainMessage;
     }
     
     // Adds a player to the game
@@ -50,8 +72,8 @@ public class BlindtestInstance {
 	players.remove(userID);
 	// Electing a new owner
 	if (user.equals(owner) && !players.isEmpty()) {
-	    for(Long l : players.keySet()) {
-		owner = players.get(l).getUser();
+	    for(Long k : players.keySet()) {
+		owner = players.get(k).getUser();
 		break;
 	    }
 	}
@@ -59,6 +81,29 @@ public class BlindtestInstance {
 	    owner = null;
 	}
 	return true;
+    }
+    
+    public EmbedBuilder updateEmbedPreparation() {
+	mainEmbed.clear();
+	StringBuilder playersList = new StringBuilder();
+	for (Long k : players.keySet()) {
+	    playersList.append(players.get(k).getUser().getName()+"\n");
+	}
+	if (owner != null) {
+	    return mainEmbed.setColor(Color.CYAN)
+	    .setTitle("Blindtest")
+	    .appendDescription("Ohayousoro!~ (> ᴗ •)ゞ  I'm preparing a new blindtest game. Type `o7 b join` for playing")
+	    .addField("Leader", owner.getName(), false)
+	    .addField("Players", playersList.toString(), false);	    
+	}
+	else 
+	    return abortEmbed();
+    }
+    
+    public EmbedBuilder abortEmbed() {
+	mainEmbed.clear();
+	return mainEmbed.setColor(Color.CYAN)
+	    .setTitle("Blindtest -ABORTED-");
     }
     
 }

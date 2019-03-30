@@ -36,8 +36,8 @@ public class BlindtestModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), "You're not the owner of the game");
 		return;
 	    }
-
 	    musicManager.player.destroy();
+	    BotUtils.editMessage(instance.getmainMessage(), instance.abortEmbed().build());
 	    instances.remove(Long.parseLong(event.getGuild().getId()));
 	    event.getGuild().getAudioManager().closeAudioConnection();
 	    BotUtils.sendMessage(event.getChannel(), "Game aborted");
@@ -68,18 +68,22 @@ public class BlindtestModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), "I'm currently playing music");
 		return;
 	    }
+	    
+	    // User VoiceChannel
+	    if (!event.getMember().getVoiceState().inVoiceChannel()) {
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you are not in a voice channel");
+		return;
+	    }
 
 	    if (args.size() < 2) {
 		BotUtils.sendMessage(event.getChannel(), "Score limit is missing : prepare <limit>");
 		return;
 	    }
 	    
-	    instance = new BlindtestInstance(event.getAuthor(), Integer.valueOf(args.get(1)));
+	    instance = new BlindtestInstance(event.getAuthor(), Integer.valueOf(args.get(1)), event.getChannel());
 	    instances.put(Long.parseLong(event.getGuild().getId()), instance);
 	    instance.setState(BlindtestState.PREPARING);
 	    audioManager.openAudioConnection(event.getMember().getVoiceState().getChannel());
-	    BotUtils.sendMessage(event.getChannel(), "Ohayousoro!~ (> ᴗ •)ゞ I'm preparing a new blindtest game for "
-		    + BotUtils.mentionAt(event.getAuthor()) + "\nType `o7 b join` to join the game");
 	});
 
 	commands.put("join", (event, args) -> {
@@ -98,8 +102,10 @@ public class BlindtestModule extends AbstractModule {
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you can not signup");
 		return;
 	    }
-	    if (instance.addPlayer(event.getAuthor()))
+	    if (instance.addPlayer(event.getAuthor())) {
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you're in (> ᴗ •)ゞ");
+		BotUtils.editMessage(instance.getmainMessage(), instance.updateEmbedPreparation().build());
+	    }
 	    else
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you're already in");
 	});
@@ -113,22 +119,24 @@ public class BlindtestModule extends AbstractModule {
 	    }
 	    if (event.getAuthor().equals(instance.getOwner())) {
 		instance.removePlayer(event.getAuthor());
+		BotUtils.editMessage(instance.getmainMessage(), instance.updateEmbedPreparation().build());
 		if (instance.getOwner() == null) {
 		    MusicModule musicModule = (MusicModule) CommandHandler.moduleMap.get("music");
 		    GuildMusicManager musicManager = musicModule.getGuildAudioPlayer(event.getGuild());
+		    // abort behaviour
 		    musicManager.player.destroy();
 		    instances.remove(Long.parseLong(event.getGuild().getId()));
 		    event.getGuild().getAudioManager().closeAudioConnection();
-		    BotUtils.sendMessage(event.getChannel(), "Game aborted : no players left");
+		    BotUtils.sendMessage(event.getChannel(), "No players left : game aborted");
 		}
 		else {
 		    BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())
 			    + " is out, the new owner is " + BotUtils.mentionAt(instance.getOwner()));
 		}
 	    }
-	    else if (instance.removePlayer(event.getAuthor())) {
+	    else if (instance.removePlayer(event.getAuthor()))
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " is out");
-	    } else
+	    else
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " already out");
 	    
 	});
@@ -142,8 +150,12 @@ public class BlindtestModule extends AbstractModule {
 	    }
 	    
 	    if (instance.getState() != BlindtestState.PREPARING) {
-//		BotUtils.sendMessage(channel, message);
+		BotUtils.sendMessage(event.getChannel(), "Blindtest is already running");
 	    }
+	    
+	    instance.setState(BlindtestState.PLAYING);
+	    
+	    
 	});
     }
 

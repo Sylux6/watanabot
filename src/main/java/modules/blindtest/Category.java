@@ -5,5 +5,6 @@ public enum Category {
     ENDING,
     INSERT_SONG,
     OST,
+    OFF_VOCAL,
     OTHER,
 }
