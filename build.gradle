@@ -36,7 +36,7 @@ dependencies {
     
     compile 'net.dv8tion:JDA:3.8.3_462'
     compile 'com.sedmelluq:lavaplayer:1.3.14'
-    compile 'net.kodehawa:imageboard-api:2.0'
+    compile 'net.kodehawa:imageboard-api:2.0.5'
     compile 'org.quartz-scheduler:quartz:2.2.3'
     compile 'pw.aru.api:nekos4j:1.0'
     

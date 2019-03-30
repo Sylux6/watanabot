@@ -15,35 +15,35 @@ public class PictureModule extends AbstractModule {
 
     @Override
     public void populate() {
-	commands.put("nsfw", (event, args) -> {
-	    if (args.size() < 2) {
-		BotUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
-		return;
-	    }
-	    if (event.getTextChannel().isNSFW())
-		getImage(event, String.join(" ", args.subList(1, args.size())), Rating.EXPLICIT);
-	    else
-		BotUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
-	});
-	
-	commands.put("questionable", (event, args) -> {
-	    if (args.size() < 2) {
-		BotUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
-		return;
-	    }
-	    if (event.getTextChannel().isNSFW())
-		getImage(event, String.join(" ", args.subList(1, args.size())), Rating.QUESTIONABLE);
-	    else
-		BotUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
-	});	
+		commands.put("nsfw", (event, args) -> {
+			if (args.size() < 2) {
+			BotUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
+			return;
+			}
+			if (event.getTextChannel().isNSFW())
+			getImage(event, String.join(" ", args.subList(1, args.size())), Rating.EXPLICIT);
+			else
+			BotUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
+		});
 
-	commands.put("safe", (event, args) -> {
-	    if (args.size() < 2) {
-		BotUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
-		return;
-	    }
-	    getImage(event, String.join(" ", args.subList(1, args.size())), Rating.SAFE);
-	});
+		commands.put("questionable", (event, args) -> {
+			if (args.size() < 2) {
+			BotUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
+			return;
+			}
+			if (event.getTextChannel().isNSFW())
+			getImage(event, String.join(" ", args.subList(1, args.size())), Rating.QUESTIONABLE);
+			else
+			BotUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
+		});
+
+		commands.put("safe", (event, args) -> {
+			if (args.size() < 2) {
+			BotUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
+			return;
+			}
+			getImage(event, String.join(" ", args.subList(1, args.size())), Rating.SAFE);
+		});
     }
 
     static public void getByDefault(MessageReceivedEvent event, List<String> args) {
@@ -80,7 +80,7 @@ public class PictureModule extends AbstractModule {
 		} else if (rating == Rating.EXPLICIT) { // If no explicit image has been found, try again with
 							// questionable rating
 		    getImage(event, search, Rating.QUESTIONABLE);
-		} else if (rating == Rating.EXPLICIT) { // If no questionable image has been found, try again with safe
+		} else if (rating == Rating.QUESTIONABLE) { // If no questionable image has been found, try again with safe
 							// rating
 		    getImage(event, search, Rating.SAFE);
 		} else
