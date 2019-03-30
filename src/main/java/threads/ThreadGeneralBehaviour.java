@@ -26,7 +26,11 @@ public class ThreadGeneralBehaviour implements Runnable {
 	    }
 	}
 	
-	if (message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)")) {
+	if (message.matches("(.*\\W+|)((?i)zensoku+ +zenshi+n+)(\\W+.*|)")) {
+	    BotUtils.sendMessage(event.getChannel(), "YOUSORO!~ (> ᴗ •)ゞ");
+	}
+	
+	else if (message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)")) {
 	    BotUtils.sendMessage(event.getChannel(), "わたし？");
 	}
 	

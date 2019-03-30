@@ -80,4 +80,5 @@ public class MessageListener extends ListenerAdapter {
 	    CommandHandler.service.execute(new ThreadPictureDefaultBehaviour(event, argTab));
 	}
     }
+    
 }

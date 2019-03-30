@@ -1,15 +1,13 @@
 package modules;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 
 import core.CommandHandler;
 import modules.picture.PictureModule;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.utils.IOUtil;
+import net.dv8tion.jda.core.entities.Role;
 import net.kodehawa.lib.imageboards.entities.Rating;
 import utils.BotUtils;
 import utils.EmbedUtils;
@@ -52,12 +50,12 @@ public class GeneralModule extends AbstractModule {
 
 	commands.put("lewd", (event, args) -> {
 	    BotUtils.sendMessage(event.getChannel(),
-		    EmbedUtils.buildEmbedImageOnly("https://puu.sh/yWilT/c92b12e8cd.png"));
+		    EmbedUtils.buildEmbedImageOnly("https://puu.sh/Cszmq.jpg"));
 	});
 	
 	commands.put("hentai", (event, args) -> {
 	    BotUtils.sendMessage(event.getChannel(),
-		    EmbedUtils.buildEmbedImageOnly("http://puu.sh/zTTKM/266bfeb83c.png"));
+		    EmbedUtils.buildEmbedImageOnly("https://puu.sh/CtsdM.png"));
 	});
 
 	commands.put("nya", (event, args) -> {
@@ -102,6 +100,69 @@ public class GeneralModule extends AbstractModule {
 	    String p[] = {"Obviously", "I take", "The best would be"};
 	    int r1 = BotUtils.random.nextInt(p.length), r2 = BotUtils.random.nextInt(args.size()-1)+1;
 	    BotUtils.sendMessage(event.getChannel(), p[r1]+" **"+args.get(r2)+"**");
+	});
+	
+	commands.put("say", (event, args) -> {
+	    args.remove(0);	    
+	    BotUtils.sendMessage(event.getChannel(), String.join(" ", args));
+	});
+	
+	commands.put("getrole", (event, args) -> {
+	    args.remove(0);
+	    StringBuilder m = new StringBuilder();
+	    ArrayList<Role> role = (ArrayList<Role>) event.getGuild().getRolesByName(String.join(" ", args), true);
+	    if (role.isEmpty()) {
+		m.append("**"+String.join(" ", args)+"** not found");
+	    	BotUtils.sendMessage(event.getChannel(), m.toString());
+	    	return;
+	    }
+	    
+	    ArrayList<Member> l = (ArrayList<Member>) event.getGuild().getMembersWithRoles(role.get(0));
+	    m.append("List of **"+String.join(" ", args)+"** (**"+l.size()+"**):\n");
+	    
+	    for (Member u: l)
+		m.append("- "+u.getUser().getName()+"#"+u.getUser().getDiscriminator()+"\n");
+		
+	    if (l.size() > 10) {
+		BotUtils.sendMessage(event.getChannel(), "List of **"+String.join(" ", args)+"** (**"+l.size()+"**) sent in DM");
+		BotUtils.sendDM(event.getAuthor(), m.toString());
+	    }
+	    else {		
+		BotUtils.sendMessage(event.getChannel(), m.toString());
+	    }
+	});
+	
+	//////////////////////////////////////////////////
+	
+	commands.put("yousolewd", (event, args) -> {
+	    if (event.getGuild().getIdLong() != BotUtils.SRID) return;
+	    Role eventRole = event.getGuild().getRolesByName("Lewd", false).get(0);
+	    if (!event.getMember().getRoles().contains(eventRole)) {
+		event.getGuild().getController().addRolesToMember(event.getMember(), eventRole).queue();
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" you're lewd >///<");
+	    }
+	    else {
+		event.getGuild().getController().removeRolesFromMember(event.getMember(), eventRole).queue();
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" you're pure");
+	    }
+	});
+	
+	commands.put("joinevent", (event, args) -> {
+	    if (event.getGuild().getIdLong() != BotUtils.SRID) return;
+	    Role eventRole = event.getGuild().getRolesByName("Event", false).get(0);
+	    if (!event.getMember().getRoles().contains(eventRole)) {
+		event.getGuild().getController().addRolesToMember(event.getMember(), eventRole).queue();
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" "+eventRole.getName()+" role added");
+	    }
+	});
+	
+	commands.put("leaveevent", (event, args) -> {
+	    if (event.getGuild().getIdLong() != BotUtils.SRID) return;
+	    Role eventRole = event.getGuild().getRolesByName("Event", false).get(0);
+	    if (event.getMember().getRoles().contains(eventRole)) {
+		event.getGuild().getController().removeRolesFromMember(event.getMember(), eventRole).queue();
+		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" "+eventRole.getName()+" role removed");
+	    }
 	});
 	
     }

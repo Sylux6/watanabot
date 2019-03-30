@@ -13,9 +13,12 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.utils.IOUtil;
 
@@ -68,6 +71,11 @@ public class BotUtils {
 	channel.sendFile(file, FilenameUtils.getName(url_.getPath()), m.build()).queue();
     }
     
+    static public void sendDM(User user, String message) {
+	PrivateChannel channel = user.openPrivateChannel().complete();
+	channel.sendMessage(message).queue();
+    }
+    
     ///////// EDITING MESSAGE FUNCTION ////////
     
     static public void editMessage(Message oldMessage, String newMessage) {
@@ -81,6 +89,15 @@ public class BotUtils {
     static public void editMessage(Message oldMessage, MessageEmbed newMessage) {
 	oldMessage.editMessage(newMessage).queue();
     }  
+    
+    ///////// ROLE FUNCTION ////////
+    static public void addRole(Guild guild, Member member, Role role) {
+	guild.getController().addRolesToMember(member, role).queue();
+    }
+    
+    static public void removeRole(Guild guild, Member member, Role role) {
+	guild.getController().removeRolesFromMember(member, role).queue();
+    }
     
     // Function for reacting to a message for a given String emote
     // returns true on success
@@ -126,5 +143,6 @@ public class BotUtils {
     static public String mentionAt(User user) {
 	return "<@" + user.getId() + ">";
     }
+   
     
 }
