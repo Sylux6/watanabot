@@ -120,11 +120,11 @@ public class GeneralModule extends AbstractModule {
         Role eventRole = event.getGuild().getRolesByName("Lewd", false).get(0);
         if (!event.getMember().getRoles().contains(eventRole)) {
         event.getGuild().getController().addRolesToMember(event.getMember(), eventRole).queue();
-        BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" you're lewd >///<");
+        BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" you're lewd >///< (**Lewd** role added)");
         }
         else {
         event.getGuild().getController().removeRolesFromMember(event.getMember(), eventRole).queue();
-        BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" you're pure");
+        BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" you're pure (**Lewd** role removed)");
         }
     });
 
