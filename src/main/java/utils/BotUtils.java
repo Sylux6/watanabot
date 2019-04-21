@@ -57,7 +57,11 @@ public class BotUtils {
     }
     
     static public void sendMessage(MessageChannel channel, MessageEmbed message) {
-	channel.sendMessage(message).queue();
+	    channel.sendMessage(message).queue();
+    }
+
+    static public void sendLog(String message) {
+        bot.getGuildById(SRID).getTextChannelsByName("log", true).get(0).sendMessage(message).queue();
     }
     
     static public void sendFile(MessageChannel channel, byte[] file, String attachment, Message message) {
@@ -115,7 +119,6 @@ public class BotUtils {
 	return !guild.getEmotesByName("yousoro", true).isEmpty();
     }
     
-    
     // Returns emoji object from guild
     static public Emote getEmote(Guild guild, String name, boolean ignoreCase) {
 	List<Emote> emote = guild.getEmotesByName(name, ignoreCase);
@@ -143,6 +146,4 @@ public class BotUtils {
     static public String mentionAt(User user) {
 	return "<@" + user.getId() + ">";
     }
-   
-    
 }

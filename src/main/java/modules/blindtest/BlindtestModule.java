@@ -69,7 +69,7 @@ public class BlindtestModule extends AbstractModule {
 		return;
 	    }
 	    
-	    // User VoiceChannel
+	    // Users VoiceChannel
 	    if (!event.getMember().getVoiceState().inVoiceChannel()) {
 		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you are not in a voice channel");
 		return;
