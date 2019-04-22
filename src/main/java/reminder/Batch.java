@@ -17,7 +17,7 @@ public class Batch implements Job {
         LocalDate today = LocalDate.now();
         BotUtils.sendLog(new Date().toString() + " - Running batch");
         ArrayList l = DBUtils.query("select userid from member where guildid = "
-                + BotUtils.SRID + "extract(month from birthday) = " + today.getMonthValue()
+                + BotUtils.SRID + " and extract(month from birthday) = " + today.getMonthValue()
                 + " and extract(day from birthday) = " + today.getDayOfMonth());
         StringBuilder wish = new StringBuilder(BotUtils.getYousoro(BotUtils.bot.getGuildById(BotUtils.SRID)) + " Happy Birthday to:\n");
         for (Long id : (ArrayList<Long>)l) {
