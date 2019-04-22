@@ -7,6 +7,6 @@ public class StatusListener extends ListenerAdapter {
 
     @Override
     public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent event) {
-	System.out.println(event.getMember().getNickname()+" "+event.getNewOnlineStatus().toString());
+	    System.out.println(event.getMember().getNickname()+" "+event.getNewOnlineStatus().toString());
     }
 }

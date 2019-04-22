@@ -8,7 +8,7 @@ public class GameListener extends ListenerAdapter {
 
     @Override
     public void onUserUpdateGame(UserUpdateGameEvent event) {
-	// Streaming
-	StreamStatusManager.onStream(event.getGuild(), event.getMember(), event);
+        // Streaming
+        StreamStatusManager.onStream(event.getGuild(), event.getMember(), event);
     }
 }

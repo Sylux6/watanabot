@@ -27,15 +27,15 @@ public class LLModule extends AbstractModule {
     public void populate() {
 	commands.put("info", (event, args) -> {
 	    if (args.size() < 2)
-		return;
+			return;
 
 	    for (Idol i : Idol.values()) {
-		for (int j = 1; j < args.size(); j++) {
-		    if (i.toString().matches("(.*(?i)" + args.get(j) + " .*)")) {
-			BotUtils.sendMessage(event.getChannel(), i.toEmbed());
-			return;
-		    }
-		}
+			for (int j = 1; j < args.size(); j++) {
+				if (i.toString().matches("(.*(?i)" + args.get(j) + " .*)")) {
+				BotUtils.sendMessage(event.getChannel(), i.toEmbed());
+				return;
+				}
+			}
 	    }
 	    BotUtils.sendMessage(event.getChannel(), "Idol not found");
 	});
@@ -78,16 +78,16 @@ public class LLModule extends AbstractModule {
 		rarity = "R";
 
 	    try {
-		// 1st request
-		jsonArray = JsonUtils.stringToJsonArray(
-			HttpRequest.getRequest(api_cardid_url, "idol_main_unit=" + unit, "rarity=" + rarity));
-				
-		c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
+			// 1st request
+			jsonArray = JsonUtils.stringToJsonArray(
+				HttpRequest.getRequest(api_cardid_url, "idol_main_unit=" + unit, "rarity=" + rarity));
 
-		BotUtils.sendFile(event.getChannel(), c.getFileImg(), "idol.png", c.toEmbedMessage());
+			c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
+
+			BotUtils.sendFile(event.getChannel(), c.getFileImg(), "idol.png", c.toEmbedMessage());
 	    } catch (Exception e) {
-		BotUtils.logger.error("", e);
-		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+			BotUtils.logger.error("", e);
+			BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
 	    }
 
 	});
@@ -138,25 +138,23 @@ public class LLModule extends AbstractModule {
 	
 	commands.put("search", (event, args) -> {
 	    BotUtils.random.setSeed(System.currentTimeMillis());
-	    if (args.size() < 2) {
-		BotUtils.sendMessage(event.getChannel(), "search term missing");
-		return;
+			if (args.size() < 2) {
+				BotUtils.sendMessage(event.getChannel(), "search term missing");
+				return;
 	    }
 	    
 	    try {
-		StringBuilder terms = new StringBuilder();
-		for (int i = 1; i < args.size(); i++)
-		    terms.append(args.get(i)+" ");
-		JSONArray jsonArray = JsonUtils.stringToJsonArray(HttpRequest.getRequest(api_cardid_url, "search=" + terms.toString()));
-		if (jsonArray.length() == 0) {
-		    BotUtils.sendMessage(event.getChannel(), "No results");
-		    return;
-		}
-		Card c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
-		BotUtils.sendFile(event.getChannel(), c.getFileImg(), "idol.png", c.toEmbedMessage());
+	    	args.remove(0);
+			JSONArray jsonArray = JsonUtils.stringToJsonArray(HttpRequest.getRequest(api_cardid_url, "search=" + String.join(" ", args)));
+			if (jsonArray.length() == 0) {
+				BotUtils.sendMessage(event.getChannel(), "No results");
+				return;
+			}
+			Card c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.getAuthor());
+			BotUtils.sendFile(event.getChannel(), c.getFileImg(), "idol.png", c.toEmbedMessage());
 	    } catch (Exception e) {
-		BotUtils.logger.error("", e);
-		BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+			BotUtils.logger.error("", e);
+			BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
 	    }
 	});
 

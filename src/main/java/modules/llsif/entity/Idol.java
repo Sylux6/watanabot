@@ -404,28 +404,28 @@ public enum Idol {
     private String summary;
     private String img;
     
-    private Idol(String name, String jp_name, int age, String school, String birthday, String astro, String blood,
+    Idol(String name, String jp_name, int age, String school, String birthday, String astro, String blood,
 	    int heigth, String measurements, String favorite_food, String least_favorite_food, String hobbies,
 	    String year, String unit, String subunit, String cv_name, String cv_nickname, String summary, String img) {
-	this.name = name;
-	this.jp_name = jp_name;
-	this.age = age;
-	this.school = school;
-	this.birthday = birthday;
-	this.astro = astro;
-	this.blood = blood;
-	this.heigth = heigth;
-	this.measurements = measurements;
-	this.favorite_food = favorite_food;
-	this.least_favorite_food = least_favorite_food;
-	this.hobbies = hobbies;
-	this.year = year;
-	this.unit = unit;
-	this.subunit = subunit;
-	this.cv_name = cv_name;
-	this.cv_nickname = cv_nickname;
-	this.summary = summary;
-	this.img = img;
+		this.name = name;
+		this.jp_name = jp_name;
+		this.age = age;
+		this.school = school;
+		this.birthday = birthday;
+		this.astro = astro;
+		this.blood = blood;
+		this.heigth = heigth;
+		this.measurements = measurements;
+		this.favorite_food = favorite_food;
+		this.least_favorite_food = least_favorite_food;
+		this.hobbies = hobbies;
+		this.year = year;
+		this.unit = unit;
+		this.subunit = subunit;
+		this.cv_name = cv_name;
+		this.cv_nickname = cv_nickname;
+		this.summary = summary;
+		this.img = img;
     }
 
     public String getName() {
@@ -505,23 +505,23 @@ public enum Idol {
     }
     
     public MessageEmbed toEmbed() {
-	return new EmbedBuilder()
-		.setThumbnail(img)
-		.setTitle(name+" ("+jp_name+")")
-		.setDescription("CV. "+cv_name+" ("+cv_nickname+")")
-		.addField("Birthday", birthday+" ("+astro+")", true)
-		.addField("Blood Type", blood, true)
-		.addField("Height", heigth+" cm", true)
-		.addField("Three Sizes", measurements, true)
-		.addField("Favorite Food", favorite_food, true)
-		.addField("Disliked Food", least_favorite_food, true)
-		.addField("Hobbies", hobbies, false)
-		.addField("Background", summary, false)
-		.build();
+		return new EmbedBuilder()
+			.setThumbnail(getImg())
+			.setTitle(getName()+" ("+getJp_name()+")")
+			.setDescription("CV. "+getCv_name()+" ("+getCv_nickname()+")")
+			.addField("Birthday", getBirthday()+" ("+getAstro()+")", true)
+			.addField("Blood Type", getBlood(), true)
+			.addField("Height", getHeigth()+" cm", true)
+			.addField("Three Sizes", getMeasurements(), true)
+			.addField("Favorite Food", getFavorite_food(), true)
+			.addField("Disliked Food", getLeast_favorite_food(), true)
+			.addField("Hobbies", getHobbies(), false)
+			.addField("Background", getSummary(), false)
+			.build();
     }
     
     public String toString() {
-	return name+" "+cv_name+" "+cv_nickname;
+	return getName()+" "+getCv_name()+" "+getCv_nickname();
     }
     
 }

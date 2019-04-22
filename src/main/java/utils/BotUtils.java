@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -21,6 +19,8 @@ import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.utils.IOUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BotUtils {
     
@@ -37,8 +37,8 @@ public class BotUtils {
     
     // SECRET ROOM RELATED
     static public long SRID = Long.parseLong("181478842274283520");
-    
-    // Logger 
+
+    // Logger
     static public Logger logger = LoggerFactory.getLogger("Watanabot");
     
     /////////////////////////////////////////////
@@ -57,7 +57,11 @@ public class BotUtils {
     }
     
     static public void sendMessage(MessageChannel channel, MessageEmbed message) {
-	channel.sendMessage(message).queue();
+	    channel.sendMessage(message).queue();
+    }
+
+    static public void sendLog(String message) {
+        bot.getGuildById(SRID).getTextChannelsByName("log", true).get(0).sendMessage(message).queue();
     }
     
     static public void sendFile(MessageChannel channel, byte[] file, String attachment, Message message) {
@@ -115,7 +119,6 @@ public class BotUtils {
 	return !guild.getEmotesByName("yousoro", true).isEmpty();
     }
     
-    
     // Returns emoji object from guild
     static public Emote getEmote(Guild guild, String name, boolean ignoreCase) {
 	List<Emote> emote = guild.getEmotesByName(name, ignoreCase);
@@ -143,6 +146,4 @@ public class BotUtils {
     static public String mentionAt(User user) {
 	return "<@" + user.getId() + ">";
     }
-   
-    
 }
