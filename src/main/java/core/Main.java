@@ -3,7 +3,6 @@ package core;
 import core.listeners.GameListener;
 import core.listeners.LeaverListener;
 import core.listeners.MessageListener;
-import db.model.Member;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
@@ -41,6 +40,6 @@ public class Main {
 		} catch (Exception e) {
 			BotUtils.logger.error("", e);
 		}
-    }
+	}
 
 }
