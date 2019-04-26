@@ -1,5 +1,6 @@
 package modules.misc;
 
+import db.model.Member;
 import modules.AbstractModule;
 import utils.BotUtils;
 import utils.DBUtils;
@@ -16,11 +17,12 @@ public class Birthday extends AbstractModule {
         commands.put("set", (event, args) -> {
             if (args.size() < 2) {
                 BotUtils.sendMessage(event.getChannel(), "Please give your birthday following this format: MM/dd");
+                return;
             }
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd", Locale.ENGLISH);
             try {
                 Date date = formatter.parse(args.get(1));
-                db.model.Member member = new db.model.Member(event.getAuthor().getIdLong(),
+                Member member = new Member(event.getAuthor().getIdLong(),
                         event.getGuild().getIdLong(), date);
                 ArrayList l = DBUtils.query("select id from member where userid = "
                         + event.getAuthor().getId() + " and guildid = " + event.getGuild().getId());
@@ -34,6 +36,17 @@ public class Birthday extends AbstractModule {
                 BotUtils.sendMessage(event.getChannel(), "Cannot get your birthday, please give your birthday " +
                         "following this format: MM/dd");
             }
+        });
+
+        commands.put("remove", (event, args) -> {
+            Member member = new Member(event.getAuthor().getIdLong(), event.getGuild().getIdLong(), null);
+            ArrayList l = DBUtils.query("select id from member where userid = "
+                    + event.getAuthor().getId() + " and guildid = " + event.getGuild().getId());
+            if (l.size() > 0) {
+                member.setId((Integer) l.get(0));
+            }
+            DBUtils.saveOrUpdate(member);
+            BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " your birthday has been removed");
         });
 
         commands.put("get", (event, args) -> {
