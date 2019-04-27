@@ -1,6 +1,5 @@
 package utils;
 
-import db.model.Member;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

@@ -60,6 +60,18 @@ public class BotUtils {
 	    channel.sendMessage(message).queue();
     }
 
+    static public void sendMessageAt(MessageChannel channel, User user, String message) {
+        channel.sendMessage(mentionAt(user) + " " + message).queue();
+    }
+
+    static public void sendMessageAt(MessageChannel channel, User user, Message message) {
+        channel.sendMessage(mentionAt(user) + " " + message).queue();
+    }
+
+    static public void sendMessageAt(MessageChannel channel, User user, MessageEmbed message) {
+        channel.sendMessage(mentionAt(user) + " " + message).queue();
+    }
+
     static public void sendLog(String message) {
         bot.getGuildById(SRID).getTextChannelsByName("log", true).get(0).sendMessage(message).queue();
     }
