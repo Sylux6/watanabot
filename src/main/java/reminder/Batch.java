@@ -1,5 +1,6 @@
 package reminder;
 
+import net.dv8tion.jda.core.entities.User;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -22,12 +23,20 @@ public class Batch implements Job {
                 + BotUtils.SRID + " and extract(month from birthday) = " + today.getMonthValue()
                 + " and extract(day from birthday) = " + today.getDayOfMonth());
         if (l.size() > 0) {
+            boolean found = false;
             StringBuilder wish = new StringBuilder("Happy Birthday " + BotUtils.getYousoro(BotUtils.bot.getGuildById(BotUtils.SRID)) + "\n");
             for (BigInteger id : (ArrayList<BigInteger>) l) {
-                wish.append(BotUtils.mentionAt(BotUtils.bot.getUserById(String.valueOf(id))));
-                wish.append("\n");
+                // FIXME: dirty
+                User user = BotUtils.bot.getUserById(String.valueOf(id));
+                if (user != null) {
+                    found = true;
+                    wish.append(BotUtils.mentionAt(user));
+                    wish.append("\n");
+                }
             }
-            BotUtils.sendMessage(BotUtils.bot.getGuildById(BotUtils.SRID).getTextChannelsByName("general", true).get(0), wish.toString());
+            if (found) {
+                BotUtils.sendMessage(BotUtils.bot.getGuildById(BotUtils.SRID).getTextChannelsByName("general", true).get(0), wish.toString());
+            }
         }
     }
 }
