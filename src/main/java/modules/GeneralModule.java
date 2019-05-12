@@ -1,21 +1,14 @@
 package modules;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-
 import core.CommandHandler;
 import modules.picture.PictureModule;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 import net.kodehawa.lib.imageboards.entities.Rating;
 import utils.BotUtils;
-import utils.DBUtils;
 import utils.EmbedUtils;
+
+import java.util.ArrayList;
 
 public class GeneralModule extends AbstractModule {
 

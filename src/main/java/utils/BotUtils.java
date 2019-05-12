@@ -5,19 +5,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
+import net.dv8tion.jda.core.entities.*;
 import org.apache.commons.io.FilenameUtils;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.PrivateChannel;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.utils.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,5 +149,10 @@ public class BotUtils {
     // Returns mention syntax for message
     static public String mentionAt(User user) {
 	return "<@" + user.getId() + ">";
+    }
+
+    // Returns text channel syntax for message
+    static public String linkTextChannel(MessageChannel channel) {
+        return "<#" + channel.getId() + ">";
     }
 }

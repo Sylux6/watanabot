@@ -1,10 +1,14 @@
 package modules.birthday;
 
 import db.model.Member;
+import db.model.Settings;
 import modules.AbstractModule;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.TextChannel;
 import utils.BotUtils;
 import utils.DBUtils;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,6 +84,32 @@ public class Birthday extends AbstractModule {
                     BotUtils.sendMessage(event.getChannel(), "Cannot find the user in this server");
                 }
             }
+        });
+
+        commands.put("setchannel", (event, args) -> {
+            if (!event.getMember().hasPermission(Permission.MANAGE_CHANNEL)) {
+                BotUtils.sendMessageAt(event.getChannel(), event.getAuthor(), "You have no permission to set a birthday channel");
+                return;
+            }
+            Settings settings = new Settings(event.getGuild().getIdLong(), event.getChannel().getIdLong());
+            ArrayList res = DBUtils.query("select id from settings where guildid = "
+                    + event.getGuild().getId());
+            if (res.size() > 0) {
+                settings.setId((Integer) res.get(0));
+            }
+            DBUtils.saveOrUpdate(settings);
+            BotUtils.sendMessage(event.getChannel(), "Birthdays will be announced in " + BotUtils.linkTextChannel(event.getChannel()) + " (note that I'll check your birthdays everyday on CEST timezone (> ᴗ •)ゞ)");
+        });
+
+        commands.put("getchannel", (event, args) -> {
+            ArrayList res = DBUtils.query("select birthdaychannelid from settings where guildid = "
+                    + event.getGuild().getId());
+            TextChannel channel = event.getGuild().getTextChannelById(res.get(0).toString());
+            if (res.size() == 0 || channel == null) {
+                BotUtils.sendMessage(event.getChannel(), "Birthday channel is not set");
+                return;
+            }
+            BotUtils.sendMessage(event.getChannel(), "Birthdays are announced in " + BotUtils.linkTextChannel(channel));
         });
     }
 
