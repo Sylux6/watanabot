@@ -13,7 +13,7 @@ public class WatanabeYou implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 	MessageEmbed m = new EmbedBuilder()
-		    .setTitle("Birthday")
+		    .setTitle("BirthdayModule")
 		    .setDescription("TODAY IS MY BIRTHDAY! "
 			    +BotUtils.getEmojiMessage(BotUtils.bot.getGuildById(BotUtils.SRID), "poiBuki")
 			    +BotUtils.getYousoro(BotUtils.bot.getGuildById(BotUtils.SRID)))

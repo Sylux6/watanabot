@@ -7,10 +7,11 @@ import java.util.concurrent.Executors;
 
 import modules.AbstractModule;
 import modules.GeneralModule;
+import modules.anime.AnimeModule;
 import modules.azurlane.AzurLaneModule;
+import modules.birthday.BirthdayModule;
 import modules.blindtest.BlindtestModule;
 import modules.llsif.LLModule;
-import modules.birthday.Birthday;
 import modules.music.MusicModule;
 import modules.picture.PictureModule;
 import utils.BotUtils;
@@ -31,13 +32,15 @@ public class CommandHandler {
 		moduleMap.put("picture", new PictureModule());
 		moduleMap.put("llsif", new LLModule());
 		moduleMap.put("al", new AzurLaneModule());
-		moduleMap.put("birthday", new Birthday());
+		moduleMap.put("birthday", new BirthdayModule());
+		moduleMap.put("anime", new AnimeModule());
 
 		// alias
 		moduleMap.put("m", moduleMap.get("music"));
 		moduleMap.put("b", moduleMap.get("blindtest"));
 		moduleMap.put("p", moduleMap.get("picture"));
 		moduleMap.put("ll", moduleMap.get("llsif"));
+		moduleMap.put("a", moduleMap.get("anime"));
     }
 
 }

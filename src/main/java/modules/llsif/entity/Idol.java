@@ -509,7 +509,7 @@ public enum Idol {
 			.setThumbnail(getImg())
 			.setTitle(getName()+" ("+getJp_name()+")")
 			.setDescription("CV. "+getCv_name()+" ("+getCv_nickname()+")")
-			.addField("Birthday", getBirthday()+" ("+getAstro()+")", true)
+			.addField("BirthdayModule", getBirthday()+" ("+getAstro()+")", true)
 			.addField("Blood Type", getBlood(), true)
 			.addField("Height", getHeigth()+" cm", true)
 			.addField("Three Sizes", getMeasurements(), true)

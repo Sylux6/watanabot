@@ -23,7 +23,7 @@ public class Batch implements Job {
         LocalDate today = LocalDate.now();
         BotUtils.sendLog(new Date().toString() + " - Running batch");
 
-        // Birthday
+        // BirthdayModule
         ArrayList l = DBUtils.query("select guildid, userid from member where extract(month from birthday) = " + today.getMonthValue()
                 + " and extract(day from birthday) = " + today.getDayOfMonth());
         if (l.size() > 0) {
@@ -44,7 +44,7 @@ public class Batch implements Job {
                     continue;
                 }
                 boolean found = false;
-                StringBuilder wish = new StringBuilder("Happy Birthday " + BotUtils.getYousoro(BotUtils.bot.getGuildById(entry.getKey().toString())) + "\n");
+                StringBuilder wish = new StringBuilder("Happy BirthdayModule " + BotUtils.getYousoro(BotUtils.bot.getGuildById(entry.getKey().toString())) + "\n");
                 for (BigInteger id : entry.getValue()) {
                     // FIXME: dirty
                     User user = BotUtils.bot.getUserById(String.valueOf(id));

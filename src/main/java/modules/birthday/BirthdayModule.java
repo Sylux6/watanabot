@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Birthday extends AbstractModule {
+public class BirthdayModule extends AbstractModule {
     @Override
     public void populate() {
         commands.put("set", (event, args) -> {
@@ -106,7 +106,7 @@ public class Birthday extends AbstractModule {
                     + event.getGuild().getId());
             TextChannel channel = event.getGuild().getTextChannelById(res.get(0).toString());
             if (res.size() == 0 || channel == null) {
-                BotUtils.sendMessage(event.getChannel(), "Birthday channel is not set");
+                BotUtils.sendMessage(event.getChannel(), "BirthdayModule channel is not set");
                 return;
             }
             BotUtils.sendMessage(event.getChannel(), "Birthdays are announced in " + BotUtils.linkTextChannel(channel));
