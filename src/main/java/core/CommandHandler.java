@@ -10,6 +10,7 @@ import modules.GeneralModule;
 import modules.azurlane.AzurLaneModule;
 import modules.blindtest.BlindtestModule;
 import modules.llsif.LLModule;
+import modules.birthday.Birthday;
 import modules.music.MusicModule;
 import modules.picture.PictureModule;
 import utils.BotUtils;
@@ -22,7 +23,7 @@ public class CommandHandler {
     // Thread pool
     static final public ExecutorService service = Executors.newFixedThreadPool(BotUtils.NB_THREAD);
 
-    public CommandHandler() {
+    CommandHandler() {
 
 		moduleMap.put("general", new GeneralModule());
 		moduleMap.put("music", new MusicModule());
@@ -30,6 +31,7 @@ public class CommandHandler {
 		moduleMap.put("picture", new PictureModule());
 		moduleMap.put("llsif", new LLModule());
 		moduleMap.put("al", new AzurLaneModule());
+		moduleMap.put("birthday", new Birthday());
 
 		// alias
 		moduleMap.put("m", moduleMap.get("music"));
