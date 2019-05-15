@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.BotUtils;
+import utils.EmbedUtils;
 import utils.HttpRequest;
 import utils.JsonUtils;
 
@@ -29,6 +30,24 @@ public class AzurLaneModule extends AbstractModule {
                     return;
                 }
                 BotUtils.sendMessage(event.getChannel(), toEmbed(ship));
+            } catch (Exception e) {
+                BotUtils.logger.error("", e);
+                BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+            }
+        });
+
+        commands.put("chibi", (event, args) -> {
+            if (args.size() < 2)
+                return;
+            try {
+                args.remove(0);
+                String ship_name = String.join(" ", args);
+                Ship ship = Ship.getShipByName(ship_name);
+                if (ship == null) {
+                    BotUtils.sendMessage(event.getChannel(), "Not found");
+                    return;
+                }
+                BotUtils.sendMessage(event.getChannel(), EmbedUtils.buildEmbedImageOnly(ship.getImgChibi()));
             } catch (Exception e) {
                 BotUtils.logger.error("", e);
                 BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
