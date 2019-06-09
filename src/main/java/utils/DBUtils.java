@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DBUtils {
 
-    static final private StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+    static final private StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate_cfg.xml").build();
     static final private SessionFactory sessionFactory = new MetadataSources(DBUtils.registry).buildMetadata().buildSessionFactory();
 
 
