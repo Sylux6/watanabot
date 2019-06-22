@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 
 public class EmbedUtils {
 
-    static public MessageEmbed buildEmbedImage(String title, String url, List<String> tags, String imgURL) {
+    static public MessageEmbed buildEmbedImageBooru(String title, String url, List<String> tags, String imgURL) {
 	EmbedBuilder embedMessage = new EmbedBuilder();
 	embedMessage.setTitle(title, url);
 	embedMessage.setDescription(String.join(" ", tags));
@@ -17,10 +17,26 @@ public class EmbedUtils {
     }
 
     static public MessageEmbed buildEmbedImageOnly(String imgURL) {
-	EmbedBuilder embedMessage = new EmbedBuilder();
-	embedMessage.addBlankField(false);
-	embedMessage.setImage(imgURL);
-	return embedMessage.build();
+		EmbedBuilder embedMessage = new EmbedBuilder();
+		embedMessage.addBlankField(false);
+		embedMessage.setImage(imgURL);
+		return embedMessage.build();
     }
+
+	static public MessageEmbed buildEmbedImageOnly(String title, String url, String imgURL) {
+		EmbedBuilder embedMessage = new EmbedBuilder();
+		embedMessage.setTitle(title, url);
+		embedMessage.addBlankField(false);
+		embedMessage.setImage(imgURL);
+		return embedMessage.build();
+	}
+
+	static public MessageEmbed buildEmbedImageOnly(String title, String imgURL) {
+		EmbedBuilder embedMessage = new EmbedBuilder();
+		embedMessage.setTitle(title);
+		embedMessage.addBlankField(false);
+		embedMessage.setImage(imgURL);
+		return embedMessage.build();
+	}
 
 }

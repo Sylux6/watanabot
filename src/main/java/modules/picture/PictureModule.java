@@ -7,7 +7,6 @@ import modules.AbstractModule;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.kodehawa.lib.imageboards.DefaultImageBoards;
 import net.kodehawa.lib.imageboards.entities.Rating;
-import net.kodehawa.lib.imageboards.entities.exceptions.QueryParseException;
 import utils.BotUtils;
 import utils.EmbedUtils;
 
@@ -73,7 +72,7 @@ public class PictureModule extends AbstractModule {
 		if (!images.isEmpty()) {
 		    Collections.shuffle(images);
 		    BotUtils.sendMessage(event.getChannel(),
-			    EmbedUtils.buildEmbedImage(
+			    EmbedUtils.buildEmbedImageBooru(
 				    images.get(0).getTag_string_character() + " drawn by "
 					    + images.get(0).getTag_string_artist() + " - Danbooru",
 				    images.get(0).getURL(), images.get(0).getTags(), images.get(0).getURL()));

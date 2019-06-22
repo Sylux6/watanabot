@@ -1,16 +1,18 @@
 package modules.azurlane.entity;
 
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import utils.BotUtils;
 import utils.HttpRequest;
 import utils.JsonUtils;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 public class Ship {
 
-    private int id;
+    private String id;
     private String url;
     private String nameEN;
     private String nameJP;
@@ -23,9 +25,11 @@ public class Ship {
     private String img;
     private String imgIcon;
     private String imgChibi;
+    private LinkedHashMap<String, String> skins;
 
-    public Ship(int id, String url, String nameEN, String nameJP, String nameCN, String constructionTime, Rarity rarity,
-                String shipClass, String nationality, String type, String img, String imgIcon, String imgChibi) {
+    public Ship(String id, String url, String nameEN, String nameJP, String nameCN, String constructionTime, Rarity rarity,
+                String shipClass, String nationality, String type, String img, String imgIcon, String imgChibi,
+                LinkedHashMap<String, String> skins) {
         this.id = id;
         this.url = url;
         this.nameEN = nameEN;
@@ -39,9 +43,10 @@ public class Ship {
         this.img = img;
         this.imgIcon = imgIcon;
         this.imgChibi = imgChibi;
+        this.skins = skins;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -89,6 +94,10 @@ public class Ship {
         return imgChibi;
     }
 
+    public LinkedHashMap<String, String> getSkins() {
+        return skins;
+    }
+
     static public Rarity getRarityByName(String rarity) {
         switch (rarity) {
             case "Super Rare": return Rarity.SUPER_RARE;
@@ -99,27 +108,86 @@ public class Ship {
         }
     }
 
+    public MessageEmbed toEmbed() {
+        return new EmbedBuilder()
+                .setTitle(this.getNameEN() + " ("+ this.getNameJP() + ")", this.getUrl())
+                .setColor(this.getRarity().getColor())
+                .setThumbnail(this.getImgIcon())
+                .setImage(this.getImg())
+                .setDescription("ID No. " + this.getId())
+                .addField("Class", this.getShipClass(), true)
+                .addField("Nationality", this.getNationality(), true)
+                .addField("Type", this.getType(), true)
+                .addField("Construction time", this.getConstructionTime(), true)
+                .build();
+    }
+
+    public MessageEmbed skinEmbed(int i) {
+        if (i == 0 || i > this.skins.size() || i < 0) {
+            return new EmbedBuilder().setDescription("No skin found").build();
+        } else {
+            String name = "", skin = "";
+            for (String key : skins.keySet()) {
+                name = key;
+                img = this.skins.get(key);
+                if (--i == 0) break;
+            }
+            return new EmbedBuilder()
+                    .setTitle(this.getNameEN() + " (" + this.getNameJP() + ")", this.getUrl())
+                    .setColor(this.getRarity().getColor())
+                    .setDescription(name)
+                    .setImage(img)
+                    .build();
+        }
+    }
+
+    public MessageEmbed skinListEmbed() {
+        EmbedBuilder embedShip = new EmbedBuilder()
+                .setTitle(this.getNameEN() + " ("+ this.getNameJP() + ")", this.getUrl())
+                .setColor(this.getRarity().getColor())
+                .setThumbnail(this.getImgIcon());
+        if (skins.size() > 0) {
+            int i = 1;
+            StringBuilder list = new StringBuilder();
+            for (String key : skins.keySet()) {
+                list.append(i + ". " + key + "\n");
+                i++;
+            }
+            embedShip.addField("Skin(s)", list.toString(), true);
+        } else {
+            embedShip.setDescription("No skin");
+        }
+        return embedShip.build();
+    }
+
     static public Ship getShipByName(String name) throws IOException {
-        JSONArray jsonArray = JsonUtils.stringToJsonArray(HttpRequest.getRequest("https://al-shipgirls" +
-                ".pw/shipyard/ship_info_detailed", "search=" + name));
-        if (jsonArray.length() < 1) {
+        JSONObject jsonObject = JsonUtils.stringToJsonObject(HttpRequest.getRequest(
+                "https://api.kurozeropb.info/v1/azurlane/ship", "name=" + name
+        ));
+        if (jsonObject.getInt("statusCode") != 200) {
             return null;
         }
-        JSONObject object = jsonArray.getJSONObject(0).getJSONObject("item");
-        int id = object.getInt("id");
-        String url = object.getString("page_url");
-        String nameEN = object.getJSONObject("names").getString("en");
-        String nameJP = object.getJSONObject("names").getString("jp");
-        String nameCN = object.getJSONObject("names").getString("cn");
-        String constructionTime = object.getString("construction_time");
-        Rarity rarity = getRarityByName(object.getString("rarity"));
-        String shipClass = object.getString("class");
-        String nationality = object.getString("nationality");
-        String type = object.getString("type");
-        String img = object.getJSONArray("images").getJSONObject(0).getString("url");
-        String imgIcon = object.getString("icon");
-        String imgChibi = object.getString("chibi");
+        JSONObject ship = jsonObject.getJSONObject("ship");
+        JSONArray skins = ship.getJSONArray("skins");
+        LinkedHashMap<String, String> skinMap = new LinkedHashMap<>();
+        for (Object skin : skins) {
+            skinMap.put(((JSONObject) skin).getString("title"), ((JSONObject) skin).getString("image"));
+        }
+        String id = ship.getString("id");
+        String url = ship.getString("wikiUrl");
+        String nameEN = JsonUtils.getStringOrNull(ship.getJSONObject("names"), "en");
+        String nameJP = JsonUtils.getStringOrNull(ship.getJSONObject("names"), "jp");
+        String nameCN = JsonUtils.getStringOrNull(ship.getJSONObject("names"), "cn");
+        String constructionTime = JsonUtils.getStringOrNull(ship, "buildTime");
+        Rarity rarity = getRarityByName(JsonUtils.getStringOrNull(ship, "rarity"));
+        String shipClass = JsonUtils.getStringOrNull(ship, "class");
+        String nationality = JsonUtils.getStringOrNull(ship, "nationality");
+        String type = JsonUtils.getStringOrNull(ship, "hullType");
+        String img = skinMap.get("Default");
+        String imgIcon = JsonUtils.getStringOrNull(ship, "thumbnail");
+        String imgChibi = JsonUtils.getStringOrNull(ship, "chibi");
+        skinMap.remove("Default");
         return new Ship(id, url, nameEN, nameJP, nameCN, constructionTime, rarity, shipClass, nationality, type, img,
-                imgIcon, imgChibi);
+                imgIcon, imgChibi, skinMap);
     }
 }
