@@ -3,6 +3,7 @@ package modules.azurlane;
 import modules.AbstractModule;
 import modules.azurlane.entity.Rarity;
 import modules.azurlane.entity.Ship;
+import net.dv8tion.jda.client.entities.Application;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.json.JSONArray;
@@ -29,7 +30,48 @@ public class AzurLaneModule extends AbstractModule {
                     BotUtils.sendMessage(event.getChannel(), "Not found");
                     return;
                 }
-                BotUtils.sendMessage(event.getChannel(), toEmbed(ship));
+                BotUtils.sendMessage(event.getChannel(), ship.toEmbed());
+            } catch (Exception e) {
+                BotUtils.logger.error("", e);
+                BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+            }
+        });
+
+        commands.put("skins", (event, args) -> {
+            if (args.size() < 2)
+                return;
+            try {
+                args.remove(0);
+                String ship_name = String.join(" ", args);
+                Ship ship = Ship.getShipByName(ship_name);
+                if (ship == null) {
+                    BotUtils.sendMessage(event.getChannel(), "Not found");
+                    return;
+                }
+                BotUtils.sendMessage(event.getChannel(), ship.skinListEmbed());
+            } catch (Exception e) {
+                BotUtils.logger.error("", e);
+                BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+            }
+        });
+
+        commands.put("skin", (event, args) -> {
+            if (args.size() < 3) {
+                BotUtils.sendMessage(event.getChannel(),
+                        "Index skin is missing, type `o7 al skins` to get the list of skins");
+                return;
+            }
+            try {
+                args.remove(0);
+                int index = Integer.valueOf(args.get(0));
+                args.remove(0);
+                String ship_name = String.join(" ", args);
+                Ship ship = Ship.getShipByName(ship_name);
+                if (ship == null) {
+                    BotUtils.sendMessage(event.getChannel(), "Not found");
+                    return;
+                }
+                BotUtils.sendMessage(event.getChannel(), ship.skinEmbed(index));
             } catch (Exception e) {
                 BotUtils.logger.error("", e);
                 BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
@@ -47,7 +89,10 @@ public class AzurLaneModule extends AbstractModule {
                     BotUtils.sendMessage(event.getChannel(), "Not found");
                     return;
                 }
-                BotUtils.sendMessage(event.getChannel(), EmbedUtils.buildEmbedImageOnly(ship.getImgChibi()));
+                BotUtils.sendMessage(event.getChannel(), EmbedUtils.buildEmbedImageOnly(
+                        ship.getNameEN() + " ("+ ship.getNameJP() + ")",
+                        ship.getUrl(),
+                        ship.getImgChibi()));
             } catch (Exception e) {
                 BotUtils.logger.error("", e);
                 BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
@@ -58,19 +103,5 @@ public class AzurLaneModule extends AbstractModule {
     @Override
     public String getName() {
         return "azur lane";
-    }
-
-    private MessageEmbed toEmbed(Ship ship) {
-        return new EmbedBuilder()
-                .setTitle(ship.getNameEN() + " ("+ ship.getNameJP() + ")", ship.getUrl())
-                .setColor(ship.getRarity().getColor())
-                .setThumbnail(ship.getImgIcon())
-                .setImage(ship.getImg())
-                .setDescription("ID No. " + ship.getId())
-                .addField("Class", ship.getShipClass(), true)
-                .addField("Nationality", ship.getNationality(), true)
-                .addField("Type", ship.getType(), true)
-                .addField("Construction time", ship.getConstructionTime(), true)
-                .build();
     }
 }
