@@ -22,7 +22,8 @@ public class ThreadGeneralBehaviour implements Runnable {
 
 	if (message.matches("(.*(?i)yousoro.*)|(.*sylux6Yo.*)")) {
 	    if (!BotUtils.reactMessage(event.getMessage(), "yousoro")) {
-		event.getMessage().addReaction("\uD83D\uDC99").queue();
+	    	// Blue heart
+			event.getMessage().addReaction("\uD83D\uDC99").queue();
 	    }
 	}
 	
