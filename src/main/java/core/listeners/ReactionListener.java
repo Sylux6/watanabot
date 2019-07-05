@@ -6,7 +6,6 @@ import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import utils.BotUtils;
 
-
 public class ReactionListener extends ListenerAdapter {
 
     @Override
@@ -16,6 +15,8 @@ public class ReactionListener extends ListenerAdapter {
         }
         if (BotUtils.smashPassInstances.containsKey(event.getMessageId())) {
             SmashPassModule.addReaction(event);
+        } else if (BotUtils.pollInstances.containsKey(event.getMessageId())) {
+            BotUtils.pollInstances.get(event.getMessageId()).addVote(event);
         }
     }
 
@@ -26,6 +27,9 @@ public class ReactionListener extends ListenerAdapter {
         }
         if (BotUtils.smashPassInstances.containsKey(event.getMessageId())) {
             SmashPassModule.removeReaction(event);
+        }
+        if (BotUtils.pollInstances.containsKey(event.getMessageId())) {
+            BotUtils.pollInstances.get(event.getMessageId()).removeVote(event);
         }
     }
 }

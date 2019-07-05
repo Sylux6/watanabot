@@ -1,5 +1,7 @@
 package utils;
 
+import modules.poll.PollModule;
+import modules.poll.entity.Poll;
 import modules.poll.entity.SmashPass;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -35,6 +37,7 @@ public class BotUtils {
 
     // Non persistent memory
     static public HashMap<String, SmashPass> smashPassInstances = new HashMap<>();
+    static public HashMap<String, Poll> pollInstances = new HashMap<>();
     
     /////////////////////////////////////////////
     ////////      FUNCTIONS         /////////////
@@ -55,6 +58,17 @@ public class BotUtils {
 	    channel.sendMessage(message).queue();
     }
 
+    static public void sendPollMessage(MessageChannel channel, Poll poll) {
+        channel.sendMessage(poll.toEmbed()).queue(message1 -> {
+            poll.setMessage(message1);
+            pollInstances.put(message1.getId(), poll);
+            for(int i = 1; i < poll.getSize() + 1; i++) {
+                message1.addReaction(PollModule.choiceToEmote.get(i)).queue();
+            }
+            message1.addReaction("↩").queue();
+        });
+    }
+
     static public void sendMessageAt(MessageChannel channel, User user, String message) {
         channel.sendMessage(mentionAt(user) + " " + message).queue();
     }
@@ -72,81 +86,87 @@ public class BotUtils {
     }
     
     static public void sendFile(MessageChannel channel, byte[] file, String attachment, Message message) {
-	channel.sendFile(file, attachment, message).queue();
+	    channel.sendFile(file, attachment, message).queue();
     }
     
     static public void sendFileByUrl(MessageChannel channel, String message, String url) throws IOException {
-	URL url_ = new URL(url);
-	byte[] file = IOUtil.readFully(url_.openStream());
-	MessageBuilder m = new MessageBuilder(message);
-	channel.sendFile(file, FilenameUtils.getName(url_.getPath()), m.build()).queue();
+        URL url_ = new URL(url);
+        byte[] file = IOUtil.readFully(url_.openStream());
+        MessageBuilder m = new MessageBuilder(message);
+        channel.sendFile(file, FilenameUtils.getName(url_.getPath()), m.build()).queue();
     }
     
     static public void sendDM(User user, String message) {
-	PrivateChannel channel = user.openPrivateChannel().complete();
-	channel.sendMessage(message).queue();
+        PrivateChannel channel = user.openPrivateChannel().complete();
+        channel.sendMessage(message).queue();
     }
     
     ///////// EDITING MESSAGE FUNCTION ////////
     
     static public void editMessage(Message oldMessage, String newMessage) {
-	oldMessage.editMessage(newMessage).queue();
+	    oldMessage.editMessage(newMessage).queue();
     }
     
     static public void editMessage(Message oldMessage, Message newMessage) {
-	oldMessage.editMessage(newMessage).queue();
+	    oldMessage.editMessage(newMessage).queue();
     }  
     
     static public void editMessage(Message oldMessage, MessageEmbed newMessage) {
-	oldMessage.editMessage(newMessage).queue();
-    }  
-    
+	    oldMessage.editMessage(newMessage).queue();
+    }
+
+    static public void editMessagePoll(Message oldMessage, MessageEmbed newMessage, Poll poll) {
+        oldMessage.editMessage(newMessage).queue(message -> {
+            poll.setMessage(message);
+        });
+    }
+
     ///////// ROLE FUNCTION ////////
     static public void addRole(Guild guild, Member member, Role role) {
-	guild.getController().addRolesToMember(member, role).queue();
+	    guild.getController().addRolesToMember(member, role).queue();
     }
     
     static public void removeRole(Guild guild, Member member, Role role) {
-	guild.getController().removeRolesFromMember(member, role).queue();
+	    guild.getController().removeRolesFromMember(member, role).queue();
     }
     
     // Function for reacting to a message for a given String emote
     // returns true on success
     static public boolean reactMessage(Message message, String name) {
-	Emote emote = getEmote(message.getGuild(), name, false);
-	if (emote != null) {
-	    message.addReaction(emote).queue();
-	    return true;
-	}
-	return false;
+        Emote emote = getEmote(message.getGuild(), name, false);
+        if (emote != null) {
+            message.addReaction(emote).queue();
+            return true;
+        }
+        return false;
     }
     
     // Checks if a yousoro emoji exists
     static public boolean yousoroEmojiExists(Guild guild) {
-	return !guild.getEmotesByName("yousoro", true).isEmpty();
+        return !guild.getEmotesByName("yousoro", true).isEmpty();
     }
     
     // Returns emoji object from guild
     static public Emote getEmote(Guild guild, String name, boolean ignoreCase) {
-	List<Emote> emote = guild.getEmotesByName(name, ignoreCase);
-	if (emote.isEmpty())
-	    return null;
-	return emote.get(0);
+        List<Emote> emote = guild.getEmotesByName(name, ignoreCase);
+        if (emote.isEmpty())
+            return null;
+        return emote.get(0);
     }
     
     // Returns emoji syntax for message
     static public String getEmojiMessage(Guild guild, String name) {
-	Emote emote = getEmote(guild, name, false);
-	if (emote == null)
-	    return "";
-	return "<:"+name+":"+emote.getId()+">";
+        Emote emote = getEmote(guild, name, false);
+        if (emote == null)
+            return "";
+        return "<:"+name+":"+emote.getId()+">";
     }
     
     static public String getYousoro(Guild guild) {
-	Emote emote = getEmote(guild, "yousoro", false);
-	if (emote == null)
-	    return "(> ᴗ •)ゞ";
-	return "<:yousoro:"+emote.getId()+">";
+        Emote emote = getEmote(guild, "yousoro", false);
+        if (emote == null)
+            return "(> ᴗ •)ゞ";
+        return "<:yousoro:"+emote.getId()+">";
     }
     
     // Returns mention syntax for message

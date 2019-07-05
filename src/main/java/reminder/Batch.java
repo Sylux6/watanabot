@@ -1,15 +1,17 @@
 package reminder;
 
+import modules.poll.entity.Poll;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import utils.BotUtils;
 import utils.DBUtils;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,12 +22,17 @@ public class Batch implements Job {
     @Override
     @SuppressWarnings("unchecked")
     public void execute(JobExecutionContext context) {
-        LocalDate today = LocalDate.now();
         BotUtils.sendLog(new Date().toString() + " - Running batch");
+        birthdayBatch();
+        cleanOldPoll();
+    }
 
-        // Birthday
-        ArrayList l = DBUtils.query("select guildid, userid from member where extract(month from birthday) = " + today.getMonthValue()
-                + " and extract(day from birthday) = " + today.getDayOfMonth());
+    private void birthdayBatch() {
+        LocalDate today = LocalDate.now();
+        ArrayList l = DBUtils.query(
+                "select guildid, userid from member where extract(month from birthday) = " + today.getMonthValue()
+                + " and extract(day from birthday) = " + today.getDayOfMonth()
+        );
         if (l.size() > 0) {
             HashMap<BigInteger, ArrayList<BigInteger>> res = new HashMap<>();
             for (Object[] o: (ArrayList<Object[]>) l) {
@@ -58,6 +65,19 @@ public class Batch implements Job {
                     BotUtils.sendMessage(channel, wish.toString());
                 }
             }
+        }
+    }
+
+    private void cleanOldPoll() {
+        LocalDateTime now = LocalDateTime.now();
+        ArrayList<Poll> old = new ArrayList<Poll>();
+        for (Poll poll : BotUtils.pollInstances.values()) {
+            if (poll.getCreatedDatetime().until(now, ChronoUnit.HOURS) > 24) {
+                old.add(poll);
+            }
+        }
+        for (Poll poll : old) {
+            BotUtils.pollInstances.remove(poll);
         }
     }
 }
