@@ -3,6 +3,7 @@ package core;
 import core.listeners.GameListener;
 import core.listeners.LeaverListener;
 import core.listeners.MessageListener;
+import core.listeners.ReactionListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
@@ -26,12 +27,13 @@ public class Main {
 
         // Building bot
         BotUtils.bot = new JDABuilder(AccountType.BOT).setToken(args[0])
-            .addEventListener(new MessageListener())
-            .addEventListener(new GameListener())
-            .addEventListener(new LeaverListener())
-            .setGame(Game.playing("with Chika-chan"))
-            .build()
-            .awaitReady();
+                .addEventListener(new MessageListener())
+                .addEventListener(new GameListener())
+                .addEventListener(new LeaverListener())
+                .addEventListener(new ReactionListener())
+                .setGame(Game.playing("with Chika-chan"))
+                .build()
+                .awaitReady();
 
         QuartzScheduler sched = new QuartzScheduler();
         try {

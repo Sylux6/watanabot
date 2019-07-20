@@ -1,21 +1,21 @@
 package utils;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.Random;
-
-import net.dv8tion.jda.core.entities.*;
-import org.apache.commons.io.FilenameUtils;
-
+import modules.poll.entity.SmashPass;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.utils.IOUtil;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
 public class BotUtils {
-    
     // Bot
     static public JDA bot;
     
@@ -32,6 +32,9 @@ public class BotUtils {
 
     // Logger
     static public Logger logger = LoggerFactory.getLogger("Watanabot");
+
+    // Non persistent memory
+    static public HashMap<String, SmashPass> smashPassInstances = new HashMap<>();
     
     /////////////////////////////////////////////
     ////////      FUNCTIONS         /////////////
@@ -41,11 +44,11 @@ public class BotUtils {
     ///////// SENDING MESSAGE FUNCTION ////////
     
     static public void sendMessage(MessageChannel channel, String message) {
-	channel.sendMessage(message).queue();
+	    channel.sendMessage(message).queue();
     }
     
     static public void sendMessage(MessageChannel channel, Message message) {
-	channel.sendMessage(message).queue();
+	    channel.sendMessage(message).queue();
     }
     
     static public void sendMessage(MessageChannel channel, MessageEmbed message) {
