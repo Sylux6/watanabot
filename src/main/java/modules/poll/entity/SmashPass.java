@@ -62,7 +62,9 @@ public class SmashPass {
     public MessageEmbed toEmbed() {
         BotUtils.smashPassInstances.remove(messageId);
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setTitle(topic);
+        if (!topic.isEmpty()) {
+            embed.setTitle(topic);
+        }
         embed.setThumbnail(owner.getUser().getAvatarUrl());
         embed.setDescription("created by " + owner.getEffectiveName());
 
