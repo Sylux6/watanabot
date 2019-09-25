@@ -160,6 +160,15 @@ public class Ship {
         return embedShip.build();
     }
 
+    public MessageEmbed chibiEmbed() {
+        return new EmbedBuilder()
+                .setTitle(this.getNameEN() + " ("+ this.getNameJP() + ")", this.getUrl())
+                .setColor(this.getRarity().getColor())
+                .setImage(this.imgChibi)
+                .build();
+
+    }
+
     static public Ship getShipByName(String name) throws IOException {
         JSONObject jsonObject = JsonUtils.stringToJsonObject(HttpRequest.getRequest(
                 "https://api.kurozeropb.info/v1/azurlane/ship", "name=" + name

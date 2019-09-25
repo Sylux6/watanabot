@@ -89,10 +89,7 @@ public class AzurLaneModule extends AbstractModule {
                     BotUtils.sendMessage(event.getChannel(), "Not found");
                     return;
                 }
-                BotUtils.sendMessage(event.getChannel(), EmbedUtils.buildEmbedImageOnly(
-                        ship.getNameEN() + " ("+ ship.getNameJP() + ")",
-                        ship.getUrl(),
-                        ship.getImgChibi()));
+                BotUtils.sendMessage(event.getChannel(), ship.chibiEmbed());
             } catch (Exception e) {
                 BotUtils.logger.error("", e);
                 BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
