@@ -35,8 +35,8 @@ public class MusicModule extends AbstractModule {
 
 	    // Check if bot is not currently in use
 	    if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
-		BotUtils.sendMessage(event.getChannel(), "I am already in a voice channel. Stealing is bad!");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "I am already in a voice channel. Stealing is bad!");
+			return;
 	    }
 	    audioManager.openAudioConnection(event.getMember().getVoiceState().getChannel());
 	    BotUtils.sendMessage(event.getChannel(), "Ohayousoro!~ (> ᴗ •)ゞ");
@@ -51,8 +51,8 @@ public class MusicModule extends AbstractModule {
 
 	commands.put("pause", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.player.setPaused(true);
@@ -61,7 +61,7 @@ public class MusicModule extends AbstractModule {
 
 	commands.put("resume", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
 		return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
@@ -71,30 +71,30 @@ public class MusicModule extends AbstractModule {
 
 	commands.put("volume", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
 		return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    if (args.size() < 2) {
-		// Setting the volume to 50 by default
-		musicManager.player.setVolume(50);
-		BotUtils.sendMessage(event.getChannel(), "Volume set to 50%");
-		return;
+			// Setting the volume to 50 by default
+			musicManager.player.setVolume(50);
+			BotUtils.sendMessage(event.getChannel(), "Volume set to 50%");
+			return;
 	    }
 	    try {
-		int volume = Integer.valueOf(args.get(1));
-		musicManager.player.setVolume(volume);
-		BotUtils.sendMessage(event.getChannel(), "Volume set to " + volume + "%");
+			int volume = Integer.valueOf(args.get(1));
+			musicManager.player.setVolume(volume);
+			BotUtils.sendMessage(event.getChannel(), "Volume set to " + volume + "%");
 	    } catch (NumberFormatException e) {
-		musicManager.player.setVolume(50);
-		BotUtils.sendMessage(event.getChannel(), "Unknown value: volume set to 50%");
+			musicManager.player.setVolume(50);
+			BotUtils.sendMessage(event.getChannel(), "Unknown value: volume set to 50%");
 	    }
 	});
 
 	commands.put("clear", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.scheduler.purgeQueue();
@@ -103,21 +103,21 @@ public class MusicModule extends AbstractModule {
 
 	commands.put("queue", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    AudioManager audioManager = event.getGuild().getAudioManager();
 
 	    // Check if bot is in voiceChannel
 	    if (!audioManager.isConnected()) {
-		BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
+			return;
 	    }
 
 	    if (args.size() < 2) {
-		BotUtils.sendMessage(event.getChannel(), "No music found");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "No music found");
+			return;
 	    }
 	    
 	    playerManager.loadItemOrdered(musicManager, args.get(1),
@@ -126,25 +126,25 @@ public class MusicModule extends AbstractModule {
 	
 	commands.put("play", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-		BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    AudioManager audioManager = event.getGuild().getAudioManager();
 
 	    // Check if bot is in voiceChannel
 	    if (!audioManager.isConnected()) {
-		BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
+			return;
 	    }
 
 	    if (args.size() == 1 && musicManager.scheduler.getTracklist().size() > 1) {
-		musicManager.player.startTrack(musicManager.scheduler.getTracklist().get(0), true);
-		return;
+			musicManager.player.startTrack(musicManager.scheduler.getTracklist().get(0), true);
+			return;
 	    }
 	    else if (args.size() < 2) {
-		BotUtils.sendMessage(event.getChannel(), "No music found");
-		return;
+			BotUtils.sendMessage(event.getChannel(), "No music found");
+			return;
 	    }
 	    
 	    musicManager.player.stopTrack();
@@ -172,12 +172,12 @@ public class MusicModule extends AbstractModule {
 	    List<AudioTrack> tracklist = musicManager.scheduler.getTracklist();
 	    int i = 0;
 	    for (AudioTrack t : tracklist) {
-		if (i == 5) {
-		    message.append("and **" + (tracklist.size() - i) + "** more...");
-		    break;
-		}
-		message.append("**" + (i + 1) + ".** " + t.getInfo().title + "\n");
-		i++;
+			if (i == 5) {
+				message.append("and **" + (tracklist.size() - i) + "** more...");
+				break;
+			}
+			message.append("**" + (i + 1) + ".** " + t.getInfo().title + "\n");
+			i++;
 	    }
 	    BotUtils.sendMessage(event.getChannel(), message.toString());
 	});
@@ -197,24 +197,24 @@ public class MusicModule extends AbstractModule {
     }
     
     static public boolean isInVoiceChannel(Member author, AudioManager audioManager) {
-	if (author.getVoiceState().getChannel() == null || audioManager.getConnectedChannel() == null)
-	    return false;
-	return author.getVoiceState().getChannel().equals(audioManager.getConnectedChannel());
+		if (author.getVoiceState().getChannel() == null || audioManager.getConnectedChannel() == null)
+			return false;
+		return author.getVoiceState().getChannel().equals(audioManager.getConnectedChannel());
     }
 
     public synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
-	long guildId = Long.parseLong(guild.getId());
-	GuildMusicManager musicManager = musicManagers.get(guildId);
+		long guildId = Long.parseLong(guild.getId());
+		GuildMusicManager musicManager = musicManagers.get(guildId);
 
-	if (musicManager == null) {
-	    musicManager = new GuildMusicManager(playerManager);
-	    musicManager.player.setVolume(50);
-	    musicManagers.put(guildId, musicManager);
-	}
+		if (musicManager == null) {
+			musicManager = new GuildMusicManager(playerManager);
+			musicManager.player.setVolume(50);
+			musicManagers.put(guildId, musicManager);
+		}
 
-	guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
+		guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
 
-	return musicManager;
+		return musicManager;
     }
 
     @Override
