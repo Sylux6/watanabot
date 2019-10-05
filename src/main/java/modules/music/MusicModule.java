@@ -10,10 +10,10 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import modules.AbstractModule;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.managers.AudioManager;
-import utils.BotUtils;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.managers.AudioManager;
+import utils.MessageUtils;
 
 public class MusicModule extends AbstractModule {
 
@@ -35,75 +35,75 @@ public class MusicModule extends AbstractModule {
 
 	    // Check if bot is not currently in use
 	    if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
-			BotUtils.sendMessage(event.getChannel(), "I am already in a voice channel. Stealing is bad!");
+			MessageUtils.sendMessage(event.getChannel(), "I am already in a voice channel. Stealing is bad!");
 			return;
 	    }
 	    audioManager.openAudioConnection(event.getMember().getVoiceState().getChannel());
-	    BotUtils.sendMessage(event.getChannel(), "Ohayousoro!~ (> ᴗ •)ゞ");
+	    MessageUtils.sendMessage(event.getChannel(), "Ohayousoro!~ (> ᴗ •)ゞ");
 	    
 	});
 
 	commands.put("leave", (event, args) -> {
 	    event.getGuild().getAudioManager().closeAudioConnection();
 	    getGuildAudioPlayer(event.getGuild()).player.destroy();
-	    BotUtils.sendMessage(event.getChannel(), "Bye bye!~ (> ᴗ •)ゞ");
+	    MessageUtils.sendMessage(event.getChannel(), "Bye bye!~ (> ᴗ •)ゞ");
 	});
 
 	commands.put("pause", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			MessageUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
 			return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.player.setPaused(true);
-	    BotUtils.sendMessage(event.getChannel(), "Pause...");
+	    MessageUtils.sendMessage(event.getChannel(), "Pause...");
 	});
 
 	commands.put("resume", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			MessageUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
 		return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.player.setPaused(false);
-	    BotUtils.sendMessage(event.getChannel(), "... Resume");
+	    MessageUtils.sendMessage(event.getChannel(), "... Resume");
 	});
 
 	commands.put("volume", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			MessageUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
 		return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    if (args.size() < 2) {
 			// Setting the volume to 50 by default
 			musicManager.player.setVolume(50);
-			BotUtils.sendMessage(event.getChannel(), "Volume set to 50%");
+			MessageUtils.sendMessage(event.getChannel(), "Volume set to 50%");
 			return;
 	    }
 	    try {
 			int volume = Integer.valueOf(args.get(1));
 			musicManager.player.setVolume(volume);
-			BotUtils.sendMessage(event.getChannel(), "Volume set to " + volume + "%");
+			MessageUtils.sendMessage(event.getChannel(), "Volume set to " + volume + "%");
 	    } catch (NumberFormatException e) {
 			musicManager.player.setVolume(50);
-			BotUtils.sendMessage(event.getChannel(), "Unknown value: volume set to 50%");
+			MessageUtils.sendMessage(event.getChannel(), "Unknown value: volume set to 50%");
 	    }
 	});
 
 	commands.put("clear", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			MessageUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
 			return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.scheduler.purgeQueue();
-	    BotUtils.sendMessage(event.getChannel(), "Tracklist has been cleared");
+	    MessageUtils.sendMessage(event.getChannel(), "Tracklist has been cleared");
 	});
 
 	commands.put("queue", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			MessageUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
 			return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
@@ -111,12 +111,12 @@ public class MusicModule extends AbstractModule {
 
 	    // Check if bot is in voiceChannel
 	    if (!audioManager.isConnected()) {
-			BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
+			MessageUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
 			return;
 	    }
 
 	    if (args.size() < 2) {
-			BotUtils.sendMessage(event.getChannel(), "No music found");
+			MessageUtils.sendMessage(event.getChannel(), "No music found");
 			return;
 	    }
 	    
@@ -126,7 +126,7 @@ public class MusicModule extends AbstractModule {
 	
 	commands.put("play", (event, args) -> {
 	    if (!isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-			BotUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
+			MessageUtils.sendMessage(event.getChannel(), "You must be in the voice channel");
 			return;
 	    }
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
@@ -134,7 +134,7 @@ public class MusicModule extends AbstractModule {
 
 	    // Check if bot is in voiceChannel
 	    if (!audioManager.isConnected()) {
-			BotUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
+			MessageUtils.sendMessage(event.getChannel(), "I am not in a voice channel. Please make me join you.");
 			return;
 	    }
 
@@ -143,7 +143,7 @@ public class MusicModule extends AbstractModule {
 			return;
 	    }
 	    else if (args.size() < 2) {
-			BotUtils.sendMessage(event.getChannel(), "No music found");
+			MessageUtils.sendMessage(event.getChannel(), "No music found");
 			return;
 	    }
 	    
@@ -156,13 +156,13 @@ public class MusicModule extends AbstractModule {
 	commands.put("stop", (event, args) -> {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.player.stopTrack();
-	    BotUtils.sendMessage(event.getChannel(), "Stop playing");
+	    MessageUtils.sendMessage(event.getChannel(), "Stop playing");
 	});
 
 	commands.put("next", (event, args) -> {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.scheduler.nextTrack();
-	    BotUtils.sendMessage(event.getChannel(),
+	    MessageUtils.sendMessage(event.getChannel(),
 		    "Playing next track: " + musicManager.player.getPlayingTrack().getInfo().title);
 	});
 
@@ -179,19 +179,19 @@ public class MusicModule extends AbstractModule {
 			message.append("**" + (i + 1) + ".** " + t.getInfo().title + "\n");
 			i++;
 	    }
-	    BotUtils.sendMessage(event.getChannel(), message.toString());
+	    MessageUtils.sendMessage(event.getChannel(), message.toString());
 	});
 
 	commands.put("shuffle", (event, args) -> {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    musicManager.scheduler.shuffle();
-	    BotUtils.sendMessage(event.getChannel(), "Tracklist has been shuffled");
+	    MessageUtils.sendMessage(event.getChannel(), "Tracklist has been shuffled");
 	});
 	
 	commands.put("now", (event, args) -> {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 	    AudioTrack now = musicManager.player.getPlayingTrack();
-	    BotUtils.sendMessage(event.getChannel(), "You are listening to **"+now.getInfo().title+"**");
+	    MessageUtils.sendMessage(event.getChannel(), "You are listening to **"+now.getInfo().title+"**");
 	});
 
     }

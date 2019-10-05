@@ -1,13 +1,12 @@
 package utils;
 
 import modules.poll.entity.SmashPass;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.utils.IOUtil;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.internal.utils.IOUtil;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,9 +29,6 @@ public class BotUtils {
     // SECRET ROOM RELATED
     static public long SRID = Long.parseLong("181478842274283520");
 
-    // Logger
-    static public Logger logger = LoggerFactory.getLogger("Watanabot");
-
     // Non persistent memory
     static public HashMap<String, SmashPass> smashPassInstances = new HashMap<>();
     
@@ -42,85 +38,18 @@ public class BotUtils {
     
     
     ///////// SENDING MESSAGE FUNCTION ////////
-    
-    static public void sendMessage(MessageChannel channel, String message) {
-	    channel.sendMessage(message).queue();
-    }
-    
-    static public void sendMessage(MessageChannel channel, Message message) {
-	    channel.sendMessage(message).queue();
-    }
-    
-    static public void sendMessage(MessageChannel channel, MessageEmbed message) {
-	    channel.sendMessage(message).queue();
-    }
 
-    static public void sendMessageAt(MessageChannel channel, User user, String message) {
-        channel.sendMessage(mentionAt(user) + " " + message).queue();
-    }
-
-    static public void sendMessageAt(MessageChannel channel, User user, Message message) {
-        channel.sendMessage(mentionAt(user) + " " + message).queue();
-    }
-
-    static public void sendMessageAt(MessageChannel channel, User user, MessageEmbed message) {
-        channel.sendMessage(mentionAt(user) + " " + message).queue();
-    }
-
-    static public void sendLog(String message) {
-        bot.getGuildById(SRID).getTextChannelsByName("log", true).get(0).sendMessage(message).queue();
-    }
-    
-    static public void sendFile(MessageChannel channel, byte[] file, String attachment, Message message) {
-	channel.sendFile(file, attachment, message).queue();
-    }
-    
-    static public void sendFileByUrl(MessageChannel channel, String message, String url) throws IOException {
-	URL url_ = new URL(url);
-	byte[] file = IOUtil.readFully(url_.openStream());
-	MessageBuilder m = new MessageBuilder(message);
-	channel.sendFile(file, FilenameUtils.getName(url_.getPath()), m.build()).queue();
-    }
-    
-    static public void sendDM(User user, String message) {
-	PrivateChannel channel = user.openPrivateChannel().complete();
-	channel.sendMessage(message).queue();
-    }
-    
     ///////// EDITING MESSAGE FUNCTION ////////
-    
-    static public void editMessage(Message oldMessage, String newMessage) {
-	oldMessage.editMessage(newMessage).queue();
-    }
-    
-    static public void editMessage(Message oldMessage, Message newMessage) {
-	oldMessage.editMessage(newMessage).queue();
-    }  
-    
-    static public void editMessage(Message oldMessage, MessageEmbed newMessage) {
-	oldMessage.editMessage(newMessage).queue();
-    }  
-    
+
     ///////// ROLE FUNCTION ////////
     static public void addRole(Guild guild, Member member, Role role) {
-	guild.getController().addRolesToMember(member, role).queue();
+	    guild.addRoleToMember(member, role).queue();
     }
     
     static public void removeRole(Guild guild, Member member, Role role) {
-	guild.getController().removeRolesFromMember(member, role).queue();
+	guild.removeRoleFromMember(member, role).queue();
     }
-    
-    // Function for reacting to a message for a given String emote
-    // returns true on success
-    static public boolean reactMessage(Message message, String name) {
-	Emote emote = getEmote(message.getGuild(), name, false);
-	if (emote != null) {
-	    message.addReaction(emote).queue();
-	    return true;
-	}
-	return false;
-    }
-    
+
     // Checks if a yousoro emoji exists
     static public boolean yousoroEmojiExists(Guild guild) {
 	return !guild.getEmotesByName("yousoro", true).isEmpty();
@@ -148,14 +77,5 @@ public class BotUtils {
 	    return "(> ᴗ •)ゞ";
 	return "<:yousoro:"+emote.getId()+">";
     }
-    
-    // Returns mention syntax for message
-    static public String mentionAt(User user) {
-	return "<@" + user.getId() + ">";
-    }
 
-    // Returns text channel syntax for message
-    static public String linkTextChannel(MessageChannel channel) {
-        return "<#" + channel.getId() + ">";
-    }
 }

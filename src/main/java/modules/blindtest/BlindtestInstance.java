@@ -1,14 +1,14 @@
 package modules.blindtest;
 
-import java.awt.Color;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
 
 public class BlindtestInstance {
     
@@ -23,14 +23,14 @@ public class BlindtestInstance {
     private ArrayList<Integer> items;
     
     public BlindtestInstance(User owner, int limit, MessageChannel chan) {
-	this.players = new HashMap<>();
-	this.state = BlindtestState.IDLE;
-	this.owner = owner;
-	this.players.put(Long.parseLong(owner.getId()), new Player(owner));
-	this.limit = limit;
-	this.chan = chan;
-	this.mainEmbed = new EmbedBuilder();
-	this.mainMessage = new MessageBuilder(updateEmbedPreparation()).sendTo(chan).complete();
+		this.players = new HashMap<>();
+		this.state = BlindtestState.IDLE;
+		this.owner = owner;
+		this.players.put(Long.parseLong(owner.getId()), new Player(owner));
+		this.limit = limit;
+		this.chan = chan;
+		this.mainEmbed = new EmbedBuilder();
+		this.mainMessage = new MessageBuilder(updateEmbedPreparation()).sendTo(chan).complete();
     }
 
     public BlindtestState getState() {

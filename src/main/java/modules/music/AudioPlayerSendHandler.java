@@ -2,8 +2,9 @@ package modules.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
+import net.dv8tion.jda.api.audio.AudioSendHandler;
 
-import net.dv8tion.jda.core.audio.AudioSendHandler;
+import java.nio.ByteBuffer;
 
 /**
  * This is a wrapper around AudioPlayer which makes it behave as an
@@ -33,12 +34,12 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
     }
 
     @Override
-    public byte[] provide20MsAudio() {
+    public ByteBuffer provide20MsAudio() {
 	if (lastFrame == null) {
 	    lastFrame = audioPlayer.provide();
 	}
 
-	byte[] data = lastFrame != null ? lastFrame.getData() : null;
+	ByteBuffer data = lastFrame != null ? ByteBuffer.wrap(lastFrame.getData()) : null;
 	lastFrame = null;
 
 	return data;

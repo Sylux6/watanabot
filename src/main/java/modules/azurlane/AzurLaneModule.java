@@ -1,19 +1,8 @@
 package modules.azurlane;
 
 import modules.AbstractModule;
-import modules.azurlane.entity.Rarity;
 import modules.azurlane.entity.Ship;
-import net.dv8tion.jda.client.entities.Application;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import utils.BotUtils;
-import utils.EmbedUtils;
-import utils.HttpRequest;
-import utils.JsonUtils;
-
-import java.io.IOException;
+import utils.MessageUtils;
 
 public class AzurLaneModule extends AbstractModule {
 
@@ -27,13 +16,12 @@ public class AzurLaneModule extends AbstractModule {
                 String ship_name = String.join(" ", args);
                 Ship ship = Ship.getShipByName(ship_name);
                 if (ship == null) {
-                    BotUtils.sendMessage(event.getChannel(), "Not found");
+                    MessageUtils.sendMessage(event.getChannel(), "Not found");
                     return;
                 }
-                BotUtils.sendMessage(event.getChannel(), ship.toEmbed());
+                MessageUtils.sendMessage(event.getChannel(), ship.toEmbed());
             } catch (Exception e) {
-                BotUtils.logger.error("", e);
-                BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+                MessageUtils.sendMessage(event.getChannel(), "Internal error, please retry");
             }
         });
 
@@ -45,19 +33,18 @@ public class AzurLaneModule extends AbstractModule {
                 String ship_name = String.join(" ", args);
                 Ship ship = Ship.getShipByName(ship_name);
                 if (ship == null) {
-                    BotUtils.sendMessage(event.getChannel(), "Not found");
+                    MessageUtils.sendMessage(event.getChannel(), "Not found");
                     return;
                 }
-                BotUtils.sendMessage(event.getChannel(), ship.skinListEmbed());
+                MessageUtils.sendMessage(event.getChannel(), ship.skinListEmbed());
             } catch (Exception e) {
-                BotUtils.logger.error("", e);
-                BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+                MessageUtils.sendMessage(event.getChannel(), "Internal error, please retry");
             }
         });
 
         commands.put("skin", (event, args) -> {
             if (args.size() < 3) {
-                BotUtils.sendMessage(event.getChannel(),
+                MessageUtils.sendMessage(event.getChannel(),
                         "Index skin is missing, type `o7 al skins` to get the list of skins");
                 return;
             }
@@ -68,13 +55,12 @@ public class AzurLaneModule extends AbstractModule {
                 String ship_name = String.join(" ", args);
                 Ship ship = Ship.getShipByName(ship_name);
                 if (ship == null) {
-                    BotUtils.sendMessage(event.getChannel(), "Not found");
+                    MessageUtils.sendMessage(event.getChannel(), "Not found");
                     return;
                 }
-                BotUtils.sendMessage(event.getChannel(), ship.skinEmbed(index));
+                MessageUtils.sendMessage(event.getChannel(), ship.skinEmbed(index));
             } catch (Exception e) {
-                BotUtils.logger.error("", e);
-                BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+                MessageUtils.sendMessage(event.getChannel(), "Internal error, please retry");
             }
         });
 
@@ -86,13 +72,12 @@ public class AzurLaneModule extends AbstractModule {
                 String ship_name = String.join(" ", args);
                 Ship ship = Ship.getShipByName(ship_name);
                 if (ship == null) {
-                    BotUtils.sendMessage(event.getChannel(), "Not found");
+                    MessageUtils.sendMessage(event.getChannel(), "Not found");
                     return;
                 }
-                BotUtils.sendMessage(event.getChannel(), ship.chibiEmbed());
+                MessageUtils.sendMessage(event.getChannel(), ship.chibiEmbed());
             } catch (Exception e) {
-                BotUtils.logger.error("", e);
-                BotUtils.sendMessage(event.getChannel(), "Internal error, please retry");
+                MessageUtils.sendMessage(event.getChannel(), "Internal error, please retry");
             }
         });
     }

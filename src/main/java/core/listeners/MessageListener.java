@@ -9,13 +9,14 @@ import modules.AbstractModule;
 import modules.blindtest.BlindtestModule;
 import modules.music.MusicModule;
 import modules.picture.PictureModule;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import threads.ThreadCommand;
 import threads.ThreadGeneralBehaviour;
 import threads.ThreadMentionBehaviour;
 import threads.ThreadPictureDefaultBehaviour;
 import utils.BotUtils;
+import utils.MessageUtils;
 
 public class MessageListener extends ListenerAdapter {
 
@@ -68,7 +69,7 @@ public class MessageListener extends ListenerAdapter {
 		if (module instanceof MusicModule) { // Block MusicModule commands if Blindtest is running
 			BlindtestModule blindtestModule = (BlindtestModule) CommandHandler.moduleMap.get("blindtest");
 			if (blindtestModule.getBlindtestInstance(event.getGuild()) != null) {
-			BotUtils.sendMessage(event.getChannel(), "A blindtest game is running");
+			MessageUtils.sendMessage(event.getChannel(), "A blindtest game is running");
 			return;
 			}
 		}

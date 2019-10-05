@@ -3,9 +3,10 @@ package modules.poll;
 import modules.AbstractModule;
 import modules.poll.entity.SmashPass;
 import modules.poll.entity.SmashPassResponse;
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import utils.BotUtils;
+import utils.MessageUtils;
 
 public class SmashPassModule extends AbstractModule {
 
@@ -61,7 +62,7 @@ public class SmashPassModule extends AbstractModule {
                 case "\ud83c\udd97":
                     // stop
                     if (event.getMember().equals(instance.getOwner())) {
-                        BotUtils.sendMessage(event.getChannel(), instance.toEmbed());
+                        MessageUtils.sendMessage(event.getChannel(), instance.toEmbed());
                     }
             }
         }

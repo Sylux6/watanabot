@@ -1,12 +1,13 @@
 package reminder;
 
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import utils.BotUtils;
+import utils.MessageUtils;
 
 public class WatanabeYou implements Job {
 
@@ -19,7 +20,7 @@ public class WatanabeYou implements Job {
 			    +BotUtils.getYousoro(BotUtils.bot.getGuildById(BotUtils.SRID)))
 		    .setImage("https://puu.sh/A3DA1/de62cafe1a.jpg")
 		    .build();
-	BotUtils.sendMessage(BotUtils.bot.getGuildById(BotUtils.SRID).getTextChannelsByName("announcements", true).get(0), m);
+	MessageUtils.sendMessage(BotUtils.bot.getGuildById(BotUtils.SRID).getTextChannelsByName("announcements", true).get(0), m);
     }
 
 }

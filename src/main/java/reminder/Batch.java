@@ -1,12 +1,12 @@
 package reminder;
 
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import utils.BotUtils;
 import utils.DBUtils;
+import utils.MessageUtils;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ public class Batch implements Job {
     @SuppressWarnings("unchecked")
     public void execute(JobExecutionContext context) {
         LocalDate today = LocalDate.now();
-        BotUtils.sendLog(new Date().toString() + " - Running batch");
+        MessageUtils.sendLog(new Date().toString() + " - Running batch");
 
         // Birthday
         ArrayList l = DBUtils.query("select guildid, userid from member where extract(month from birthday) = " + today.getMonthValue()
@@ -50,12 +50,12 @@ public class Batch implements Job {
                     User user = BotUtils.bot.getUserById(String.valueOf(id));
                     if (user != null) {
                         found = true;
-                        wish.append(BotUtils.mentionAt(user));
+                        wish.append(MessageUtils.mentionAt(user));
                         wish.append("\n");
                     }
                 }
                 if (found) {
-                    BotUtils.sendMessage(channel, wish.toString());
+                    MessageUtils.sendMessage(channel, wish.toString());
                 }
             }
         }

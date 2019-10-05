@@ -1,8 +1,8 @@
 package modules.poll.entity;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import utils.BotUtils;
 
 import java.util.ArrayList;
@@ -14,9 +14,9 @@ public class SmashPass {
     private String attachment;
     private boolean hasAttachment;
     private String messageId;
-    private Member owner;
+    private net.dv8tion.jda.api.entities.Member owner;
     private String topic;
-    private HashMap<Member, SmashPassResponse> responses;
+    private HashMap<net.dv8tion.jda.api.entities.Member, SmashPassResponse> responses;
 
     public SmashPass(String messageId, Member owner, String topic, boolean hasAttachment) {
         this.messageId = messageId;
@@ -46,7 +46,7 @@ public class SmashPass {
         return messageId;
     }
 
-    public Member getOwner() {
+    public net.dv8tion.jda.api.entities.Member getOwner() {
         return owner;
     }
 
@@ -55,7 +55,7 @@ public class SmashPass {
     }
 
 
-    public HashMap<Member, SmashPassResponse> getResponses() {
+    public HashMap<net.dv8tion.jda.api.entities.Member, SmashPassResponse> getResponses() {
         return responses;
     }
 
@@ -68,16 +68,16 @@ public class SmashPass {
         embed.setThumbnail(owner.getUser().getAvatarUrl());
         embed.setDescription("created by " + owner.getEffectiveName());
 
-        HashMap<SmashPassResponse, ArrayList<Member>> results = new HashMap<>();
+        HashMap<SmashPassResponse, ArrayList<net.dv8tion.jda.api.entities.Member>> results = new HashMap<>();
         results.put(SmashPassResponse.SMASH, new ArrayList<>());
         results.put(SmashPassResponse.PASS, new ArrayList<>());
         results.put(SmashPassResponse.HUG, new ArrayList<>());
-        for (Map.Entry<Member, SmashPassResponse> entry : responses.entrySet()) {
+        for (Map.Entry<net.dv8tion.jda.api.entities.Member, SmashPassResponse> entry : responses.entrySet()) {
             results.get(entry.getValue()).add(entry.getKey());
         }
         for (SmashPassResponse val : SmashPassResponse.values()) {
             StringBuilder s  = new StringBuilder();
-            for (Member m : results.get(val)) {
+            for (net.dv8tion.jda.api.entities.Member m : results.get(val)) {
                 s.append("- ").append(m.getEffectiveName()).append("\n");
             }
             embed.addField(val.getEmote() + " **" + val + "** (**"

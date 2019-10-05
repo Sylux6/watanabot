@@ -2,31 +2,33 @@ package modules;
 
 import core.CommandHandler;
 import modules.picture.PictureModule;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.kodehawa.lib.imageboards.entities.Rating;
 import utils.BotUtils;
 import utils.EmbedUtils;
+import utils.MessageUtils;
 
 import java.util.ArrayList;
+
 
 public class GeneralModule extends AbstractModule {
 
     @Override
     public void populate() {
         commands.put("test", (event, args) -> {
-            BotUtils.sendMessage(event.getChannel(), "You ran the test command with args: " + args);
+            MessageUtils.sendMessage(event.getChannel(), "You ran the test command with args: " + args);
         });
 
         commands.put("help", (event, args) -> {
             if (args.size() < 2) {
-                BotUtils.sendDM(event.getAuthor(), getHelp());
+                MessageUtils.sendDM(event.getAuthor(), getHelp());
             } else {
                 AbstractModule module = CommandHandler.moduleMap.get(args.get(1));
                 if (module == null)
-                    BotUtils.sendMessage(event.getChannel(), args.get(1) + " module not found");
+                    MessageUtils.sendMessage(event.getChannel(), args.get(1) + " module not found");
                 else {
-                    BotUtils.sendDM(event.getAuthor(), module.getHelp());
+                    MessageUtils.sendDM(event.getAuthor(), module.getHelp());
                 }
             }
         });
@@ -36,24 +38,24 @@ public class GeneralModule extends AbstractModule {
             for (String s : CommandHandler.moduleMap.keySet()) {
             help.append("- `" + s + "`\n");
             }
-            BotUtils.sendMessage(event.getChannel(), help.toString());
+            MessageUtils.sendMessage(event.getChannel(), help.toString());
         });
 
         commands.put("roll", (event, args) -> {
             if (BotUtils.yousoroEmojiExists(event.getGuild()))
-            BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " " + roll() + " "
+            MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " " + roll() + " "
                 + BotUtils.getEmojiMessage(event.getGuild(), "yousoro"));
             else
-            BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " " + roll() + "");
+            MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " " + roll() + "");
         });
 
         commands.put("lewd", (event, args) -> {
-            BotUtils.sendMessage(event.getChannel(),
-                EmbedUtils.buildEmbedImageOnly("https://puu.sh/Cszmq.jpg"));
+            MessageUtils.sendMessage(event.getChannel(),
+                    EmbedUtils.buildEmbedImageOnly("https://puu.sh/Cszmq.jpg"));
         });
 
         commands.put("hentai", (event, args) -> {
-            BotUtils.sendMessage(event.getChannel(),
+            MessageUtils.sendMessage(event.getChannel(),
                 EmbedUtils.buildEmbedImageOnly("https://puu.sh/CtsdM.png"));
         });
 
@@ -69,12 +71,12 @@ public class GeneralModule extends AbstractModule {
         commands.put("choose", (event, args) -> {
             String p[] = {"Obviously", "I take", "The best would be"};
             int r1 = BotUtils.random.nextInt(p.length), r2 = BotUtils.random.nextInt(args.size()-1)+1;
-            BotUtils.sendMessage(event.getChannel(), p[r1]+" **"+args.get(r2)+"**");
+            MessageUtils.sendMessage(event.getChannel(), p[r1]+" **"+args.get(r2)+"**");
         });
 
         commands.put("say", (event, args) -> {
             args.remove(0);
-            BotUtils.sendMessage(event.getChannel(), String.join(" ", args));
+            MessageUtils.sendMessage(event.getChannel(), String.join(" ", args));
         });
 
         commands.put("getrole", (event, args) -> {
@@ -83,7 +85,7 @@ public class GeneralModule extends AbstractModule {
             ArrayList<Role> role = (ArrayList<Role>) event.getGuild().getRolesByName(String.join(" ", args), true);
             if (role.isEmpty()) {
                 m.append("**"+String.join(" ", args)+"** not found");
-                BotUtils.sendMessage(event.getChannel(), m.toString());
+                MessageUtils.sendMessage(event.getChannel(), m.toString());
                 return;
             }
 
@@ -94,20 +96,20 @@ public class GeneralModule extends AbstractModule {
                 m.append("- "+u.getUser().getName()+"#"+u.getUser().getDiscriminator()+"\n");
 
             if (l.size() > 10) {
-                BotUtils.sendMessage(event.getChannel(), "List of **"+String.join(" ", args)+"** (**"+l.size()+"**) sent in DM");
-                BotUtils.sendDM(event.getAuthor(), m.toString());
+                MessageUtils.sendMessage(event.getChannel(), "List of **"+String.join(" ", args)+"** (**"+l.size()+"**) sent in DM");
+                MessageUtils.sendDM(event.getAuthor(), m.toString());
             }
             else {
-                BotUtils.sendMessage(event.getChannel(), m.toString());
+                MessageUtils.sendMessage(event.getChannel(), m.toString());
             }
         });
 
         commands.put("screenshare", (event, args) -> {
             if (!event.getMember().getVoiceState().inVoiceChannel()) {
-                BotUtils.sendMessage(event.getChannel(), "Please join a voice channel");
+                MessageUtils.sendMessage(event.getChannel(), "Please join a voice channel");
                 return;
             }
-            BotUtils.sendMessage(event.getChannel(),
+            MessageUtils.sendMessage(event.getChannel(),
                     "There you go for screensharing:\n" +
                             "<https://www.discordapp.com/channels/" + event.getGuild().getId() + "/"
                             + event.getMember().getVoiceState().getChannel().getId() + ">");
@@ -119,12 +121,12 @@ public class GeneralModule extends AbstractModule {
             if (event.getGuild().getIdLong() != BotUtils.SRID) return;
             Role eventRole = event.getGuild().getRolesByName("Lewd", false).get(0);
             if (!event.getMember().getRoles().contains(eventRole)) {
-            event.getGuild().getController().addRolesToMember(event.getMember(), eventRole).queue();
-            BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" you're lewd >///< (**Lewd** role added)");
+            event.getGuild().addRoleToMember(event.getMember(), eventRole).queue();
+            MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor())+" you're lewd >///< (**Lewd** role added)");
             }
             else {
-            event.getGuild().getController().removeRolesFromMember(event.getMember(), eventRole).queue();
-            BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" you're pure (**Lewd** role removed)");
+            event.getGuild().removeRoleFromMember(event.getMember(), eventRole).queue();
+            MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor())+" you're pure (**Lewd** role removed)");
             }
         });
 
@@ -132,8 +134,8 @@ public class GeneralModule extends AbstractModule {
             if (event.getGuild().getIdLong() != BotUtils.SRID) return;
             Role eventRole = event.getGuild().getRolesByName("Event", false).get(0);
             if (!event.getMember().getRoles().contains(eventRole)) {
-            event.getGuild().getController().addRolesToMember(event.getMember(), eventRole).queue();
-            BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" "+eventRole.getName()+" role added");
+            event.getGuild().addRoleToMember(event.getMember(), eventRole).queue();
+            MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor())+" "+eventRole.getName()+" role added");
             }
         });
 
@@ -141,8 +143,8 @@ public class GeneralModule extends AbstractModule {
             if (event.getGuild().getIdLong() != BotUtils.SRID) return;
             Role eventRole = event.getGuild().getRolesByName("Event", false).get(0);
             if (event.getMember().getRoles().contains(eventRole)) {
-            event.getGuild().getController().removeRolesFromMember(event.getMember(), eventRole).queue();
-            BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())+" "+eventRole.getName()+" role removed");
+            event.getGuild().removeRoleFromMember(event.getMember(), eventRole).queue();
+            MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor())+" "+eventRole.getName()+" role removed");
             }
         });
 
