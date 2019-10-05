@@ -102,6 +102,17 @@ public class GeneralModule extends AbstractModule {
             }
         });
 
+        commands.put("screenshare", (event, args) -> {
+            if (!event.getMember().getVoiceState().inVoiceChannel()) {
+                BotUtils.sendMessage(event.getChannel(), "Please join a voice channel");
+                return;
+            }
+            BotUtils.sendMessage(event.getChannel(),
+                    "There you go for screensharing:\n" +
+                            "<https://www.discordapp.com/channels/" + event.getGuild().getId() + "/"
+                            + event.getMember().getVoiceState().getChannel().getId() + ">");
+        });
+
         //////////////////////////////////////////////////
 
         commands.put("yousolewd", (event, args) -> {
