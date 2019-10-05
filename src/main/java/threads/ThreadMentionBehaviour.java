@@ -1,7 +1,8 @@
 package threads;
 
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import utils.BotUtils;
+import utils.MessageUtils;
 
 public class ThreadMentionBehaviour extends ThreadGeneralBehaviour {
 
@@ -12,16 +13,16 @@ public class ThreadMentionBehaviour extends ThreadGeneralBehaviour {
     @Override
     public void run() {
 	message = event.getMessage().getContentDisplay();
-	StringBuilder answer = new StringBuilder(BotUtils.mentionAt(event.getAuthor()) + " ");
+	StringBuilder answer = new StringBuilder(MessageUtils.mentionAt(event.getAuthor()) + " ");
 
 	if (message.matches(".*(?i)lewd.*")) {
-	    BotUtils.sendMessage(event.getChannel(), answer.append("I'm not lewd!").toString());
+	    MessageUtils.sendMessage(event.getChannel(), answer.append("I'm not lewd!").toString());
 	}
 	else {
 	    if (BotUtils.yousoroEmojiExists(event.getGuild())) {
-		BotUtils.sendMessage(event.getChannel(), answer.append(BotUtils.getEmojiMessage(event.getGuild(), "yousoro")).toString());
+		MessageUtils.sendMessage(event.getChannel(), answer.append(BotUtils.getEmojiMessage(event.getGuild(), "yousoro")).toString());
 	    } else {
-		BotUtils.sendMessage(event.getChannel(), answer.append("(> ᴗ •)ゞ").toString());
+		MessageUtils.sendMessage(event.getChannel(), answer.append("(> ᴗ •)ゞ").toString());
 	    }	    
 	}
 	

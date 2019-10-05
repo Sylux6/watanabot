@@ -4,9 +4,9 @@ import core.listeners.GameListener;
 import core.listeners.LeaverListener;
 import core.listeners.MessageListener;
 import core.listeners.ReactionListener;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import reminder.QuartzScheduler;
 import utils.BotUtils;
 
@@ -27,11 +27,13 @@ public class Main {
 
         // Building bot
         BotUtils.bot = new JDABuilder(AccountType.BOT).setToken(args[0])
-                .addEventListener(new MessageListener())
-                .addEventListener(new GameListener())
-                .addEventListener(new LeaverListener())
-                .addEventListener(new ReactionListener())
-                .setGame(Game.playing("with Chika-chan"))
+                .addEventListeners(
+                        new MessageListener(),
+                        new GameListener(),
+                        new LeaverListener(),
+                        new ReactionListener()
+                )
+                .setActivity(Activity.playing("with Chika-chan"))
                 .build()
                 .awaitReady();
 
@@ -39,7 +41,6 @@ public class Main {
         try {
             sched.run();
         } catch (Exception e) {
-            BotUtils.logger.error("", e);
         }
     }
 

@@ -7,11 +7,11 @@ import core.CommandHandler;
 import modules.AbstractModule;
 import modules.music.GuildMusicManager;
 import modules.music.MusicModule;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.managers.AudioManager;
-import utils.BotUtils;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.managers.AudioManager;
+import utils.MessageUtils;
 
 public class BlindtestModule extends AbstractModule {
 
@@ -33,14 +33,14 @@ public class BlindtestModule extends AbstractModule {
 
 	    if (owner != null && instance.getOwner().getIdLong() != event.getAuthor().getIdLong()
 		    && owner.getOnlineStatus() != OnlineStatus.OFFLINE) {
-		BotUtils.sendMessage(event.getChannel(), "You're not the owner of the game");
+		MessageUtils.sendMessage(event.getChannel(), "You're not the owner of the game");
 		return;
 	    }
 	    musicManager.player.destroy();
-	    BotUtils.editMessage(instance.getmainMessage(), instance.abortEmbed().build());
+	    MessageUtils.editMessage(instance.getmainMessage(), instance.abortEmbed().build());
 	    instances.remove(Long.parseLong(event.getGuild().getId()));
 	    event.getGuild().getAudioManager().closeAudioConnection();
-	    BotUtils.sendMessage(event.getChannel(), "Game aborted");
+	    MessageUtils.sendMessage(event.getChannel(), "Game aborted");
 	});
 
 	commands.put("prepare", (event, args) -> {
@@ -52,31 +52,31 @@ public class BlindtestModule extends AbstractModule {
 	    
 	    // Check if a blindtest is already running
 	    if (instance != null) {
-		BotUtils.sendMessage(event.getChannel(), "A blindtest game is already running");
+		MessageUtils.sendMessage(event.getChannel(), "A blindtest game is already running");
 		return;
 	    }
 
 	    // Check if bot is not currently in use
 	    if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
-		BotUtils.sendMessage(event.getChannel(), "I am already in a voice channel. Stealing is bad!");
+		MessageUtils.sendMessage(event.getChannel(), "I am already in a voice channel. Stealing is bad!");
 		return;
 	    }
 
 
 	    // Bot is playing music
 	    if (musicManager.player.getPlayingTrack() != null) {
-		BotUtils.sendMessage(event.getChannel(), "I'm currently playing music");
+		MessageUtils.sendMessage(event.getChannel(), "I'm currently playing music");
 		return;
 	    }
 	    
 	    // Users VoiceChannel
 	    if (!event.getMember().getVoiceState().inVoiceChannel()) {
-		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you are not in a voice channel");
+		MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " you are not in a voice channel");
 		return;
 	    }
 
 	    if (args.size() < 2) {
-		BotUtils.sendMessage(event.getChannel(), "Score limit is missing : prepare <limit>");
+		MessageUtils.sendMessage(event.getChannel(), "Score limit is missing : prepare <limit>");
 		return;
 	    }
 	    
@@ -90,36 +90,36 @@ public class BlindtestModule extends AbstractModule {
 	    BlindtestInstance instance = getBlindtestInstance(event.getGuild());
 	    
 	    if (instance == null) {
-		BotUtils.sendMessage(event.getChannel(), "No game found");
+		MessageUtils.sendMessage(event.getChannel(), "No game found");
 		return;
 	    }
 	   
 	    if (!MusicModule.isInVoiceChannel(event.getMember(), event.getGuild().getAudioManager())) {
-		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you are not in the voice channel");
+		MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " you are not in the voice channel");
 		return;
 	    }
 	    if (instance.getState() != BlindtestState.PREPARING && instance.getState() != BlindtestState.SCORING) {
-		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you can not signup");
+		MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " you can not signup");
 		return;
 	    }
 	    if (instance.addPlayer(event.getAuthor())) {
-		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you're in (> ᴗ •)ゞ");
-		BotUtils.editMessage(instance.getmainMessage(), instance.updateEmbedPreparation().build());
+		MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " you're in (> ᴗ •)ゞ");
+		MessageUtils.editMessage(instance.getmainMessage(), instance.updateEmbedPreparation().build());
 	    }
 	    else
-		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " you're already in");
+		MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " you're already in");
 	});
 
 	commands.put("leave", (event, args) -> {
 	    BlindtestInstance instance = getBlindtestInstance(event.getGuild());
 	    
 	    if (instance == null) {
-		BotUtils.sendMessage(event.getChannel(), "No blindtest game found");
+		MessageUtils.sendMessage(event.getChannel(), "No blindtest game found");
 		return;
 	    }
 	    if (event.getAuthor().equals(instance.getOwner())) {
 		instance.removePlayer(event.getAuthor());
-		BotUtils.editMessage(instance.getmainMessage(), instance.updateEmbedPreparation().build());
+		MessageUtils.editMessage(instance.getmainMessage(), instance.updateEmbedPreparation().build());
 		if (instance.getOwner() == null) {
 		    MusicModule musicModule = (MusicModule) CommandHandler.moduleMap.get("music");
 		    GuildMusicManager musicManager = musicModule.getGuildAudioPlayer(event.getGuild());
@@ -127,17 +127,17 @@ public class BlindtestModule extends AbstractModule {
 		    musicManager.player.destroy();
 		    instances.remove(Long.parseLong(event.getGuild().getId()));
 		    event.getGuild().getAudioManager().closeAudioConnection();
-		    BotUtils.sendMessage(event.getChannel(), "No players left : game aborted");
+		    MessageUtils.sendMessage(event.getChannel(), "No players left : game aborted");
 		}
 		else {
-		    BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor())
-			    + " is out, the new owner is " + BotUtils.mentionAt(instance.getOwner()));
+		    MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor())
+			    + " is out, the new owner is " + MessageUtils.mentionAt(instance.getOwner()));
 		}
 	    }
 	    else if (instance.removePlayer(event.getAuthor()))
-		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " is out");
+		MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " is out");
 	    else
-		BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " already out");
+		MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " already out");
 	    
 	});
 	
@@ -145,12 +145,12 @@ public class BlindtestModule extends AbstractModule {
 	    BlindtestInstance instance = getBlindtestInstance(event.getGuild());
 	    
 	    if (instance == null) {
-		BotUtils.sendMessage(event.getChannel(), "No blindtest game found");
+		MessageUtils.sendMessage(event.getChannel(), "No blindtest game found");
 		return;
 	    }
 	    
 	    if (instance.getState() != BlindtestState.PREPARING) {
-		BotUtils.sendMessage(event.getChannel(), "Blindtest is already running");
+		MessageUtils.sendMessage(event.getChannel(), "Blindtest is already running");
 	    }
 	    
 	    instance.setState(BlindtestState.PLAYING);

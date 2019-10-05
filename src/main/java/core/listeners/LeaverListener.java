@@ -1,10 +1,11 @@
 package core.listeners;
 
 import db.model.Member;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import utils.BotUtils;
 import utils.DBUtils;
+import utils.MessageUtils;
 
 public class LeaverListener extends ListenerAdapter {
 
@@ -13,7 +14,7 @@ public class LeaverListener extends ListenerAdapter {
         Member member = new Member(event.getMember().getUser().getIdLong(), event.getGuild().getIdLong());
         DBUtils.delete(member);
         if (event.getGuild().getIdLong() == BotUtils.SRID) {
-            BotUtils.sendLog(event.getUser().getName() + " has left");
+            MessageUtils.sendLog(event.getUser().getName() + " has left");
         }
     }
 }

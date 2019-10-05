@@ -1,10 +1,9 @@
 package utils;
 
-import java.util.List;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
-import modules.llsif.entity.Card;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import java.util.List;
 
 public class EmbedUtils {
 

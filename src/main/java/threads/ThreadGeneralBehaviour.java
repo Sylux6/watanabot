@@ -1,8 +1,8 @@
 package threads;
 
 
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import utils.BotUtils;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import utils.MessageUtils;
 
 public class ThreadGeneralBehaviour implements Runnable {
 
@@ -21,22 +21,22 @@ public class ThreadGeneralBehaviour implements Runnable {
 	// We don't use else if since we want to match multiple cases
 
 	if (message.matches("(.*(?i)yousoro.*)|(.*sylux6Yo.*)")) {
-	    if (!BotUtils.reactMessage(event.getMessage(), "yousoro")) {
+	    if (!MessageUtils.reactMessage(event.getMessage(), "yousoro")) {
 	    	// Blue heart
 			event.getMessage().addReaction("\uD83D\uDC99").queue();
 	    }
 	}
 	
 	if (message.matches("(.*\\W+|)((?i)zensoku+ +zenshi+n+)(\\W+.*|)")) {
-	    BotUtils.sendMessage(event.getChannel(), "YOUSORO!~ (> ᴗ •)ゞ");
+	    MessageUtils.sendMessage(event.getChannel(), "YOUSORO!~ (> ᴗ •)ゞ");
 	}
 	
 	else if (message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)")) {
-	    BotUtils.sendMessage(event.getChannel(), "わたし？");
+	    MessageUtils.sendMessage(event.getChannel(), "わたし？");
 	}
 	
 	else if (message.matches("(?i).*hello.*|.*ohayo.*|.*good +morning.*")) {
-	    BotUtils.sendMessage(event.getChannel(), BotUtils.mentionAt(event.getAuthor()) + " Ohayousoro! (> ᴗ •)ゞ");
+	    MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " Ohayousoro! (> ᴗ •)ゞ");
 	}
 	
     }
