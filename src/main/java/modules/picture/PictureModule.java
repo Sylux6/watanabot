@@ -16,32 +16,32 @@ public class PictureModule extends AbstractModule {
     public void populate() {
 		commands.put("nsfw", (event, args) -> {
 			if (args.size() < 2) {
-			MessageUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
-			return;
+				MessageUtils.sendMessage(event.getChannel(), "I don't know what to get for you");
+				return;
 			}
 			if (event.getTextChannel().isNSFW())
-			getImage(event, String.join(" ", args.subList(1, args.size())), Rating.EXPLICIT);
+				getImage(event, String.join(" ", args.subList(1, args.size())), Rating.EXPLICIT);
 			else
-			MessageUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
+				MessageUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
 		});
 
 		commands.put("questionable", (event, args) -> {
 			if (args.size() < 2) {
-			MessageUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
-			return;
+				MessageUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
+				return;
 			}
 			if (event.getTextChannel().isNSFW())
-			getImage(event, String.join(" ", args.subList(1, args.size())), Rating.QUESTIONABLE);
+				getImage(event, String.join(" ", args.subList(1, args.size())), Rating.QUESTIONABLE);
 			else
-			MessageUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
+				MessageUtils.sendMessage(event.getChannel(), "You are not in a nsfw channel. You lewd!");
 		});
 
 		commands.put("safe", (event, args) -> {
 			if (args.size() < 2) {
-			MessageUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
+				MessageUtils.sendMessage(event.getChannel(), "I do not know what to get for you");
 			return;
 			}
-			getImage(event, String.join(" ", args.subList(1, args.size())), Rating.SAFE);
+				getImage(event, String.join(" ", args.subList(1, args.size())), Rating.SAFE);
 		});
     }
 
@@ -50,44 +50,33 @@ public class PictureModule extends AbstractModule {
     }
 
     static public void getImage(MessageReceivedEvent event, List<String> search) {
-	getImage(event, String.join(" ", search), event.getTextChannel().isNSFW() ? Rating.EXPLICIT : Rating.SAFE);
+		getImage(event, String.join(" ", search), event.getTextChannel().isNSFW() ? Rating.EXPLICIT : Rating.SAFE);
     }
 
     static public void getImage(MessageReceivedEvent event, String search, Rating rating) {
-	String rating_part;
-	switch (rating) {
-	case EXPLICIT:
-	    rating_part = "rating:explicit";
-	    break;
-	case QUESTIONABLE:
-	    rating_part = "rating:questionnable";
-	    break;
-	default:
-	    rating_part = "rating:safe";
-	}
-	try {
-	    DefaultImageBoards.DANBOORU.search(100, String.join(" ", search + " " + rating_part)).async(images -> {
-		// The last rating tag is taken during search process so user can not trick the
-		// nsfw filter
-		if (!images.isEmpty()) {
-		    Collections.shuffle(images);
-		    MessageUtils.sendMessage(event.getChannel(),
-			    EmbedUtils.buildEmbedImageBooru(
-				    images.get(0).getTag_string_character() + " drawn by "
-					    + images.get(0).getTag_string_artist() + " - Danbooru",
-				    images.get(0).getURL(), images.get(0).getTags(), images.get(0).getURL()));
-		} else if (rating == Rating.EXPLICIT) { // If no explicit image has been found, try again with
-							// questionable rating
-		    getImage(event, search, Rating.QUESTIONABLE);
-		} else if (rating == Rating.QUESTIONABLE) { // If no questionable image has been found, try again with safe
-							// rating
-		    getImage(event, search, Rating.SAFE);
-		} else
-		    MessageUtils.sendMessage(event.getChannel(), "No results");
-	    });
-	} catch (Exception e) {
-	    MessageUtils.sendMessage(event.getChannel(), "No results");
-	}
+		try {
+			DefaultImageBoards.DANBOORU.search(search, rating)
+					.async(images -> {
+				// The last rating tag is taken during search process so user can not trick the nsfw filter
+				if (!images.isEmpty()) {
+					Collections.shuffle(images);
+					MessageUtils.sendMessage(event.getChannel(),
+						EmbedUtils.buildEmbedImageBooru(
+							images.get(0).getTag_string_character() + " drawn by "
+								+ images.get(0).getTag_string_artist() + " - Danbooru",
+							images.get(0).getURL(), images.get(0).getTags(), images.get(0).getURL()));
+				} else if (rating == Rating.EXPLICIT) {
+					// If no explicit image has been found, try again with questionable rating
+					getImage(event, search, Rating.QUESTIONABLE);
+				} else if (rating == Rating.QUESTIONABLE) {
+					// If no questionable image has been found, try again with safe rating
+					getImage(event, search, Rating.SAFE);
+				} else
+					MessageUtils.sendMessage(event.getChannel(), "No results");
+			});
+		} catch (Exception e) {
+			MessageUtils.sendMessage(event.getChannel(), "No results");
+		}
     }
 
     @Override
