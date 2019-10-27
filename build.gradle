@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
-    compile 'net.dv8tion:JDA:4.0.0_52'
+    compile 'net.dv8tion:JDA:4.0.0_54'
     compile 'com.sedmelluq:lavaplayer:1.3.22-pre'
     compile 'net.kodehawa:imageboard-api:2.1'
     compile 'org.quartz-scheduler:quartz:2.2.3'

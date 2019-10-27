@@ -79,6 +79,24 @@ public class GeneralModule extends AbstractModule {
             MessageUtils.sendMessage(event.getChannel(), String.join(" ", args));
         });
 
+        commands.put("avatar", (event, args) -> {
+            if (args.size() < 2) {
+                MessageUtils.sendMessage(event.getChannel(), EmbedUtils.buildEmbedImageOnly(
+                        event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator(),
+                        event.getAuthor().getEffectiveAvatarUrl()));
+            } else {
+                String username = String.join(" ", args.subList(1, args.size()));
+                Member member = BotUtils.findMember(event.getGuild(), username);
+                if (member != null) {
+                    MessageUtils.sendMessage(event.getChannel(), EmbedUtils.buildEmbedImageOnly(
+                            member.getUser().getName() + "#" + event.getAuthor().getDiscriminator(),
+                            member.getUser().getEffectiveAvatarUrl()));
+                } else {
+                    MessageUtils.sendMessage(event.getChannel(), "Cannot find user in the server");
+                }
+            }
+        });
+
         commands.put("getrole", (event, args) -> {
             args.remove(0);
             StringBuilder m = new StringBuilder();
