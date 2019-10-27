@@ -9,6 +9,7 @@
 
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
+apply plugin: 'kotlin'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -31,5 +32,25 @@ dependencies {
     compile 'org.hibernate:hibernate-core:5.4.2.Final'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+buildscript {
+    ext.kotlin_version = '1.3.50'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
