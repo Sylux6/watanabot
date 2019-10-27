@@ -8,7 +8,7 @@
 
 ### Enhancements
 
-- Better function to look for member
+- Better implementation to look for member
 
 ## v2.0.0 (2019-10-19)
 
