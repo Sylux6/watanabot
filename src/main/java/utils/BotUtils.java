@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -35,11 +36,37 @@ public class BotUtils {
     /////////////////////////////////////////////
     ////////      FUNCTIONS         /////////////
     /////////////////////////////////////////////
-    
-    
-    ///////// SENDING MESSAGE FUNCTION ////////
 
-    ///////// EDITING MESSAGE FUNCTION ////////
+    /**
+     * Attempts to find a user in a channel, first look for account name then for nickname
+     *
+     * @param guild    the guild to look in
+     * @param searchText the name to look for
+     * @return IUser | null
+     */
+    public static Member findMember(Guild guild, String searchText) {
+        List<Member> users = guild.getMembers();
+        List<Member> potential = new ArrayList<>();
+        int smallestDiffIndex = 0, smallestDiff = -1;
+        for (Member u : users) {
+            String nick = u.getEffectiveName();
+            if (nick.equalsIgnoreCase(searchText)) {
+                return u;
+            }
+            if (nick.toLowerCase().contains(searchText)) {
+                potential.add(u);
+                int d = Math.abs(nick.length() - searchText.length());
+                if (d < smallestDiff || smallestDiff == -1) {
+                    smallestDiff = d;
+                    smallestDiffIndex = potential.size() - 1;
+                }
+            }
+        }
+        if (!potential.isEmpty()) {
+            return potential.get(smallestDiffIndex);
+        }
+        return null;
+    }
 
     ///////// ROLE FUNCTION ////////
     static public void addRole(Guild guild, Member member, Role role) {

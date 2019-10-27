@@ -5,6 +5,7 @@ import db.model.Settings;
 import modules.AbstractModule;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
+import utils.BotUtils;
 import utils.DBUtils;
 import utils.MessageUtils;
 
@@ -15,7 +16,6 @@ import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class Birthday extends AbstractModule {
@@ -74,18 +74,16 @@ public class Birthday extends AbstractModule {
             } else {
                 args.remove(0);
                 String username = String.join(" ", args);
-                List<net.dv8tion.jda.api.entities.Member> l = new ArrayList<>();
-                l.addAll(event.getGuild().getMembersByName(username, true));
-                l.addAll(event.getGuild().getMembersByEffectiveName(username, true));
-                if (l.size() >  0) {
+                net.dv8tion.jda.api.entities.Member member = BotUtils.findMember(event.getGuild(), username);
+                if (member != null) {
                     ArrayList res = DBUtils.query("select birthday from member where userid = "
-                            + l.get(0).getUser().getId() + " and guildid = " + event.getGuild().getId());
+                            + member.getUser().getId() + " and guildid = " + event.getGuild().getId());
                     if (res.size() > 0 && res.get(0) != null) {
-                        MessageUtils.sendMessage(event.getChannel(), l.get(0).getEffectiveName()
+                        MessageUtils.sendMessage(event.getChannel(), member.getEffectiveName()
                                 + " birthday is on "
                                 + new SimpleDateFormat("MMM dd", Locale.ENGLISH).format(res.get(0)));
                     } else {
-                        MessageUtils.sendMessage(event.getChannel(), l.get(0).getEffectiveName()
+                        MessageUtils.sendMessage(event.getChannel(), member.getEffectiveName()
                                 + " didn't set a birthday");
                     }
                 } else {
