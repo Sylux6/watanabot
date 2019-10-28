@@ -1,38 +1,36 @@
-package utils;
+package utils
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.MessageEmbed
 
-import java.util.List;
+object EmbedUtils {
 
-public class EmbedUtils {
-
-    static public MessageEmbed buildEmbedImageBooru(String title, String url, List<String> tags, String imgURL) {
-	EmbedBuilder embedMessage = new EmbedBuilder();
-	embedMessage.setTitle(title, url);
-	embedMessage.setDescription(String.join(" ", tags));
-	embedMessage.setImage(imgURL);
-	return embedMessage.build();
+    fun buildEmbedImageBooru(title: String, url: String, tags: List<String>, imgURL: String): MessageEmbed {
+        val embedMessage = EmbedBuilder()
+        embedMessage.setTitle(title, url)
+        embedMessage.setDescription(tags.joinToString(" "))
+        embedMessage.setImage(imgURL)
+        return embedMessage.build()
     }
 
-    static public MessageEmbed buildEmbedImageOnly(String imgURL) {
-		EmbedBuilder embedMessage = new EmbedBuilder();
-		embedMessage.setImage(imgURL);
-		return embedMessage.build();
+    fun buildEmbedImageOnly(imgURL: String): MessageEmbed {
+        val embedMessage = EmbedBuilder()
+        embedMessage.setImage(imgURL)
+        return embedMessage.build()
     }
 
-	static public MessageEmbed buildEmbedImageOnly(String title, String url, String imgURL) {
-		EmbedBuilder embedMessage = new EmbedBuilder();
-		embedMessage.setTitle(title, url);
-		embedMessage.setImage(imgURL);
-		return embedMessage.build();
-	}
+    fun buildEmbedImageOnly(title: String, url: String, imgURL: String): MessageEmbed {
+        val embedMessage = EmbedBuilder()
+        embedMessage.setTitle(title, url)
+        embedMessage.setImage(imgURL)
+        return embedMessage.build()
+    }
 
-	static public MessageEmbed buildEmbedImageOnly(String title, String imgURL) {
-		EmbedBuilder embedMessage = new EmbedBuilder();
-		embedMessage.setTitle(title);
-		embedMessage.setImage(imgURL);
-		return embedMessage.build();
-	}
+    fun buildEmbedImageOnly(title: String, imgURL: String): MessageEmbed {
+        val embedMessage = EmbedBuilder()
+        embedMessage.setTitle(title)
+        embedMessage.setImage(imgURL)
+        return embedMessage.build()
+    }
 
 }

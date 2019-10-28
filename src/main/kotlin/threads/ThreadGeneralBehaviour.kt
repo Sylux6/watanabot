@@ -1,44 +1,31 @@
-package threads;
+package threads
 
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import utils.MessageUtils;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import utils.MessageUtils
 
-public class ThreadGeneralBehaviour implements Runnable {
+open class ThreadGeneralBehaviour(internal var event: MessageReceivedEvent) : Runnable {
+    internal lateinit var message: String
 
-    MessageReceivedEvent event;
-    String message;
+    override fun run() {
+        message = event.message.contentDisplay
 
-    public ThreadGeneralBehaviour(MessageReceivedEvent event) {
-	this.event = event;
-    }
+        // Let's go for matching all possible cases
+        // We don't use else if since we want to match multiple cases
 
-    @Override
-    public void run() {
-	message = event.getMessage().getContentDisplay();
+        if (message.matches("(.*(?i)yousoro.*)|(.*sylux6Yo.*)".toRegex())) {
+            if (!MessageUtils.reactMessage(event.message, "yousoro")) {
+                // Blue heart
+                event.message.addReaction("\uD83D\uDC99").queue()
+            }
+        }
 
-	// Let's go for matching all possible cases
-	// We don't use else if since we want to match multiple cases
+        when {
+            message.matches("(.*\\W+|)((?i)zensoku+ +zenshi+n+)(\\W+.*|)".toRegex()) -> MessageUtils.sendMessage(event.channel, "YOUSORO!~ (> ᴗ •)ゞ")
+            message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)".toRegex()) -> MessageUtils.sendMessage(event.channel, "わたし？")
+            message.matches("(?i).*hello.*|.*ohayo.*|.*good +morning.*".toRegex()) -> MessageUtils.sendMessage(event.channel, MessageUtils.mentionAt(event.author) + " Ohayousoro! (> ᴗ •)ゞ")
+        }
 
-	if (message.matches("(.*(?i)yousoro.*)|(.*sylux6Yo.*)")) {
-	    if (!MessageUtils.reactMessage(event.getMessage(), "yousoro")) {
-	    	// Blue heart
-			event.getMessage().addReaction("\uD83D\uDC99").queue();
-	    }
-	}
-	
-	if (message.matches("(.*\\W+|)((?i)zensoku+ +zenshi+n+)(\\W+.*|)")) {
-	    MessageUtils.sendMessage(event.getChannel(), "YOUSORO!~ (> ᴗ •)ゞ");
-	}
-	
-	else if (message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)")) {
-	    MessageUtils.sendMessage(event.getChannel(), "わたし？");
-	}
-	
-	else if (message.matches("(?i).*hello.*|.*ohayo.*|.*good +morning.*")) {
-	    MessageUtils.sendMessage(event.getChannel(), MessageUtils.mentionAt(event.getAuthor()) + " Ohayousoro! (> ᴗ •)ゞ");
-	}
-	
     }
 
 }

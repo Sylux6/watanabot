@@ -1,73 +1,69 @@
-package utils;
+package utils
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
+import org.hibernate.boot.MetadataSources
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
+object DBUtils {
 
-public class DBUtils {
-
-    static final private StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate_cfg.xml").build();
-    static final private SessionFactory sessionFactory = new MetadataSources(DBUtils.registry).buildMetadata().buildSessionFactory();
+    private val registry = StandardServiceRegistryBuilder().configure("hibernate_cfg.xml").build()
+    private val sessionFactory = MetadataSources(DBUtils.registry).buildMetadata().buildSessionFactory()
 
 
-    static public void insert(Object object) {
-        Session session = sessionFactory.openSession();
+    fun insert(`object`: Any) {
+        val session = sessionFactory.openSession()
 
-        try (session) {
-            Transaction tx = session.beginTransaction();
-            session.persist(object);
-            tx.commit();
-        } catch (Exception e) {
+        try {
+            val tx = session.beginTransaction()
+            session.persist(`object`)
+            tx.commit()
+        } catch (e: Exception) {
             // log
         }
+
     }
 
-    static public void saveOrUpdate(Object object) {
-        Session session = sessionFactory.openSession();
+    fun saveOrUpdate(`object`: Any) {
+        val session = sessionFactory.openSession()
 
-        try (session) {
-            Transaction tx = session.beginTransaction();
-            session.saveOrUpdate(object);
-            tx.commit();
-        } catch (Exception e) {
+        try {
+            val tx = session.beginTransaction()
+            session.saveOrUpdate(`object`)
+            tx.commit()
+        } catch (e: Exception) {
             // log
         }
+
     }
 
-    static public void delete(Object object) {
-        Session session = sessionFactory.openSession();
+    fun delete(`object`: Any) {
+        val session = sessionFactory.openSession()
 
-        try (session) {
-            Transaction tx = session.beginTransaction();
-            session.delete(object);
-            tx.commit();
-        } catch (Exception e) {
+        try {
+            val tx = session.beginTransaction()
+            session.delete(`object`)
+            tx.commit()
+        } catch (e: Exception) {
             // log
         }
+
     }
 
-    static public ArrayList selectAll(Class table) {
-        Session session = sessionFactory.openSession();
-        String hql = "FROM " + table.getName();
-        Query query = session.createQuery(hql);
-        List result = query.list();
-        session.close();
-        return (ArrayList) result;
+    fun selectAll(table: Class<*>): List<Any> {
+        val session = sessionFactory.openSession()
+        val hql = "FROM " + table.name
+        val query = session.createQuery(hql)
+        val result = query.resultList
+        session.close()
+        return result
     }
 
-    static public ArrayList query(String sql) {
-        Session session = sessionFactory.openSession();
-        Query query = session.createSQLQuery(sql);
-        List result = query.list();
-        session.close();
-        return (ArrayList) result;
+    fun query(sql: String): List<Any> {
+        val session = sessionFactory.openSession()
+        val query = session.createNativeQuery(sql)
+        val result = query.resultList
+        session.close()
+        return result
     }
 
 }

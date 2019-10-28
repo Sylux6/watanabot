@@ -1,61 +1,57 @@
-package reminder;
+package reminder
 
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import utils.BotUtils;
-import utils.DBUtils;
-import utils.MessageUtils;
+import org.quartz.Job
+import org.quartz.JobExecutionContext
+import utils.BotUtils
+import utils.DBUtils
+import utils.MessageUtils
+import java.math.BigInteger
+import java.time.LocalDate
+import java.util.*
 
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+class Batch : Job {
 
-public class Batch implements Job {
+    override fun execute(context: JobExecutionContext) {
+        val today = LocalDate.now()
+        MessageUtils.sendLog(Date().toString() + " - Running batch")
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void execute(JobExecutionContext context) {
-        LocalDate today = LocalDate.now();
-        MessageUtils.sendLog(new Date().toString() + " - Running batch");
+        // Random status
+        BotUtils.randomStatus()
 
         // Birthday
-        ArrayList l = DBUtils.query("select guildid, userid from member where extract(month from birthday) = " + today.getMonthValue()
-                + " and extract(day from birthday) = " + today.getDayOfMonth());
-        if (l.size() > 0) {
-            HashMap<BigInteger, ArrayList<BigInteger>> res = new HashMap<>();
-            for (Object[] o: (ArrayList<Object[]>) l) {
-                ArrayList<BigInteger> members = res.get(o[0]);
+        val l = DBUtils.query("select guildid, userid from member where extract(month from birthday) = " + today.monthValue
+                + " and extract(day from birthday) = " + today.dayOfMonth)
+        if (l.size > 0) {
+            val res = HashMap<BigInteger, ArrayList<BigInteger>>()
+            // TODO
+            for (o in l) {
+                o as Array<Any>
+                var members: ArrayList<BigInteger>? = res[o[0]]
                 if (members == null) {
-                    members = new ArrayList<>();
-                    res.put((BigInteger) o[0], members);
+                    members = ArrayList()
+                    res[o[0] as BigInteger] = members
                 }
-                members.add((BigInteger) o[1]);
+                members.add(o[1] as BigInteger)
             }
-            for (Map.Entry<BigInteger, ArrayList<BigInteger>> entry: res.entrySet()) {
-                ArrayList settings = DBUtils.query("select birthdaychannelid from settings where guildid = "
-                        + entry.getKey());
-                TextChannel channel = BotUtils.bot.getGuildById(entry.getKey().toString()).getTextChannelById(settings.get(0).toString());
-                if (res.size() == 0 || channel == null) {
-                    continue;
+            for ((key, value) in res) {
+                val settings = DBUtils.query("select birthdaychannelid from settings where guildid = $key")
+                val channel = BotUtils.bot.getGuildById(key.toString())!!.getTextChannelById(settings[0].toString())
+                if (res.size == 0 || channel == null) {
+                    continue
                 }
-                boolean found = false;
-                StringBuilder wish = new StringBuilder("Happy Birthday " + BotUtils.getYousoro(BotUtils.bot.getGuildById(entry.getKey().toString())) + "\n");
-                for (BigInteger id : entry.getValue()) {
+                var found = false
+                val wish = StringBuilder("Happy Birthday ${BotUtils.getYousoro(BotUtils.bot.getGuildById(key.toString())!!)} \uD83C\uDF82\n")
+                for (id in value) {
                     // FIXME: dirty
-                    User user = BotUtils.bot.getUserById(String.valueOf(id));
+                    val user = BotUtils.bot.getUserById(id.toString())
                     if (user != null) {
-                        found = true;
-                        wish.append(MessageUtils.mentionAt(user));
-                        wish.append("\n");
+                        found = true
+                        wish.append(MessageUtils.mentionAt(user))
+                        wish.append("\n")
                     }
                 }
                 if (found) {
-                    MessageUtils.sendMessage(channel, wish.toString());
+                    MessageUtils.sendMessage(channel, wish.toString())
                 }
             }
         }
