@@ -1,85 +1,75 @@
-package core.listeners;
+package core.listeners
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import commands.general.GeneralCommandModule
+import internal.commands.AbstractCommandModule
+import commands.picture.PictureCommandModule
+import core.CommandHandler
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import net.dv8tion.jda.api.hooks.ListenerAdapter
+import threads.ThreadCommand
+import threads.ThreadGeneralBehaviour
+import threads.ThreadMentionBehaviour
+import utils.BotUtils
 
-import core.CommandHandler;
-import modules.AbstractModule;
-import modules.blindtest.BlindtestModule;
-import modules.music.MusicModule;
-import modules.picture.PictureModule;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import threads.ThreadCommand;
-import threads.ThreadGeneralBehaviour;
-import threads.ThreadMentionBehaviour;
-import threads.ThreadPictureDefaultBehaviour;
-import utils.BotUtils;
-import utils.MessageUtils;
+class MessageListener : ListenerAdapter() {
 
-public class MessageListener extends ListenerAdapter {
+    override fun onMessageReceived(event: MessageReceivedEvent) {
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+        // Ignore messages from BOT
+        if (event.message.author.isBot)
+            return
 
-		// Ignore messages from BOT
-		if (event.getMessage().getAuthor().isBot())
-			return;
+        // Get all elements of the received message separated by spaces
+        val args: MutableList<String> = mutableListOf(*event.message.contentDisplay.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
 
-		// Get all elements of the received message separated by blankspaces
-		List<String> tmp = new ArrayList<>(Arrays.asList(event.getMessage().getContentDisplay().split("\\s+")));
+        // First ensure at least the command and prefix is present, the arg length can
+        // be handled by your command func
+        if (args.isEmpty())
+            return
 
-		// First ensure at least the command and prefix is present, the arg length can
-		// be handled by your command func
-		if (tmp.size() == 0)
-			return;
+        // In those cases there is no command to execute
+        if (!args.first().startsWith(BotUtils.BOT_PREFIX)) {
+            if (event.message.mentionedUsers.contains(event.jda.selfUser))
+                CommandHandler.SERVICE.execute(ThreadMentionBehaviour(event))
+            else
+                CommandHandler.SERVICE.execute(ThreadGeneralBehaviour(event))
+            return
+        }
 
-		// Check if the first arg (the command) starts with the prefix defined in the
-		// utils class
-		if (!tmp.get(0).startsWith(BotUtils.BOT_PREFIX)) {
-			if (event.getMessage().getMentionedUsers().contains(event.getJDA().getSelfUser()))
-			CommandHandler.service.execute(new ThreadMentionBehaviour(event));
-			else
-			CommandHandler.service.execute(new ThreadGeneralBehaviour(event));
-			return;
-		}
+        // Bot prefix is not needed anymore
+        args.removeAt(0)
+        // Nothing to do
+        if (args.size == 0)
+            return
 
-		List<String> argTab;
+        val commandModule: AbstractCommandModule
+        // No specific module found
+        if (CommandHandler.COMMAND_MODULE_MAP.containsKey(args.first())) {
+            commandModule = CommandHandler.COMMAND_MODULE_MAP[args.first()]!!
+            // Module name is not needed anymore
+            args.removeAt(0)
+        } else {
+            commandModule = GeneralCommandModule
+        }
 
-		if (tmp.get(0).equals(BotUtils.BOT_PREFIX)) {
-			argTab = tmp.subList(1, tmp.size());
-		} else {
-			argTab = tmp;
-			argTab.set(0, argTab.get(0).substring(BotUtils.PREFIX_LENGTH));
-		}
+//        if (module is MusicModule) { // Block MusicModule commands if Blindtest is running
+//            val blindtestModule = CommandHandler.moduleMap["blindtest"] as BlindtestModule
+//            if (blindtestModule.getBlindtestInstance(event.guild) != null) {
+//                MessageUtils.sendMessage(event.channel, "A blindtest game is running")
+//                return
+//            }
+//        }
 
-		// Get the module map of commands
-		AbstractModule module;
-
-		// No specific module found
-		if ((module = CommandHandler.moduleMap.get(argTab.get(0))) == null) {
-			module = CommandHandler.moduleMap.get("general"); // Take general module by default
-		} else {
-			if (argTab.size() < 2) // Message contains at least <module> <command>
-			return;
-			argTab.remove(0); // Module name removed
-		}
-
-		if (module instanceof MusicModule) { // Block MusicModule commands if Blindtest is running
-			BlindtestModule blindtestModule = (BlindtestModule) CommandHandler.moduleMap.get("blindtest");
-			if (blindtestModule.getBlindtestInstance(event.getGuild()) != null) {
-			MessageUtils.sendMessage(event.getChannel(), "A blindtest game is running");
-			return;
-			}
-		}
-
-		// Calling the command
-		if (module.getMapCommands().containsKey(argTab.get(0))) {
-			CommandHandler.service.execute(new ThreadCommand(module, event, argTab));
-		} else if (module instanceof PictureModule) { // Getting image by default if unknown command
-			CommandHandler.service.execute(new ThreadPictureDefaultBehaviour(event, argTab));
-		}
+        // Calling the command
+        if (commandModule.commandMap.containsKey(args.first())) {
+            CommandHandler.SERVICE.execute(
+                    ThreadCommand(commandModule, commandModule.commandMap[args.first()]!!, event, args.drop(1))
+            )
+        }
+        else if (commandModule is PictureCommandModule) { // Getting image by default if unknown command
+            CommandHandler.SERVICE.execute { PictureCommandModule.getImage(event, args) }
+//            CommandHandler.SERVICE.execute(ThreadPictureDefaultBehaviour(event, argTab))
+        }
     }
-    
+
 }

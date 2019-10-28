@@ -1,23 +1,11 @@
-package threads;
+package threads
 
-import java.util.List;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
-import modules.picture.PictureModule;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+class ThreadPictureDefaultBehaviour(internal var event: MessageReceivedEvent, internal var args: List<String>) : Runnable {
 
-public class ThreadPictureDefaultBehaviour implements Runnable {
-    
-    MessageReceivedEvent event;
-    List<String> args;
-
-    public ThreadPictureDefaultBehaviour(MessageReceivedEvent event, List<String> args) {
-	this.event = event;
-	this.args = args;
-    }
-
-    @Override
-    public void run() {
-	PictureModule.getByDefault(event, args);
+    override fun run() {
+//        PictureModule.getByDefault(event, args)
     }
 
 }

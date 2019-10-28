@@ -1,25 +1,26 @@
-package utils;
+package utils
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
-public class JsonUtils {
-    
-    static public JSONObject stringToJsonObject(String s) {
-        return new JSONObject(s);
-    }
-    
-    static public JSONArray stringToJsonArray(String s) {
-	    return new JSONArray(s);
+object JsonUtils {
+
+    fun stringToJsonObject(s: String): JSONObject {
+        return JSONObject(s)
     }
 
-    static public String getStringOrNull(JSONObject jsonObject, String key) {
+    fun stringToJsonArray(s: String): JSONArray {
+        return JSONArray(s)
+    }
+
+    fun getStringOrNull(jsonObject: JSONObject, key: String): String {
         try {
-            return jsonObject.getString(key);
-        } catch (JSONException e) {
-            return "";
+            return jsonObject.getString(key)
+        } catch (e: JSONException) {
+            return ""
         }
+
     }
 
 }

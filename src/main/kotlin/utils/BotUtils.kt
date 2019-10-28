@@ -1,108 +1,99 @@
-package utils;
+package utils
 
-import modules.poll.entity.SmashPass;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.internal.utils.IOUtil;
-import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.NotNull;
+import commands.poll.entity.SmashPass
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.entities.*
+import java.util.*
+import kotlin.math.abs
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-public class BotUtils {
+object BotUtils {
     // Bot
-    static public JDA bot;
-    
+    lateinit var bot: JDA
+
     // RNG
-    static public Random random = new Random();
+    var random = Random()
 
     // CONSTANTS
-    static public String BOT_PREFIX = "o7";
-    static public int PREFIX_LENGTH = BOT_PREFIX.length();
-    static public int NB_THREAD = 50;
-    
+    const val BOT_PREFIX = "o7"
+    const val PRIMARY_COLOR = 3447003
+    const val NB_THREAD = 50
+
     // SECRET ROOM RELATED
-    static public long SRID = Long.parseLong("181478842274283520");
+    var SRID = java.lang.Long.parseLong("181478842274283520")
 
     // Non persistent memory
-    static public HashMap<String, SmashPass> smashPassInstances = new HashMap<>();
-    
+    var smashPassInstances = HashMap<String, SmashPass>()
+
     /////////////////////////////////////////////
     ////////      FUNCTIONS         /////////////
     /////////////////////////////////////////////
 
+    fun randomStatus() {
+        bot.presence.setPresence(listOf(
+                Activity.playing("with Chika-chan"), Activity.watching("Chika-chan")).random(), true)
+    }
+
     /**
      * Attempts to find a user in a channel, first look for account name then for nickname
      *
-     * @param guild    the guild to look in
+     * @param guild the guild to look in
      * @param searchText the name to look for
      * @return IUser | null
      */
-    public static Member findMember(Guild guild, String searchText) {
-        List<Member> users = guild.getMembers();
-        List<Member> potential = new ArrayList<>();
-        int smallestDiffIndex = 0, smallestDiff = -1;
-        for (Member u : users) {
-            String nick = u.getEffectiveName();
-            if (nick.equalsIgnoreCase(searchText)) {
-                return u;
+    fun findMember(guild: Guild, searchText: String): Member? {
+        val users = guild.members
+        val potential = ArrayList<Member>()
+        var smallestDiffIndex = 0
+        var smallestDiff = -1
+        for (u in users) {
+            val nick = u.effectiveName
+            val username = u.user.name
+            if (nick.equals(searchText, ignoreCase = true) || username.equals(searchText, ignoreCase = true)) {
+                return u
             }
-            if (nick.toLowerCase().contains(searchText)) {
-                potential.add(u);
-                int d = Math.abs(nick.length() - searchText.length());
+            if (nick.toLowerCase().contains(searchText) || username.toLowerCase().contains(searchText)) {
+                potential.add(u)
+                val d = abs(nick.length - searchText.length)
                 if (d < smallestDiff || smallestDiff == -1) {
-                    smallestDiff = d;
-                    smallestDiffIndex = potential.size() - 1;
+                    smallestDiff = d
+                    smallestDiffIndex = potential.size - 1
                 }
             }
         }
-        if (!potential.isEmpty()) {
-            return potential.get(smallestDiffIndex);
-        }
-        return null;
+        return if (potential.isNotEmpty()) {
+            potential[smallestDiffIndex]
+        } else null
     }
 
     ///////// ROLE FUNCTION ////////
-    static public void addRole(Guild guild, Member member, Role role) {
-	    guild.addRoleToMember(member, role).queue();
+    fun addRole(guild: Guild, member: Member, role: Role) {
+        guild.addRoleToMember(member, role).queue()
     }
-    
-    static public void removeRole(Guild guild, Member member, Role role) {
-	guild.removeRoleFromMember(member, role).queue();
+
+    fun removeRole(guild: Guild, member: Member, role: Role) {
+        guild.removeRoleFromMember(member, role).queue()
     }
 
     // Checks if a yousoro emoji exists
-    static public boolean yousoroEmojiExists(Guild guild) {
-	return !guild.getEmotesByName("yousoro", true).isEmpty();
+    fun yousoroEmojiExists(guild: Guild): Boolean {
+        return guild.getEmotesByName("yousoro", true).isNotEmpty()
     }
-    
+
     // Returns emoji object from guild
-    static public Emote getEmote(Guild guild, String name, boolean ignoreCase) {
-	List<Emote> emote = guild.getEmotesByName(name, ignoreCase);
-	if (emote.isEmpty())
-	    return null;
-	return emote.get(0);
+    fun getEmote(guild: Guild, name: String, ignoreCase: Boolean): Emote? {
+        val emote = guild.getEmotesByName(name, ignoreCase)
+        return if (emote.isEmpty()) null else emote[0]
     }
-    
+
     // Returns emoji syntax for message
-    static public String getEmojiMessage(Guild guild, String name) {
-	Emote emote = getEmote(guild, name, false);
-	if (emote == null)
-	    return "";
-	return "<:"+name+":"+emote.getId()+">";
+    fun getEmojiMessage(guild: Guild, name: String): String {
+        val emote = getEmote(guild, name, false) ?: return ""
+        return "<:" + name + ":" + emote.id + ">"
     }
-    
-    static public String getYousoro(Guild guild) {
-	Emote emote = getEmote(guild, "yousoro", false);
-	if (emote == null)
-	    return "(> ᴗ •)ゞ";
-	return "<:yousoro:"+emote.getId()+">";
+
+    fun getYousoro(guild: Guild): String {
+        val emote = getEmote(guild, "yousoro", false) ?: return "(> ᴗ •)ゞ"
+        return "<:yousoro:" + emote.id + ">"
     }
 
 }

@@ -1,70 +1,72 @@
-package utils;
+package utils
 
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.internal.utils.IOUtil;
-import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.NotNull;
+import net.dv8tion.jda.api.MessageBuilder
+import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.entities.MessageChannel
+import net.dv8tion.jda.api.entities.MessageEmbed
+import net.dv8tion.jda.api.entities.User
+import net.dv8tion.jda.internal.utils.IOUtil
+import org.apache.commons.io.FilenameUtils
+import java.io.IOException
+import java.net.URL
 
-import java.io.IOException;
-import java.net.URL;
+object MessageUtils {
 
-public class MessageUtils {
-
-    static public void sendMessage(MessageChannel channel, String message) {
-	    channel.sendMessage(message).queue();
+    fun sendMessage(channel: MessageChannel, message: String) {
+        channel.sendMessage(message).queue()
     }
 
-    static public void sendMessage(MessageChannel channel, Message message) {
-	    channel.sendMessage(message).queue();
+    fun sendMessage(channel: MessageChannel, message: Message) {
+        channel.sendMessage(message).queue()
     }
 
-    static public void sendMessage(MessageChannel channel, MessageEmbed message) {
-	    channel.sendMessage(message).queue();
+    fun sendMessage(channel: MessageChannel, message: MessageEmbed) {
+        channel.sendMessage(message).queue()
     }
 
-    static public void sendMessageAt(MessageChannel channel, User user, String message) {
-        channel.sendMessage(mentionAt(user) + " " + message).queue();
+    fun sendMessageAt(channel: MessageChannel, user: User, message: String) {
+        channel.sendMessage(mentionAt(user) + " " + message).queue()
     }
 
-    static public void sendMessageAt(MessageChannel channel, User user, Message message) {
-        channel.sendMessage(mentionAt(user) + " " + message).queue();
+    fun sendMessageAt(channel: MessageChannel, user: User, message: Message) {
+        channel.sendMessage(mentionAt(user) + " " + message).queue()
     }
 
-    static public void sendMessageAt(MessageChannel channel, User user, MessageEmbed message) {
-        channel.sendMessage(mentionAt(user) + " " + message).queue();
+    fun sendMessageAt(channel: MessageChannel, user: User, message: MessageEmbed) {
+        channel.sendMessage(mentionAt(user) + " " + message).queue()
     }
 
-    static public void sendLog(String message) {
-        BotUtils.bot.getGuildById(BotUtils.SRID).getTextChannelsByName("log", true).get(0).sendMessage(message).queue();
+    fun sendLog(message: String) {
+        BotUtils.bot.getGuildById(BotUtils.SRID)!!.getTextChannelsByName("log", true)[0].sendMessage(message).queue()
     }
 
-    static public void sendFile(@NotNull MessageChannel channel, byte[] file, String attachment, Message message) {
-        channel.sendMessage(message).addFile(file, attachment).queue();
+    fun sendFile(channel: MessageChannel, file: ByteArray, attachment: String, message: Message) {
+        channel.sendMessage(message).addFile(file, attachment).queue()
     }
 
-    static public void sendFileByUrl(MessageChannel channel, String message, String url) throws IOException {
-        URL url_ = new URL(url);
-        byte[] file = IOUtil.readFully(url_.openStream());
-        MessageBuilder m = new MessageBuilder(message);
-        channel.sendMessage(m.build()).addFile(file, FilenameUtils.getName(url_.getPath())).queue();
+    @Throws(IOException::class)
+    fun sendFileByUrl(channel: MessageChannel, message: String, url: String) {
+        val url_ = URL(url)
+        val file = IOUtil.readFully(url_.openStream())
+        val m = MessageBuilder(message)
+        channel.sendMessage(m.build()).addFile(file, FilenameUtils.getName(url_.path)).queue()
     }
 
-    static public void sendDM(User user, String message) {
-	PrivateChannel channel = user.openPrivateChannel().complete();
-	channel.sendMessage(message).queue();
+    fun sendDM(user: User, message: String) {
+        val channel = user.openPrivateChannel().complete()
+        channel.sendMessage(message).queue()
     }
 
-    static public void editMessage(Message oldMessage, String newMessage) {
-	oldMessage.editMessage(newMessage).queue();
+    fun editMessage(oldMessage: Message, newMessage: String) {
+        oldMessage.editMessage(newMessage).queue()
     }
 
-    static public void editMessage(Message oldMessage, Message newMessage) {
-	oldMessage.editMessage(newMessage).queue();
+    fun editMessage(oldMessage: Message, newMessage: Message) {
+        oldMessage.editMessage(newMessage).queue()
     }
 
-    static public void editMessage(Message oldMessage, MessageEmbed newMessage) {
-	oldMessage.editMessage(newMessage).queue();
+    fun editMessage(oldMessage: Message, newMessage: MessageEmbed) {
+        oldMessage.editMessage(newMessage).queue()
     }
 
     /**
@@ -73,13 +75,13 @@ public class MessageUtils {
      * @param name guild name
      * @return true on success
      */
-    static public boolean reactMessage(Message message, String name) {
-	Emote emote = BotUtils.getEmote(message.getGuild(), name, false);
-	if (emote != null) {
-	    message.addReaction(emote).queue();
-	    return true;
-	}
-	return false;
+    fun reactMessage(message: Message, name: String): Boolean {
+        val emote = BotUtils.getEmote(message.guild, name, false)
+        if (emote != null) {
+            message.addReaction(emote).queue()
+            return true
+        }
+        return false
     }
 
     /**
@@ -87,8 +89,8 @@ public class MessageUtils {
      * @param user user
      * @return mention syntax
      */
-    static public String mentionAt(User user) {
-	return "<@" + user.getId() + ">";
+    fun mentionAt(user: User): String {
+        return "<@" + user.id + ">"
     }
 
     /**
@@ -96,7 +98,7 @@ public class MessageUtils {
      * @param channel MessageChannel
      * @return TextChannel link syntax
      */
-    static public String linkTextChannel(MessageChannel channel) {
-        return "<#" + channel.getId() + ">";
+    fun linkTextChannel(channel: MessageChannel): String {
+        return "<#" + channel.id + ">"
     }
 }

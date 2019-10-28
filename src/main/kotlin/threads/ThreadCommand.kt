@@ -1,25 +1,14 @@
-package threads;
+package threads
 
-import java.util.List;
+import internal.commands.AbstractCommand
+import internal.commands.AbstractCommandModule
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
-import modules.AbstractModule;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+class ThreadCommand(private val commandModule: AbstractCommandModule, private val command: AbstractCommand,
+                    internal var event: MessageReceivedEvent, var argTab: List<String>) : Runnable {
 
-public class ThreadCommand implements Runnable {
-    
-    AbstractModule module;
-    MessageReceivedEvent event;
-    List<String> argTab;
-    
-    public ThreadCommand(AbstractModule module, MessageReceivedEvent event, List<String> argTab) {
-	this.module = module;
-	this.event = event;
-	this.argTab = argTab;
-    }
-
-    @Override
-    public void run() {
-	module.getMapCommands().get(argTab.get(0)).runCommand(event, argTab);
+    override fun run() {
+        command.preRunCommand(commandModule, event, argTab)
     }
 
 }
