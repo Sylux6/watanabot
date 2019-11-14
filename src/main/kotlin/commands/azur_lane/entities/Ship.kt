@@ -33,9 +33,9 @@ class Ship(
                 .setThumbnail(this.imgIcon)
                 .setImage(this.img)
                 .setDescription("ID No. " + this.id)
-                .addField("Class", this.shipClass, true)
+                .addField("Class", this.shipClass, false)
                 .addField("Nationality", this.nationality, true)
-                .addField("Type", this.type, true)
+                .addField("Type", this.type, false)
                 .addField("Construction time", this.constructionTime, true)
                 .build()
     }
