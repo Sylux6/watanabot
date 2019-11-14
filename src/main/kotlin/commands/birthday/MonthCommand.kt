@@ -34,11 +34,6 @@ object MonthCommand : AbstractCommand("month") {
         val l = query("select userid, birthday from member where "
                 + "extract(month from birthday) = $month and guildid = ${event.guild.id} order by birthday")
 
-        if (l.isEmpty()) {
-            sendMessage(event.channel, "No birthdays this month")
-            return
-        }
-
         val result = ArrayList<Pair<Member, Date>>()
         l.forEach { o ->
             o as Array<Any>
@@ -58,7 +53,12 @@ object MonthCommand : AbstractCommand("month") {
         } }
         val message = EmbedBuilder()
                 .setColor(PRIMARY_COLOR)
-                .setTitle("Birthdays on ${Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH)}")
+                .setTitle("Birthdays in ${Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH)}")
+        if (group.isEmpty()) {
+            message.setDescription("No birthday")
+            sendMessage(channel, message.build())
+            return
+        }
         for (groupDay in group) {
             val memberList = StringBuilder()
             for (member in groupDay.value)
