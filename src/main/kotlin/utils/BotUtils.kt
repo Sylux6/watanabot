@@ -14,7 +14,7 @@ object BotUtils {
     var random = Random()
 
     // CONSTANTS
-    const val BOT_PREFIX = "//"
+    const val BOT_PREFIX = "o7"
     const val PRIMARY_COLOR = 3447003
     const val NB_THREAD = 50
 

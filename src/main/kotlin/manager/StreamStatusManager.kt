@@ -22,7 +22,7 @@ object StreamStatusManager {
     }
 
     fun leaveStream(guild: Guild, member: Member) {
-        if (guild.idLong != BotUtils.SRID || member.activities.all { activity -> activity.type != Activity.ActivityType.STREAMING })
+        if (guild.idLong != BotUtils.SRID)
             return
         val role = guild.getRolesByName("On Live", false).first()
         removeRole(guild, member, role)
