@@ -2,11 +2,10 @@ package core.listeners
 
 import manager.StreamStatusManager.leaveStream
 import manager.StreamStatusManager.onStream
-import manager.StreamStatusManager.updateStream
 import net.dv8tion.jda.api.events.user.UserActivityEndEvent
 import net.dv8tion.jda.api.events.user.UserActivityStartEvent
-import net.dv8tion.jda.api.events.user.update.UserUpdateActivityOrderEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+
 
 class GameListener : ListenerAdapter() {
 
@@ -15,8 +14,8 @@ class GameListener : ListenerAdapter() {
         onStream(event.guild, event.member, event)
     }
 
-    override fun onUserUpdateActivityOrder(event: UserUpdateActivityOrderEvent) {
+    override fun onUserActivityEnd(event: UserActivityEndEvent) {
         // Streaming
-        updateStream(event.guild, event.member, event)
+        leaveStream(event.guild, event.member)
     }
 }

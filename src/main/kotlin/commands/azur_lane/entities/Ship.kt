@@ -5,9 +5,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 import org.json.JSONObject
 import utils.HttpRequest
 import utils.JsonUtils
-
 import java.io.IOException
-import java.util.LinkedHashMap
+import java.util.*
 
 class Ship(
         private val id: String,
@@ -33,10 +32,12 @@ class Ship(
                 .setThumbnail(this.imgIcon)
                 .setImage(this.img)
                 .setDescription("ID No. " + this.id)
-                .addField("Class", this.shipClass, false)
+                .addField("Class", this.shipClass, true)
                 .addField("Nationality", this.nationality, true)
-                .addField("Type", this.type, false)
+                .addBlankField(true)
+                .addField("Type", this.type, true)
                 .addField("Construction time", this.constructionTime, true)
+                .addBlankField(true)
                 .build()
     }
 

@@ -1,15 +1,16 @@
 package core.listeners
 
 import commands.general.GeneralCommandModule
-import internal.commands.AbstractCommandModule
 import commands.picture.PictureCommandModule
-import core.CommandHandler
+import core.CommandHandler.COMMAND_MODULE_MAP
+import core.CommandHandler.SERVICE
+import internal.commands.AbstractCommandModule
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import threads.ThreadCommand
 import threads.ThreadGeneralBehaviour
 import threads.ThreadMentionBehaviour
-import utils.BotUtils
+import utils.BotUtils.BOT_PREFIX
 
 class MessageListener : ListenerAdapter() {
 
@@ -28,11 +29,11 @@ class MessageListener : ListenerAdapter() {
             return
 
         // In those cases there is no command to execute
-        if (!args.first().startsWith(BotUtils.BOT_PREFIX)) {
+        if (!args.first().startsWith(BOT_PREFIX)) {
             if (event.message.mentionedUsers.contains(event.jda.selfUser))
-                CommandHandler.SERVICE.execute(ThreadMentionBehaviour(event))
+                SERVICE.execute(ThreadMentionBehaviour(event))
             else
-                CommandHandler.SERVICE.execute(ThreadGeneralBehaviour(event))
+                SERVICE.execute(ThreadGeneralBehaviour(event))
             return
         }
 
@@ -44,8 +45,8 @@ class MessageListener : ListenerAdapter() {
 
         val commandModule: AbstractCommandModule
         // No specific module found
-        if (CommandHandler.COMMAND_MODULE_MAP.containsKey(args.first())) {
-            commandModule = CommandHandler.COMMAND_MODULE_MAP[args.first()]!!
+        if (COMMAND_MODULE_MAP.containsKey(args.first())) {
+            commandModule = COMMAND_MODULE_MAP[args.first()]!!
             // Module name is not needed anymore
             args.removeAt(0)
         } else {
@@ -62,13 +63,13 @@ class MessageListener : ListenerAdapter() {
 
         // Calling the command
         if (commandModule.commandMap.containsKey(args.first())) {
-            CommandHandler.SERVICE.execute(
+            SERVICE.execute(
                     ThreadCommand(commandModule, commandModule.commandMap[args.first()]!!, event, args.drop(1))
             )
         }
         else if (commandModule is PictureCommandModule) { // Getting image by default if unknown command
-            CommandHandler.SERVICE.execute { PictureCommandModule.getImage(event, args) }
-//            CommandHandler.SERVICE.execute(ThreadPictureDefaultBehaviour(event, argTab))
+            SERVICE.execute { PictureCommandModule.getImage(event, args) }
+//            SERVICE.execute(ThreadPictureDefaultBehaviour(event, argTab))
         }
     }
 
