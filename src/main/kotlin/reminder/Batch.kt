@@ -1,5 +1,6 @@
 package reminder
 
+import com.github.azurapi.azurapikotlin.api.Atago
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 import utils.BotUtils
@@ -17,6 +18,9 @@ class Batch : Job {
 
         // Random status
         BotUtils.randomStatus()
+
+        // Update Azur Lane database
+        Atago.reloadDatabase()
 
         // Birthday
         val l = DBUtils.query("select guildid, userid from member where extract(month from birthday) = " + today.monthValue

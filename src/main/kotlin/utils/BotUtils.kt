@@ -19,9 +19,6 @@ object BotUtils {
     const val PRIMARY_COLOR = 3447003
     const val NB_THREAD = 50
 
-    // Unique instance of Azur Lane API so we avoid building database everytime
-    val azurLaneApi = Atago()
-
     // SECRET ROOM RELATED
     var SRID = java.lang.Long.parseLong("181478842274283520")
 
