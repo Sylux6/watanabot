@@ -29,7 +29,7 @@ dependencies {
     implementation("org.hibernate:hibernate-core:5.4.8.Final")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.60")
     implementation("org.json", "json", "20190722")
-    implementation("com.github.AzurAPI:AzurApi-Kotlin:0.1.0")
+    implementation("com.github.AzurAPI:AzurApi-Kotlin:1.0.0")
 
     testImplementation("io.kotlintest:kotlintest-runner-junit5:$kotlintestVersion")
 }
