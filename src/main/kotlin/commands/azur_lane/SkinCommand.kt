@@ -1,8 +1,9 @@
 package commands.azur_lane
 
-import commands.azur_lane.entities.Ship.Companion.getShipByName
+import com.github.azurapi.azurapikotlin.internal.exceptions.ApiException
 import internal.commands.AbstractCommand
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import utils.BotUtils
 import utils.MessageUtils.sendMessage
 
 object SkinCommand : AbstractCommand("skin", 2) {
@@ -13,16 +14,11 @@ object SkinCommand : AbstractCommand("skin", 2) {
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         try {
-            val index = args.first().toInt()
-            val shipName = args.drop(1).joinToString(" ")
-            val ship = getShipByName(shipName)
-            if (ship == null) {
-                sendMessage(event.channel, "Not found")
-                return
-            }
-            sendMessage(event.channel, ship.skinEmbed(index))
-        } catch (e: Exception) {
-            sendMessage(event.channel, "Internal error, please retry")
+            val ship = BotUtils.azurLaneApi.getShipByName(args.drop(1).joinToString(" "))
+            sendMessage(event.channel, AzurLaneCommandModule.skinEmbed(ship,  args.first().toInt()))
+        } catch (e: ApiException) {
+            sendMessage(event.channel, "Not found")
+            return
         }
     }
 }

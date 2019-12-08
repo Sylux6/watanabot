@@ -1,5 +1,6 @@
 package utils
 
+import com.github.azurapi.azurapikotlin.api.Atago
 import commands.poll.entity.SmashPass
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.*
@@ -14,9 +15,12 @@ object BotUtils {
     var random = Random()
 
     // CONSTANTS
-    const val BOT_PREFIX = "o7"
+    const val BOT_PREFIX = "//"
     const val PRIMARY_COLOR = 3447003
     const val NB_THREAD = 50
+
+    // Unique instance of Azur Lane API so we avoid building database everytime
+    val azurLaneApi = Atago()
 
     // SECRET ROOM RELATED
     var SRID = java.lang.Long.parseLong("181478842274283520")
