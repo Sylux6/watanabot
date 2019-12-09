@@ -112,3 +112,4 @@ gradle-app.setting
 /.idea/modules/watanabot.iml
 /.idea/modules/watanabot.main.iml
 /.idea/modules/watanabot.test.iml
+/.idea/jarRepositories.xml
