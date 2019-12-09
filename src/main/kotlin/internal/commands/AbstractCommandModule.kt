@@ -20,7 +20,7 @@ abstract class AbstractCommandModule(val name: String, val shortName: String, co
 
             override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
                 val message = EmbedBuilder()
-                        .setThumbnail(BotUtils.bot.selfUser.avatarUrl)
+                        .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
                         .setColor(BotUtils.PRIMARY_COLOR)
                         .setTitle("List of commands")
                         .setDescription(moduleDescription)

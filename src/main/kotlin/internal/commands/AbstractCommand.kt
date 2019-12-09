@@ -15,7 +15,7 @@ abstract class AbstractCommand(val name: String, private val minArgs: Int = 0, v
 
     private fun help(commandModule: AbstractCommandModule, channel: MessageChannel) {
         val message = EmbedBuilder()
-                .setThumbnail(BotUtils.bot.selfUser.avatarUrl)
+                .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
                 .setColor(BotUtils.PRIMARY_COLOR)
                 .setTitle("Documentation for `$name`")
                 .addField(
