@@ -50,7 +50,7 @@ object GetCommand : AbstractCommand("get") {
     private fun birthdayEmbedMessage(channel: MessageChannel, member: Member, date: Date) {
         val message = EmbedBuilder()
                 .setColor(PRIMARY_COLOR)
-                .setTitle(member.effectiveName)
+                .setAuthor(member.effectiveName, null, member.user.effectiveAvatarUrl)
                 .setDescription("\uD83C\uDF82 ${dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date))}")
         sendMessage(channel, message.build())
     }
