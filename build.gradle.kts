@@ -22,14 +22,14 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.postgresql", "postgresql", "42.2.2")
-    implementation("net.dv8tion:JDA:4.0.0_60")
-    implementation("com.sedmelluq:lavaplayer:1.3.25")
+    implementation("net.dv8tion:JDA:4.0.0_73")
+    implementation("com.sedmelluq:lavaplayer:1.3.32")
     implementation("net.kodehawa:imageboard-api:2.1")
     implementation("org.quartz-scheduler:quartz:2.3.2")
     implementation("org.hibernate:hibernate-core:5.4.8.Final")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.60")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.json", "json", "20190722")
-    implementation("com.github.AzurAPI:AzurApi-Kotlin:1.0.0")
+    implementation("com.github.AzurAPI:AzurApi-Kotlin:2.0.1")
 
     testImplementation("io.kotlintest:kotlintest-runner-junit5:$kotlintestVersion")
 }
