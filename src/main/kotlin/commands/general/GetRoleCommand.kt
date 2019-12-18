@@ -14,7 +14,7 @@ object GetRoleCommand : AbstractCommand("getrole", 1) {
         get() = "Get list of members with the given role."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        val roleName = args.joinToString("")
+        val roleName = args.joinToString(" ")
         val message = StringBuilder()
         val role: List<Role> = event.guild.getRolesByName(roleName, true)
         if (role.isEmpty()) {
@@ -23,8 +23,8 @@ object GetRoleCommand : AbstractCommand("getrole", 1) {
             return
         }
 
-        val l: List<Member> = event.guild.getMembersWithRoles(role[0])
-        message.append("List of **${roleName}** (**${l.size}**):\n")
+        val l: List<Member> = event.guild.getMembersWithRoles(role.first())
+        message.append("List of **${role.first().name}** (**${l.size}**):\n")
 
         for (u in l)
             message.append("- ${u.user.name}#${u.user.discriminator}\n")
