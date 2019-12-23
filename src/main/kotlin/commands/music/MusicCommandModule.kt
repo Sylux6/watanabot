@@ -13,7 +13,7 @@ object MusicCommandModule : AbstractCommandModule(
         "Music",
         "m",
         setOf(JoinCommand, LeaveCommand, PlayCommand, StopCommand, PauseCommand, ResumeCommand, ShuffleCommand,
-                NextCommand, PlaylisCommand, ClearCommand)
+                NextCommand, PlaylisCommand, ClearCommand, QueueCommand)
 ) {
     override val moduleDescription: String
         get() = "Commands for listening to music."
