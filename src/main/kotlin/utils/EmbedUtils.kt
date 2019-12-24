@@ -33,4 +33,12 @@ object EmbedUtils {
         return embedMessage.build()
     }
 
+    fun buildBotMessage(message: String): MessageEmbed {
+        return EmbedBuilder()
+                .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
+                .setColor(BotUtils.PRIMARY_COLOR)
+                .setDescription(message)
+                .build()
+    }
+
 }

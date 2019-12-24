@@ -22,7 +22,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.postgresql", "postgresql", "42.2.2")
-    implementation("net.dv8tion:JDA:4.0.0_73")
+    implementation("net.dv8tion:JDA:4.1.0_81")
     implementation("com.sedmelluq:lavaplayer:1.3.32")
     implementation("net.kodehawa:imageboard-api:2.1")
     implementation("org.quartz-scheduler:quartz:2.3.2")

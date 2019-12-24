@@ -7,7 +7,7 @@ object GeneralCommandModule : AbstractCommandModule(
         "",
         setOf(AvatarCommand, ChooseCommand, GetRoleCommand, HentaiCommand, JoinEventCommand, LeaveEventCommand,
                 LewdCommand, NyaCommand, RollCommand, SayCommand, ScreenShareCommand, YousolewdCommand,
-                YousoroCommand, ModulesCommand)
+                YousoroCommand, ModulesCommand, ServerIconCommand)
 ) {
     override val moduleDescription: String
         get() = "General commands."

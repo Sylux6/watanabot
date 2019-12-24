@@ -1,12 +1,11 @@
 package core
 
-import core.listeners.GameListener
+import core.listeners.ActivityListener
 import core.listeners.LeaverListener
 import core.listeners.MessageListener
 import core.listeners.ReactionListener
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.entities.Activity
 import reminder.QuartzScheduler
 import utils.BotUtils
 
@@ -24,7 +23,7 @@ object Main {
         BotUtils.bot = JDABuilder(AccountType.BOT).setToken(args[0])
                 .addEventListeners(
                         MessageListener(),
-                        GameListener(),
+                        ActivityListener(),
                         LeaverListener(),
                         ReactionListener()
                 )

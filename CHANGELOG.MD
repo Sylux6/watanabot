@@ -1,6 +1,16 @@
 # Changelog
 
-## v3.0.0
+## 3.1.0
+
+### New features
+
+- Add `icon` command to get server icon
+
+### Bug fixes
+
+- `queue` command in music module is back
+
+## 3.0.0
 
 ### Changes
 
@@ -11,15 +21,11 @@
 
 -  Access to any command documentation by appending `--help` to it.
 
-### Fixes
-
-- `On Live` status on stream status update.
-
 ### Refactor
 
 - Code migration to Kotlin.
 
-## v2.1.0 (2018-10-27)
+## 2.1.0 (2018-10-27)
 
 ### New features
 
@@ -29,8 +35,8 @@
 
 - Better implementation to look for member.
 
-## v2.0.0 (2019-10-19)
+## 2.0.0 (2019-10-19)
 
 - Bot migration to JDA 4.
 
-## v1.0.0
+## 1.0.0
