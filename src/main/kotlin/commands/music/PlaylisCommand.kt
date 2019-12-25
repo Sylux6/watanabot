@@ -19,7 +19,7 @@ object PlaylisCommand : AbstractCommand("playlist") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val embedMessage = EmbedBuilder()
                 .setColor(PRIMARY_COLOR)
-                .setTitle("Playlist")
+                .setAuthor("Playlist")
         val message = StringBuilder()
         val musicManager: GuildMusicManager = getGuildAudioPlayer(event.guild)
         val playlist: List<AudioTrack> = musicManager.scheduler.tracklist
@@ -30,6 +30,7 @@ object PlaylisCommand : AbstractCommand("playlist") {
             }
             message.append("**${index + 1}.** ${track.info.title}\n")
         }
+        embedMessage.setTitle(musicManager.player.playingTrack.info.title)
         embedMessage.setDescription(message.toString())
         sendMessage(event.channel, embedMessage.build())
     }

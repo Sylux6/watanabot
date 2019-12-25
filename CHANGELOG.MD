@@ -2,6 +2,10 @@
 
 ## 3.1.0
 
+### Changes
+
+- `playlist` command shows current song
+
 ### New features
 
 - Add `icon` command to get server icon.

@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.managers.AudioManager
+import utils.BotUtils
 import java.util.*
 
 object MusicCommandModule : AbstractCommandModule(
@@ -53,6 +54,7 @@ object MusicCommandModule : AbstractCommandModule(
     fun embedTrackInfo(track: AudioTrack): MessageEmbed {
         return EmbedBuilder()
                 .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
+                .setColor(BotUtils.PRIMARY_COLOR)
                 .build()
     }
 }
