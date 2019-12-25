@@ -4,11 +4,12 @@
 
 ### New features
 
-- Add `icon` command to get server icon
+- Add `icon` command to get server icon.
 
 ### Bug fixes
 
-- `queue` command in music module is back
+- `queue` command in music module is back.
+- Bug fix on calling a module with no command.
 
 ## 3.0.0
 

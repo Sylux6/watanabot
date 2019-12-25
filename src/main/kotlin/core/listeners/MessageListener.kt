@@ -61,6 +61,10 @@ class MessageListener : ListenerAdapter() {
 //            }
 //        }
 
+        // There is no command
+        if (args.isEmpty()) {
+            return
+        }
         // Calling the command
         if (commandModule.commandMap.containsKey(args.first())) {
             SERVICE.execute(
