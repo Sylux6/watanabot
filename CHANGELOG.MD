@@ -5,6 +5,7 @@
 ### New features
 
 - Add `icon` command to get server icon.
+- Add `now` command to get the title of the current song.
 
 ### Bug fixes
 
