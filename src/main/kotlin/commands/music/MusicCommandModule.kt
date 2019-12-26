@@ -2,15 +2,11 @@ package commands.music
 
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack
-import internal.commands.AbstractCommandModule
 import commands.music.entities.GuildMusicManager
-import net.dv8tion.jda.api.EmbedBuilder
+import internal.commands.AbstractCommandModule
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
-import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.managers.AudioManager
-import utils.BotUtils
 import java.util.*
 
 object MusicCommandModule : AbstractCommandModule(
@@ -49,12 +45,5 @@ object MusicCommandModule : AbstractCommandModule(
     fun isInVoiceChannel(author: Member, audioManager: AudioManager): Boolean {
         return if (author.voiceState!!.channel == null || audioManager.connectedChannel == null) false
         else author.voiceState!!.channel == audioManager.connectedChannel
-    }
-
-    fun embedTrackInfo(track: AudioTrack): MessageEmbed {
-        return EmbedBuilder()
-                .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
-                .setColor(BotUtils.PRIMARY_COLOR)
-                .build()
     }
 }

@@ -30,7 +30,8 @@ object PlaylisCommand : AbstractCommand("playlist") {
             }
             message.append("**${index + 1}.** ${track.info.title}\n")
         }
-        embedMessage.setTitle(musicManager.player.playingTrack.info.title)
+        val track = musicManager.player.playingTrack
+        embedMessage.setTitle(track.info.title, track.info.uri)
         embedMessage.setDescription(message.toString())
         sendMessage(event.channel, embedMessage.build())
     }

@@ -1,7 +1,9 @@
 package commands.music
 
 import internal.commands.AbstractCommand
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import utils.BotUtils
 import utils.EmbedUtils
 import utils.MessageUtils
 
@@ -18,7 +20,12 @@ object NowCommand : AbstractCommand("now") {
             MessageUtils.sendMessage(event.channel, EmbedUtils.buildBotMessage("Nothing is played"))
             return
         }
-        MessageUtils.sendMessage(event.channel, MusicCommandModule.embedTrackInfo(track))
+        val embedTrack = EmbedBuilder()
+                .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
+                .setAuthor("Now playing")
+                .setColor(BotUtils.PRIMARY_COLOR)
+                .build()
+        MessageUtils.sendMessage(event.channel, embedTrack)
     }
 
 }
