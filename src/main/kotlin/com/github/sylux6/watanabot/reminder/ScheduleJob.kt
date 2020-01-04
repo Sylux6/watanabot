@@ -7,7 +7,7 @@ import org.quartz.JobExecutionException
 import com.github.sylux6.watanabot.utils.BotUtils
 import com.github.sylux6.watanabot.utils.MessageUtils
 
-class WatanabeYou() : Job {
+class WatanabeYou : Job {
 
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
@@ -22,7 +22,7 @@ class WatanabeYou() : Job {
     }
 }
 
-class Maia() : Job {
+class Maia : Job {
 
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {

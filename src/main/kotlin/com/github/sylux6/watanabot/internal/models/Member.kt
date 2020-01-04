@@ -38,6 +38,10 @@ class Member {
         return id!!
     }
 
+    fun getUserId(): Long {
+        return userId!!
+    }
+
     fun setId(id: Int?) {
         this.id = id
     }

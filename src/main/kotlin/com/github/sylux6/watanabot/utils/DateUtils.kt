@@ -22,7 +22,7 @@ object DateUtils {
                 }
         )
         if (hasMonth)
-            result.append(" ${day[1]}")
+            result.append(" of ${day[1]}")
         return result.toString()
     }
 }
