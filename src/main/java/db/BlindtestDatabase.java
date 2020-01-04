@@ -4,8 +4,8 @@
 //import java.sql.SQLException;
 //
 //import modules.blindtest.Category;
-//import utils.BotUtils;
-//import utils.DBUtils;
+//import com.github.sylux6.watanabot.utils.BotUtils;
+//import com.github.sylux6.watanabot.utils.DBUtils;
 //
 //public class BlindtestDatabase {
 //

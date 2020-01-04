@@ -17,7 +17,7 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">validate</property>
         <!-- MAPPINGS -->
-        <mapping class="internal.models.Member"/>
-        <mapping class="internal.models.Settings"/>
+        <mapping class="com.github.sylux6.watanabot.internal.models.Member"/>
+        <mapping class="com.github.sylux6.watanabot.internal.models.Settings"/>
     </session-factory>
 </hibernate-configuration>
