@@ -20,7 +20,7 @@
 
 ### Changes
 
-- Change date format to `dd/MM` in birthday commands.
+- Change date format to `dd/MM` in birthday com.github.sylux6.watanabot.commands.
 - Remove `birthday coming` command. Use `birthday month` without argument instead.
 
 ### Enhancements
