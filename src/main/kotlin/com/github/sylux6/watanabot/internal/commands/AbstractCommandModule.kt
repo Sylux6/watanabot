@@ -16,13 +16,13 @@ abstract class AbstractCommandModule(val name: String, val shortName: String, co
         commandMap["--help"] = object : AbstractCommand("help") {
             override val template: String
                 get() = ""
-            override val description = "Get list of com.github.sylux6.watanabot.commands"
+            override val description = "Get list of commands"
 
             override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
                 val message = EmbedBuilder()
                         .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
                         .setColor(BotUtils.PRIMARY_COLOR)
-                        .setTitle("List of com.github.sylux6.watanabot.commands")
+                        .setTitle("List of commands")
                         .setDescription(moduleDescription)
                 for ((commandName, command) in commandMap.toSortedMap()) {
                     if (command.privateAccess && event.guild.idLong != BotUtils.SRID)
