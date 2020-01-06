@@ -2,6 +2,7 @@ package com.github.sylux6.watanabot.utils
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
+import java.awt.Color
 
 object EmbedUtils {
 
@@ -38,6 +39,14 @@ object EmbedUtils {
                 .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
                 .setColor(BotUtils.PRIMARY_COLOR)
                 .setDescription(message)
+                .build()
+    }
+
+    fun buildErrorMessage(error: String): MessageEmbed {
+        return EmbedBuilder()
+                .setTitle("Error")
+                .setColor(Color.RED)
+                .setDescription(error)
                 .build()
     }
 

@@ -35,7 +35,7 @@ object AzurLaneCommandModule : AbstractCommandModule(
                 .addField("Nationality", ship.nationality, true)
                 .addBlankField(true)
                 .addField("Type", ship.hullType, true)
-                .addField("Construction time", ship.buildTime, true)
+                .addField("Construction time", ship.construction?.constructionTime ?: "N/A", true)
                 .addBlankField(true)
                 .build()
     }
