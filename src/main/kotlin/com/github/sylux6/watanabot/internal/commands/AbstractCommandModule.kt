@@ -1,5 +1,6 @@
 package com.github.sylux6.watanabot.internal.commands
 
+import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.BotUtils
@@ -25,10 +26,15 @@ abstract class AbstractCommandModule(val name: String, val shortName: String, co
                         .setTitle("List of commands")
                         .setDescription(moduleDescription)
                 for ((commandName, command) in commandMap.toSortedMap()) {
-                    if (command.privateAccess && event.guild.idLong != BotUtils.SRID)
+                    // Filter some access levels we don't need to check to show documentation
+                    if (!command.levelAccess.filter { it in listOf(CommandLevelAccess.IN_VOICE, CommandLevelAccess.BOT_IN_VOICE) }
+                        .all { checkCommandAccess(event, it) }
+                    ) {
                         continue
-                    if (commandName == "--help")
+                    }
+                    if (commandName == "--help") {
                         continue
+                    }
                     message.addField("`$commandName`", command.description, false)
                 }
                 MessageUtils.sendMessage(event.channel, message.build())

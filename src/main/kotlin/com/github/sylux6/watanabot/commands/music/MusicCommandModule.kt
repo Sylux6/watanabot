@@ -5,15 +5,14 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.github.sylux6.watanabot.commands.music.entities.GuildMusicManager
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
 import net.dv8tion.jda.api.entities.Guild
-import net.dv8tion.jda.api.entities.Member
-import net.dv8tion.jda.api.managers.AudioManager
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.util.*
 
 object MusicCommandModule : AbstractCommandModule(
         "Music",
         "m",
         setOf(JoinCommand, LeaveCommand, PlayCommand, StopCommand, PauseCommand, ResumeCommand, ShuffleCommand,
-                NextCommand, PlaylisCommand, ClearCommand, QueueCommand, NowCommand)
+                NextCommand, PlaylistCommand, ClearCommand, QueueCommand, NowCommand)
 ) {
     override val moduleDescription: String
         get() = "Commands for listening to music."
@@ -29,11 +28,10 @@ object MusicCommandModule : AbstractCommandModule(
     @Synchronized
     fun getGuildAudioPlayer(guild: Guild): GuildMusicManager {
         val guildId = java.lang.Long.parseLong(guild.id)
-        var musicManager: GuildMusicManager? = musicManagers[guildId]
+        var musicManager = musicManagers[guildId]
 
         if (musicManager == null) {
             musicManager = GuildMusicManager(playerManager)
-            musicManager.player.volume = 50
             musicManagers[guildId] = musicManager
         }
 
@@ -42,8 +40,10 @@ object MusicCommandModule : AbstractCommandModule(
         return musicManager
     }
 
-    fun isInVoiceChannel(author: Member, audioManager: AudioManager): Boolean {
-        return if (author.voiceState!!.channel == null || audioManager.connectedChannel == null) false
-        else author.voiceState!!.channel == audioManager.connectedChannel
+    fun isInBotVoiceChannel(event: MessageReceivedEvent): Boolean {
+        val member = event.member!!
+        val audioManager =  event.guild.audioManager
+        return if (member.voiceState!!.channel == null || audioManager.connectedChannel == null) false
+        else member.voiceState!!.channel == audioManager.connectedChannel
     }
 }

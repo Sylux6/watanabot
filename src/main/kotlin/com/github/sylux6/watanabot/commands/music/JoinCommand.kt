@@ -1,6 +1,7 @@
 package com.github.sylux6.watanabot.commands.music
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
+import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 
@@ -15,8 +16,7 @@ object JoinCommand : AbstractCommand("join") {
 
         // Check if bot is not currently in use
         if (audioManager.isConnected || audioManager.isAttemptingToConnect) {
-            sendMessage(event.channel, "I'm already in a voice channel")
-            return
+            throw CommandException("Bot is already in a voice channel")
         }
         audioManager.openAudioConnection(event.member?.voiceState?.channel)
         sendMessage(event.channel, "Ohayousoro!~ (> ᴗ •)ゞ")

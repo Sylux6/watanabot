@@ -5,12 +5,15 @@ import com.github.sylux6.watanabot.commands.picture.PictureCommandModule
 import com.github.sylux6.watanabot.core.CommandHandler.COMMAND_MODULE_MAP
 import com.github.sylux6.watanabot.core.CommandHandler.SERVICE
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
+import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.types.BotMessageType
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import com.github.sylux6.watanabot.threads.ThreadCommand
 import com.github.sylux6.watanabot.threads.ThreadGeneralBehaviour
 import com.github.sylux6.watanabot.threads.ThreadMentionBehaviour
 import com.github.sylux6.watanabot.utils.BotUtils.BOT_PREFIX
+import com.github.sylux6.watanabot.utils.MessageUtils
 
 class MessageListener : ListenerAdapter() {
 
@@ -71,9 +74,19 @@ class MessageListener : ListenerAdapter() {
                     ThreadCommand(commandModule, commandModule.commandMap[args.first()]!!, event, args.drop(1))
             )
         }
-        else if (commandModule is PictureCommandModule) { // Getting image by default if unknown command
-            SERVICE.execute { PictureCommandModule.getImage(event, args) }
-//            SERVICE.execute(ThreadPictureDefaultBehaviour(event, argTab))
+        // Picture module: user doesn't need to give a command to get an image
+        else if (commandModule is PictureCommandModule) {
+            SERVICE.execute {
+                try {
+                    PictureCommandModule.getImage(event, args)
+                } catch (e: CommandException) {
+                    MessageUtils.sendBotMessage(
+                            event.channel,
+                            e.message ?: "Error during ${commandModule.name} command",
+                            BotMessageType.ERROR
+                    )
+                }
+            }
         }
     }
 

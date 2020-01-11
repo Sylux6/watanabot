@@ -1,16 +1,16 @@
 package com.github.sylux6.watanabot.utils
 
+import com.github.sylux6.watanabot.internal.types.BotMessageType
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
-import java.awt.Color
 
 object EmbedUtils {
 
-    fun buildEmbedImageBooru(title: String, url: String, tags: List<String>, imgURL: String): MessageEmbed {
+    fun buildEmbedImageBooru(url: String, title: String, artist: String, imgURL: String): MessageEmbed {
         val embedMessage = EmbedBuilder()
-        embedMessage.setTitle(title, url)
-        embedMessage.setDescription(tags.joinToString(" "))
-        embedMessage.setImage(imgURL)
+                .setTitle(title, url)
+                .setAuthor(artist)
+                .setImage(imgURL)
         return embedMessage.build()
     }
 
@@ -34,20 +34,16 @@ object EmbedUtils {
         return embedMessage.build()
     }
 
-    fun buildBotMessage(message: String): MessageEmbed {
-        return EmbedBuilder()
-                .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
-                .setColor(BotUtils.PRIMARY_COLOR)
+    fun buildBotMessage(message: String, type: BotMessageType = BotMessageType.NORMAL): MessageEmbed {
+        val embed = EmbedBuilder()
+        if (type == BotMessageType.NORMAL) {
+            embed.setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
+        } else {
+            embed.setAuthor(type.display)
+        }
+        return embed
+                .setColor(type.color)
                 .setDescription(message)
                 .build()
     }
-
-    fun buildErrorMessage(error: String): MessageEmbed {
-        return EmbedBuilder()
-                .setTitle("Error")
-                .setColor(Color.RED)
-                .setDescription(error)
-                .build()
-    }
-
 }

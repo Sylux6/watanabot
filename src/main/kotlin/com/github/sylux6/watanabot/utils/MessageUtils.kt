@@ -1,5 +1,6 @@
 package com.github.sylux6.watanabot.utils
 
+import com.github.sylux6.watanabot.internal.types.BotMessageType
 import net.dv8tion.jda.api.MessageBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageChannel
@@ -11,6 +12,10 @@ import java.io.IOException
 import java.net.URL
 
 object MessageUtils {
+
+    fun sendBotMessage(channel: MessageChannel, message: String, type: BotMessageType = BotMessageType.NORMAL) {
+        channel.sendMessage(EmbedUtils.buildBotMessage(message, type)).queue()
+    }
 
     fun sendMessage(channel: MessageChannel, message: String) {
         channel.sendMessage(message).queue()

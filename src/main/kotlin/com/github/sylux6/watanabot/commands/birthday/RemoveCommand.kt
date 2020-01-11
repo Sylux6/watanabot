@@ -5,6 +5,7 @@ import com.github.sylux6.watanabot.internal.models.Member
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.DBUtils.query
 import com.github.sylux6.watanabot.utils.DBUtils.saveOrUpdate
+import com.github.sylux6.watanabot.utils.MessageUtils.sendBotMessage
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessageAt
 
 object RemoveCommand : AbstractCommand("remove") {
@@ -20,6 +21,6 @@ object RemoveCommand : AbstractCommand("remove") {
             member.setId(res[0] as Int)
         }
         saveOrUpdate(member)
-        sendMessageAt(event.channel, event.author, "Your birthday has been removed")
+        sendBotMessage(event.channel, "**${event.member!!.effectiveName}** birthday has been removed")
     }
 }

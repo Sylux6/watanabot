@@ -1,6 +1,7 @@
 package com.github.sylux6.watanabot.commands.birthday
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
+import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
@@ -27,8 +28,7 @@ object MonthCommand : AbstractCommand("month") {
         val month = if (args.isEmpty()) LocalDate.now().monthValue else args[0].toInt()
 
         if (month < 1 || month > 12) {
-            sendMessage(event.channel, "Invalid month")
-            return
+            throw CommandException("Invalid month")
         }
 
         val l = query("select userid, birthday from member where "

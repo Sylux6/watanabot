@@ -1,15 +1,19 @@
 package com.github.sylux6.watanabot.internal.commands
 
 import com.github.sylux6.watanabot.commands.general.GeneralCommandModule
-import com.github.sylux6.watanabot.internal.exceptions.WatanabotException
+import com.github.sylux6.watanabot.commands.music.MusicCommandModule
+import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
+import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.types.BotMessageType
+import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
+import com.github.sylux6.watanabot.utils.BotUtils
+import com.github.sylux6.watanabot.utils.MessageUtils
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.EmbedUtils
-import com.github.sylux6.watanabot.utils.MessageUtils
 
-abstract class AbstractCommand(val name: String, private val minArgs: Int = 0, val privateAccess: Boolean = false) {
+abstract class AbstractCommand(val name: String, private val minArgs: Int = 0,
+                               val levelAccess: List<CommandLevelAccess> = listOf(CommandLevelAccess.ALL)) {
 
     abstract val template: String
 
@@ -32,20 +36,37 @@ abstract class AbstractCommand(val name: String, private val minArgs: Int = 0, v
     }
 
     fun preRunCommand(commandModule: AbstractCommandModule, event: MessageReceivedEvent, args: List<String>) {
-        val hasAccess: Boolean = event.guild.idLong == BotUtils.SRID
         try {
+            for (access in levelAccess) {
+                if (!checkCommandAccess(event, access)) {
+                    throw CommandAccessException(access.info)
+                }
+            }
             when {
-                args.isNotEmpty() && args.last() == "--help" -> if (hasAccess) help(commandModule, event.channel)
-                args.size < minArgs -> if (hasAccess) MessageUtils.sendMessage(
-                        event.channel, "Invalid command, do you need help ? (see documentation with `--help`)")
-                privateAccess -> if (hasAccess) runCommand(event, args)
+                args.isNotEmpty() && args.last() == "--help" -> help(commandModule, event.channel)
+                args.size < minArgs -> throw CommandException("Invalid command, do you need help ? (see documentation with `--help`)")
                 else -> runCommand(event, args)
             }
-        } catch (e: WatanabotException) {
-            MessageUtils.sendMessage(event.channel,
-                    EmbedUtils.buildErrorMessage(e.message ?: "Error during ${commandModule.name} command"))
+        } catch (e: CommandException) {
+            MessageUtils.sendBotMessage(
+                    event.channel,
+                    e.message ?: "Error during ${commandModule.name} command",
+                    BotMessageType.ERROR
+            )
         }
     }
 
     abstract fun runCommand(event: MessageReceivedEvent, args: List<String>): Any
+}
+
+fun checkCommandAccess(event: MessageReceivedEvent, access: CommandLevelAccess): Boolean {
+    return when(access) {
+        CommandLevelAccess.IN_VOICE -> event.member!!.voiceState!!.inVoiceChannel()
+        CommandLevelAccess.IN_VOICE_WITH_BOT -> MusicCommandModule.isInBotVoiceChannel(event)
+        CommandLevelAccess.BOT_IN_VOICE -> event.guild.audioManager.isConnected
+        CommandLevelAccess.ADMIN -> event.member!!.isOwner
+        CommandLevelAccess.OWNER -> event.author == BotUtils.bot.retrieveApplicationInfo().complete().owner
+        CommandLevelAccess.PRIVATE -> event.guild.idLong == BotUtils.SRID
+        else -> true
+    }
 }

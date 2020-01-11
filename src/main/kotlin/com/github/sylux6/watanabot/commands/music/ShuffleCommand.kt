@@ -2,11 +2,12 @@ package com.github.sylux6.watanabot.commands.music
 
 import com.github.sylux6.watanabot.commands.music.MusicCommandModule.getGuildAudioPlayer
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
+import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
+import com.github.sylux6.watanabot.utils.MessageUtils
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 
 
-object ShuffleCommand : AbstractCommand("shuffle") {
+object ShuffleCommand : AbstractCommand("shuffle", levelAccess = listOf(CommandLevelAccess.IN_VOICE_WITH_BOT)) {
     override val template: String
         get() = ""
     override val description: String
@@ -15,6 +16,6 @@ object ShuffleCommand : AbstractCommand("shuffle") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val musicManager = getGuildAudioPlayer(event.guild)
         musicManager.scheduler.shuffle()
-        sendMessage(event.channel, "Playlist has been shuffled")
+        MessageUtils.sendBotMessage(event.channel, "Playlist has been shuffled")
     }
 }

@@ -1,10 +1,10 @@
 package com.github.sylux6.watanabot.commands.picture
 
-import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.commands.picture.PictureCommandModule.getImage
+import com.github.sylux6.watanabot.internal.commands.AbstractCommand
+import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.kodehawa.lib.imageboards.entities.Rating
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 
 object NsfwCommand : AbstractCommand("nsfw", 1) {
     override val template: String
@@ -16,6 +16,6 @@ object NsfwCommand : AbstractCommand("nsfw", 1) {
         if (event.textChannel.isNSFW)
             getImage(event, args, Rating.EXPLICIT)
         else
-            sendMessage(event.channel, "You are not in a NSFW channel. You lewd!")
+            throw CommandException("You are not in a NSFW channel. You lewd!")
     }
 }
