@@ -1,4 +1,5 @@
 package com.github.sylux6.watanabot.internal.exceptions
 
-class CommandException(message: String? = null) : WatanabotException(message) {
-}
+open class CommandException(message: String? = null) : WatanabotException(message)
+
+class CommandAccessException(message: String? = null) : CommandException(message)

@@ -7,7 +7,7 @@ object GeneralCommandModule : AbstractCommandModule(
         "",
         setOf(AvatarCommand, ChooseCommand, GetRoleCommand, HentaiCommand, JoinEventCommand, LeaveEventCommand,
                 LewdCommand, NyaCommand, RollCommand, SayCommand, ScreenShareCommand, YousolewdCommand,
-                YousoroCommand, ModulesCommand, ServerIconCommand)
+                YousoroCommand, ModulesCommand, ServerIconCommand, ShutdownCommand)
 ) {
     override val moduleDescription: String
         get() = "General com.github.sylux6.watanabot.commands."

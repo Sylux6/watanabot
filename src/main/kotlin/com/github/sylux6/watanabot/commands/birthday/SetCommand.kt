@@ -1,7 +1,11 @@
 package com.github.sylux6.watanabot.commands.birthday
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
+import com.github.sylux6.watanabot.internal.commands.checkCommandAccess
+import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
+import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.internal.models.Member
+import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.DBUtils.query
 import com.github.sylux6.watanabot.utils.DBUtils.saveOrUpdate
@@ -27,13 +31,11 @@ object SetCommand : AbstractCommand("set", 1) {
         try {
             // Check if all conditions are met to set another member birthday
             if (args.size > 1) {
-                if (!event.member!!.isOwner) {
-                    MessageUtils.sendMessage(event.channel, EmbedUtils.buildBotMessage("You cannot set a birthday for another member"))
-                    return
+                if (!checkCommandAccess(event, CommandLevelAccess.ADMIN)) {
+                    throw CommandAccessException("You cannot set a birthday for another member")
                 }
                 if (event.guild.getMemberById(args.first()) == null) {
-                    MessageUtils.sendMessage(event.channel, EmbedUtils.buildBotMessage("Cannot find member id"))
-                    return
+                    throw CommandException("Cannot find member id")
                 }
                 date = formatter.parse(args[1])
                 member = Member(args.first().toLong(), event.guild.idLong, date)
@@ -50,11 +52,9 @@ object SetCommand : AbstractCommand("set", 1) {
                     "${event.guild.getMemberById(member.getUserId())!!.effectiveName} birthday is set to the "
                             + dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date)))
         } catch (e: ParseException) {
-            sendMessageAt(event.channel, event.author,
-                    EmbedUtils.buildBotMessage("Cannot get your birthday, please give your birthday following this format: dd/MM"))
+            throw CommandException("Cannot get your birthday, please give your birthday following this format: dd/MM")
         } catch (e: NumberFormatException) {
-            sendMessageAt(event.channel, event.author,
-                    EmbedUtils.buildBotMessage("Cannot parse the member id"))
+            throw CommandException("Cannot parse the member id")
         }
     }
 }

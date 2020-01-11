@@ -2,29 +2,17 @@ package com.github.sylux6.watanabot.commands.music
 
 import com.github.sylux6.watanabot.commands.music.entities.AudioHandler
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
+import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import com.github.sylux6.watanabot.utils.MessageUtils
 
-object QueueCommand : AbstractCommand("queue", 1) {
+object QueueCommand : AbstractCommand("queue", 1, levelAccess = listOf(CommandLevelAccess.IN_VOICE_WITH_BOT)) {
     override val template: String
         get() = "<link>"
     override val description: String
         get() = "Enqueue song from link to the playlist."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        if (!MusicCommandModule.isInVoiceChannel(event.member!!, event.guild.audioManager)) {
-            MessageUtils.sendMessage(event.channel, "You must be in the voice channel")
-            return
-        }
-
         val musicManager = MusicCommandModule.getGuildAudioPlayer(event.guild)
-        val audioManager = event.guild.audioManager
-
-        // Check if bot is in voiceChannel
-        if (!audioManager.isConnected) {
-            MessageUtils.sendMessage(event.channel, "I am not in a voice channel. Please make me join you.")
-            return
-        }
 
         if (args.isEmpty() && musicManager.scheduler.tracklist.size > 1) {
             musicManager.player.startTrack(musicManager.scheduler.tracklist.first(), true)

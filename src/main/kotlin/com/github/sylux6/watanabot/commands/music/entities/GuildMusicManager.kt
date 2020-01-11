@@ -32,5 +32,6 @@ class GuildMusicManager
     init {
         scheduler = TrackScheduler(player)
         player.addListener(scheduler)
+        player.volume = 50
     }
 }
