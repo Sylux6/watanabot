@@ -43,7 +43,7 @@ abstract class AbstractCommand(val name: String, private val minArgs: Int = 0,
                 }
             }
             when {
-                args.isNotEmpty() && args.last() == "--help" -> help(commandModule, event.channel)
+                args.contains("--help") -> help(commandModule, event.channel)
                 args.size < minArgs -> throw CommandException("Invalid command, do you need help ? (see documentation with `--help`)")
                 else -> runCommand(event, args)
             }
