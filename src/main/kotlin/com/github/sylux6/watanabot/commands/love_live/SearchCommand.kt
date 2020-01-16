@@ -4,10 +4,10 @@ import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.CARD
 import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.getCardByID
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import com.github.sylux6.watanabot.utils.BotUtils
 import com.github.sylux6.watanabot.utils.HttpRequest
 import com.github.sylux6.watanabot.utils.JsonUtils
 import com.github.sylux6.watanabot.utils.MessageUtils
+import kotlin.random.Random
 
 object SearchCommand : AbstractCommand("search", 1) {
     override val template: String
@@ -22,7 +22,7 @@ object SearchCommand : AbstractCommand("search", 1) {
             MessageUtils.sendMessage(event.channel, "No results")
             return
         }
-        val c = getCardByID(jsonArray.getInt(BotUtils.random.nextInt(jsonArray.length())), event.author)
+        val c = getCardByID(jsonArray.getInt(Random.nextInt(jsonArray.length())), event.author)
         if (c == null) {
             MessageUtils.sendMessage(event.channel, "${MessageUtils.mentionAt(event.author)} Not found")
             return

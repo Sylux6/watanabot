@@ -10,9 +10,6 @@ object BotUtils {
     // Bot
     lateinit var bot: JDA
 
-    // RNG
-    var random = Random()
-
     // CONSTANTS
     const val BOT_PREFIX = "o7"
     const val PRIMARY_COLOR = 3447003

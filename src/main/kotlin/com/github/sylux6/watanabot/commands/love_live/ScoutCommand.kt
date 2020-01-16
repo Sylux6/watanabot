@@ -6,12 +6,12 @@ import com.github.sylux6.watanabot.commands.love_live.entities.Card
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.json.JSONArray
-import com.github.sylux6.watanabot.utils.BotUtils.random
 import com.github.sylux6.watanabot.utils.HttpRequest
 import com.github.sylux6.watanabot.utils.JsonUtils
 import com.github.sylux6.watanabot.utils.MessageUtils.mentionAt
 import com.github.sylux6.watanabot.utils.MessageUtils.sendFile
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import kotlin.random.Random
 
 object ScoutCommand : AbstractCommand("scout", 1) {
     override val template: String
@@ -20,7 +20,6 @@ object ScoutCommand : AbstractCommand("scout", 1) {
         get() = "Scout an idol from a given unit."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        random.setSeed(System.currentTimeMillis())
         val c: Card?
         val jsonArray: JSONArray
         val unit: String = when (args.first()) {
@@ -32,7 +31,7 @@ object ScoutCommand : AbstractCommand("scout", 1) {
             }
         }
         val rarity: String
-        val roll: Int = random.nextInt(100) + 1
+        val roll: Int = Random.nextInt(100) + 1
 
         // Main unit scouting
         // RNG
@@ -49,7 +48,7 @@ object ScoutCommand : AbstractCommand("scout", 1) {
 
         jsonArray = JsonUtils.stringToJsonArray(
                 HttpRequest.getRequest(CARD_ID_API_URL, "idol_main_unit=$unit", "rarity=$rarity"))
-        c = getCardByID(jsonArray.getInt(random.nextInt(jsonArray.length())), event.author)
+        c = getCardByID(jsonArray.getInt(Random.nextInt(jsonArray.length())), event.author)
 
         if (c == null) {
             sendMessage(event.channel, "${mentionAt(event.author)} Not found")
