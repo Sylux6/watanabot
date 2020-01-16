@@ -22,8 +22,9 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
 
-    implementation("net.dv8tion:JDA:4.1.1_101")
-    implementation("com.sedmelluq:lavaplayer:1.3.33")
+    implementation("net.dv8tion:JDA:4.1.1_105")
+    implementation("com.sedmelluq:lavaplayer:1.3.34")
+    implementation("club.minnced:jda-reactor:1.0.0")
 
     implementation("org.postgresql", "postgresql", "42.2.9")
     implementation("org.hibernate:hibernate-core:5.4.8.Final")
