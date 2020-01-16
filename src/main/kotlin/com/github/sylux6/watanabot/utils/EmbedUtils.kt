@@ -35,7 +35,7 @@ fun buildEmbedImageOnly(title: String, imgURL: String): MessageEmbed {
 fun buildBotMessage(message: String, type: BotMessageType = BotMessageType.NORMAL): MessageEmbed {
     val embed = EmbedBuilder()
     if (type == BotMessageType.NORMAL) {
-        embed.setAuthor(bot.selfUser.name, null, bot.selfUser.effectiveAvatarUrl)
+        embed.setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
     } else {
         embed.setAuthor(type.display)
     }

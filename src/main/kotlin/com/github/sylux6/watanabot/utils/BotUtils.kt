@@ -9,15 +9,14 @@ import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role
 
 // Bot
-lateinit var bot: JDA
+lateinit var jda: JDA
 
 // CONSTANTS
-const val BOT_PREFIX = "o7"
+const val BOT_PREFIX = "//"
 const val PRIMARY_COLOR = 3447003
-const val NB_THREAD = 50
 
-// SECRET ROOM RELATED
-var SRID = java.lang.Long.parseLong("181478842274283520")
+val PRIVATE_SERVER_ID = java.lang.Long.parseLong("181478842274283520")
+val isPrivateServer: (Long) -> (Boolean) = { id: Long -> id == PRIVATE_SERVER_ID }
 
 // Non persistent memory
 // val smashPassInstances = HashMap<String, SmashPass>()
@@ -27,7 +26,7 @@ var SRID = java.lang.Long.parseLong("181478842274283520")
 /////////////////////////////////////////////
 
 fun randomStatus() {
-    bot.presence.setPresence(
+    jda.presence.setPresence(
         listOf(
             Activity.playing("with Chika-chan"), Activity.watching("Chika-chan")
         ).random(), true
@@ -83,8 +82,8 @@ fun getEmote(guild: Guild, name: String, ignoreCase: Boolean): Emote? {
 }
 
 // Returns emoji syntax for message
-fun getEmojiMessage(guild: Guild, name: String): String {
-    val emote = getEmote(guild, name, false) ?: return ""
+fun getEmojiMessage(guild: Guild, name: String): String? {
+    val emote = getEmote(guild, name, false) ?: return null
     return "<:" + name + ":" + emote.id + ">"
 }
 

@@ -2,7 +2,7 @@ package com.github.sylux6.watanabot.reminder
 
 import com.github.azurapi.azurapikotlin.api.Atago
 import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.bot
+import com.github.sylux6.watanabot.utils.jda
 import com.github.sylux6.watanabot.utils.getYousoro
 import com.github.sylux6.watanabot.utils.mentionAt
 import com.github.sylux6.watanabot.utils.query
@@ -23,7 +23,7 @@ class Batch : Job {
     override fun execute(context: JobExecutionContext) {
         val today = LocalDate.now()
         val messageLog = EmbedBuilder()
-            .setAuthor(bot.selfUser.name, null, bot.selfUser.effectiveAvatarUrl)
+            .setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
             .setColor(PRIMARY_COLOR)
             .setTitle("Daily batch ($today)")
 
@@ -53,16 +53,16 @@ class Batch : Job {
                 for ((key, value) in res) {
                     val settings = query("select birthdaychannelid from settings where guildid = $key")
                     val channel =
-                        bot.getGuildById(key.toString())!!.getTextChannelById(settings[0].toString())
+                        jda.getGuildById(key.toString())!!.getTextChannelById(settings[0].toString())
                     if (res.size == 0 || channel == null) {
                         continue
                     }
                     var found = false
                     val wish =
-                        StringBuilder("Happy Birthday ${getYousoro(bot.getGuildById(key.toString())!!)} \uD83C\uDF82\n")
+                        StringBuilder("Happy Birthday ${getYousoro(jda.getGuildById(key.toString())!!)} \uD83C\uDF82\n")
                     for (id in value) {
                         // FIXME: dirty
-                        val user = bot.getUserById(id.toString())
+                        val user = jda.getUserById(id.toString())
                         if (user != null) {
                             found = true
                             wish.append(mentionAt(user))

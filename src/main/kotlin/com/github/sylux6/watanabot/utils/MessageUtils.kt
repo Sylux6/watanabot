@@ -11,6 +11,11 @@ import org.apache.commons.io.FilenameUtils
 import java.io.IOException
 import java.net.URL
 
+val DISCORD_TAG = Regex("\\w+?#\\d{4}")
+val DISCORD_MENTION = Regex("<@\\d{17}>")
+val DISCORD_CHANNEL = Regex("<#{18}>")
+val DISCORD_ROL = Regex("<@&\\d{18}>")
+
 fun sendBotMessage(channel: MessageChannel, message: String, type: BotMessageType = BotMessageType.NORMAL) {
     channel.sendMessage(buildBotMessage(message, type)).queue()
 }
@@ -39,12 +44,17 @@ fun sendMessageAt(channel: MessageChannel, user: User, message: MessageEmbed) {
     channel.sendMessage(mentionAt(user) + " " + message).queue()
 }
 
-fun sendLog(message: String) {
-    bot.getGuildById(SRID)!!.getTextChannelsByName("log", true)[0].sendMessage(message).queue()
+fun sendLog(message: String, type: BotMessageType = BotMessageType.NORMAL) {
+    jda.getGuildById(PRIVATE_SERVER_ID)!!.getTextChannelsByName("log", true)[0].sendMessage(
+        buildBotMessage(
+            message,
+            type
+        )
+    ).queue()
 }
 
 fun sendLog(message: MessageEmbed) {
-    bot.getGuildById(SRID)!!.getTextChannelsByName("log", true)[0].sendMessage(message).queue()
+    jda.getGuildById(PRIVATE_SERVER_ID)!!.getTextChannelsByName("log", true)[0].sendMessage(message).queue()
 }
 
 fun sendFile(channel: MessageChannel, file: ByteArray, attachment: String, message: Message) {
