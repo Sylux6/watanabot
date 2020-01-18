@@ -4,9 +4,8 @@ import com.github.sylux6.watanabot.commands.music.MusicCommandModule.getGuildAud
 import com.github.sylux6.watanabot.commands.music.entities.GuildMusicManager
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
-
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object ClearCommand : AbstractCommand("clear", levelAccess = listOf(CommandLevelAccess.IN_VOICE_WITH_BOT)) {
     override val template: String

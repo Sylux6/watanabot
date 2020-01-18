@@ -2,21 +2,24 @@ package com.github.sylux6.watanabot.commands.birthday
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.utils.BotUtils.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.DBUtils.query
+import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import com.github.sylux6.watanabot.utils.BotUtils.PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.DBUtils.query
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 import java.sql.Timestamp
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
-import java.util.*
+import java.util.ArrayList
+import java.util.Calendar
 import java.util.Calendar.DAY_OF_MONTH
 import java.util.Calendar.getInstance
+import java.util.Date
+import java.util.Locale
 
 object MonthCommand : AbstractCommand("month") {
     override val template: String
@@ -31,8 +34,10 @@ object MonthCommand : AbstractCommand("month") {
             throw CommandException("Invalid month")
         }
 
-        val l = query("select userid, birthday from member where "
-                + "extract(month from birthday) = $month and guildid = ${event.guild.id} order by birthday")
+        val l = query(
+            "select userid, birthday from member where "
+                + "extract(month from birthday) = $month and guildid = ${event.guild.id} order by birthday"
+        )
 
         val result = ArrayList<Pair<Member, Date>>()
         l.forEach { o ->
@@ -46,14 +51,16 @@ object MonthCommand : AbstractCommand("month") {
     }
 
     private fun birthdayInMonthEmbedMessage(channel: MessageChannel, month: Int, members: List<Pair<Member, Date>>) {
-        val group = members.groupBy { member -> kotlin.run {
-            val calendar: Calendar = getInstance()
-            calendar.time = member.second
-            calendar.get(DAY_OF_MONTH)
-        } }
+        val group = members.groupBy { member ->
+            kotlin.run {
+                val calendar: Calendar = getInstance()
+                calendar.time = member.second
+                calendar.get(DAY_OF_MONTH)
+            }
+        }
         val message = EmbedBuilder()
-                .setColor(PRIMARY_COLOR)
-                .setTitle("Birthdays in ${Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH)}")
+            .setColor(PRIMARY_COLOR)
+            .setTitle("Birthdays in ${Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH)}")
         if (group.isEmpty()) {
             message.setDescription("No birthday")
             sendMessage(channel, message.build())
@@ -64,9 +71,9 @@ object MonthCommand : AbstractCommand("month") {
             for (member in groupDay.value)
                 memberList.append("${member.first.effectiveName}\n")
             message.addField(
-                    "\uD83C\uDF82 ${groupDay.key}/${DecimalFormat("00").format(month)}",
-                    memberList.toString(),
-                    false
+                "\uD83C\uDF82 ${groupDay.key}/${DecimalFormat("00").format(month)}",
+                memberList.toString(),
+                false
             )
         }
         sendMessage(channel, message.build())

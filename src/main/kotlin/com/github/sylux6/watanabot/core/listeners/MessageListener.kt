@@ -7,13 +7,13 @@ import com.github.sylux6.watanabot.core.CommandHandler.SERVICE
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.internal.types.BotMessageType
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import net.dv8tion.jda.api.hooks.ListenerAdapter
 import com.github.sylux6.watanabot.threads.ThreadCommand
 import com.github.sylux6.watanabot.threads.ThreadGeneralBehaviour
 import com.github.sylux6.watanabot.threads.ThreadMentionBehaviour
 import com.github.sylux6.watanabot.utils.BotUtils.BOT_PREFIX
 import com.github.sylux6.watanabot.utils.MessageUtils
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import net.dv8tion.jda.api.hooks.ListenerAdapter
 
 class MessageListener : ListenerAdapter() {
 
@@ -24,7 +24,8 @@ class MessageListener : ListenerAdapter() {
             return
 
         // Get all elements of the received message separated by spaces
-        val args: MutableList<String> = mutableListOf(*event.message.contentDisplay.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+        val args: MutableList<String> =
+            mutableListOf(*event.message.contentDisplay.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
 
         // First ensure at least the command and prefix is present, the arg length can
         // be handled by your command func
@@ -71,7 +72,7 @@ class MessageListener : ListenerAdapter() {
         // Calling the command
         if (commandModule.commandMap.containsKey(args.first())) {
             SERVICE.execute(
-                    ThreadCommand(commandModule, commandModule.commandMap[args.first()]!!, event, args.drop(1))
+                ThreadCommand(commandModule, commandModule.commandMap[args.first()]!!, event, args.drop(1))
             )
         }
         // Picture module: user doesn't need to give a command to get an image
@@ -81,13 +82,12 @@ class MessageListener : ListenerAdapter() {
                     PictureCommandModule.getImage(event, args)
                 } catch (e: CommandException) {
                     MessageUtils.sendBotMessage(
-                            event.channel,
-                            e.message ?: "Error during ${commandModule.name} command",
-                            BotMessageType.ERROR
+                        event.channel,
+                        e.message ?: "Error during ${commandModule.name} command",
+                        BotMessageType.ERROR
                     )
                 }
             }
         }
     }
-
 }

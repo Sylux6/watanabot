@@ -17,7 +17,7 @@ class AudioPlayerSendHandler
  * @param audioPlayer
  * Audio player to wrap.
  */
-(private val audioPlayer: AudioPlayer) : AudioSendHandler {
+    (private val audioPlayer: AudioPlayer) : AudioSendHandler {
     private var lastFrame: AudioFrame? = null
 
     override fun canProvide(): Boolean {

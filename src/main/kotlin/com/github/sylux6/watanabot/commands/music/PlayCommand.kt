@@ -23,6 +23,10 @@ object PlayCommand : AbstractCommand("play", levelAccess = listOf(CommandLevelAc
 
         musicManager.player.stopTrack()
         musicManager.scheduler.purgeQueue()
-        playerManager.loadItemOrdered(musicManager, args.first(), AudioHandler(musicManager, event.channel, args.first()))
+        playerManager.loadItemOrdered(
+            musicManager,
+            args.first(),
+            AudioHandler(musicManager, event.channel, args.first())
+        )
     }
 }

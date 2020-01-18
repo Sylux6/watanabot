@@ -1,14 +1,16 @@
 package com.github.sylux6.watanabot.reminder
 
 import com.github.azurapi.azurapikotlin.api.Atago
-import org.quartz.Job
-import org.quartz.JobExecutionContext
 import com.github.sylux6.watanabot.utils.BotUtils
 import com.github.sylux6.watanabot.utils.DBUtils
 import com.github.sylux6.watanabot.utils.MessageUtils
+import org.quartz.Job
+import org.quartz.JobExecutionContext
 import java.math.BigInteger
 import java.time.LocalDate
-import java.util.*
+import java.util.ArrayList
+import java.util.Date
+import java.util.HashMap
 
 class Batch : Job {
 
@@ -23,8 +25,10 @@ class Batch : Job {
         Atago.reloadDatabase()
 
         // Birthday
-        val l = DBUtils.query("select guildid, userid from member where extract(month from birthday) = " + today.monthValue
-                + " and extract(day from birthday) = " + today.dayOfMonth)
+        val l = DBUtils.query(
+            "select guildid, userid from member where extract(month from birthday) = " + today.monthValue
+                + " and extract(day from birthday) = " + today.dayOfMonth
+        )
         if (l.size > 0) {
             val res = HashMap<BigInteger, ArrayList<BigInteger>>()
             // TODO
@@ -44,7 +48,8 @@ class Batch : Job {
                     continue
                 }
                 var found = false
-                val wish = StringBuilder("Happy Birthday ${BotUtils.getYousoro(BotUtils.bot.getGuildById(key.toString())!!)} \uD83C\uDF82\n")
+                val wish =
+                    StringBuilder("Happy Birthday ${BotUtils.getYousoro(BotUtils.bot.getGuildById(key.toString())!!)} \uD83C\uDF82\n")
                 for (id in value) {
                     // FIXME: dirty
                     val user = BotUtils.bot.getUserById(id.toString())

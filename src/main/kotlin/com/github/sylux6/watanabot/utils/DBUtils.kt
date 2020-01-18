@@ -8,7 +8,6 @@ object DBUtils {
     private val registry = StandardServiceRegistryBuilder().configure("hibernate_cfg.xml").build()
     private val sessionFactory = MetadataSources(DBUtils.registry).buildMetadata().buildSessionFactory()
 
-
     fun insert(`object`: Any) {
         val session = sessionFactory.openSession()
 
@@ -19,7 +18,6 @@ object DBUtils {
         } catch (e: Exception) {
             // log
         }
-
     }
 
     fun saveOrUpdate(`object`: Any) {
@@ -32,7 +30,6 @@ object DBUtils {
         } catch (e: Exception) {
             // log
         }
-
     }
 
     fun delete(`object`: Any) {
@@ -45,7 +42,6 @@ object DBUtils {
         } catch (e: Exception) {
             // log
         }
-
     }
 
     fun selectAll(table: Class<*>): List<Any> {
@@ -64,5 +60,4 @@ object DBUtils {
         session.close()
         return result
     }
-
 }

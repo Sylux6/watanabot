@@ -1,7 +1,7 @@
 package com.github.sylux6.watanabot.commands.general
 
-import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.commands.picture.PictureCommandModule.getImage
+import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.kodehawa.lib.imageboards.entities.Rating
 

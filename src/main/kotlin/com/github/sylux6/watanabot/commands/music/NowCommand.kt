@@ -17,11 +17,10 @@ object NowCommand : AbstractCommand("now") {
         val musicManager = MusicCommandModule.getGuildAudioPlayer(event.guild)
         val track = musicManager.player.playingTrack ?: throw CommandException("Nothing is played")
         val embedTrack = EmbedBuilder()
-                .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
-                .setAuthor("Now playing")
-                .setColor(BotUtils.PRIMARY_COLOR)
-                .build()
+            .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
+            .setAuthor("Now playing")
+            .setColor(BotUtils.PRIMARY_COLOR)
+            .build()
         MessageUtils.sendMessage(event.channel, embedTrack)
     }
-
 }

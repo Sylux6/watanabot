@@ -14,8 +14,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-abstract class AbstractCommand(val name: String, private val minArgs: Int = 0,
-                               val levelAccess: List<CommandLevelAccess> = listOf(CommandLevelAccess.ALL)) {
+abstract class AbstractCommand(
+    val name: String, private val minArgs: Int = 0,
+    val levelAccess: List<CommandLevelAccess> = listOf(CommandLevelAccess.ALL)
+) {
 
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -25,17 +27,17 @@ abstract class AbstractCommand(val name: String, private val minArgs: Int = 0,
 
     private fun help(commandModule: AbstractCommandModule, channel: MessageChannel) {
         val message = EmbedBuilder()
-                .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
-                .setColor(BotUtils.PRIMARY_COLOR)
-                .setTitle("Documentation for `$name`")
-                .addField(
-                        "Usage",
-                        "`${BotUtils.BOT_PREFIX} "
-                                + (if (commandModule != GeneralCommandModule) "${commandModule.shortName} " else "")
-                                + "$name $template`",
-                        true
-                )
-                .addField("Description", description, false)
+            .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
+            .setColor(BotUtils.PRIMARY_COLOR)
+            .setTitle("Documentation for `$name`")
+            .addField(
+                "Usage",
+                "`${BotUtils.BOT_PREFIX} "
+                    + (if (commandModule != GeneralCommandModule) "${commandModule.shortName} " else "")
+                    + "$name $template`",
+                true
+            )
+            .addField("Description", description, false)
         MessageUtils.sendMessage(channel, message.build())
     }
 
@@ -53,9 +55,9 @@ abstract class AbstractCommand(val name: String, private val minArgs: Int = 0,
             }
         } catch (e: CommandException) {
             MessageUtils.sendBotMessage(
-                    event.channel,
-                    e.message ?: "Error during ${commandModule.name} command",
-                    BotMessageType.ERROR
+                event.channel,
+                e.message ?: "Error during ${commandModule.name} command",
+                BotMessageType.ERROR
             )
         } catch (e: Exception) {
             // Something unexpected happened
@@ -67,7 +69,7 @@ abstract class AbstractCommand(val name: String, private val minArgs: Int = 0,
 }
 
 fun checkCommandAccess(event: MessageReceivedEvent, access: CommandLevelAccess): Boolean {
-    return when(access) {
+    return when (access) {
         CommandLevelAccess.IN_VOICE -> event.member!!.voiceState!!.inVoiceChannel()
         CommandLevelAccess.IN_VOICE_WITH_BOT -> MusicCommandModule.isInBotVoiceChannel(event)
         CommandLevelAccess.BOT_IN_VOICE -> event.guild.audioManager.isConnected

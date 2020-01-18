@@ -1,13 +1,17 @@
 package com.github.sylux6.watanabot.commands.music.entities
 
+import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.entities.MessageChannel
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 
-class AudioHandler(private val musicManager: GuildMusicManager, private val channel: MessageChannel, private val track: String) : AudioLoadResultHandler {
+class AudioHandler(
+    private val musicManager: GuildMusicManager,
+    private val channel: MessageChannel,
+    private val track: String
+) : AudioLoadResultHandler {
 
     override fun trackLoaded(track: AudioTrack) {
         sendMessage(channel, "Adding to queue ${track.info.title}")
@@ -38,5 +42,4 @@ class AudioHandler(private val musicManager: GuildMusicManager, private val chan
     override fun loadFailed(e: FriendlyException) {
         sendMessage(channel, "Could not play: ${e.message}")
     }
-
 }

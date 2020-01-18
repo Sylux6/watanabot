@@ -3,10 +3,10 @@ package com.github.sylux6.watanabot.commands.love_live
 import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.CARD_ID_API_URL
 import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.getCardByID
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.HttpRequest
 import com.github.sylux6.watanabot.utils.JsonUtils
 import com.github.sylux6.watanabot.utils.MessageUtils
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import kotlin.random.Random
 
 object SearchCommand : AbstractCommand("search", 1) {
@@ -17,7 +17,8 @@ object SearchCommand : AbstractCommand("search", 1) {
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
 
-        val jsonArray = JsonUtils.stringToJsonArray(HttpRequest.getRequest(CARD_ID_API_URL, "search=${args.joinToString(" ")}"))
+        val jsonArray =
+            JsonUtils.stringToJsonArray(HttpRequest.getRequest(CARD_ID_API_URL, "search=${args.joinToString(" ")}"))
         if (jsonArray.isEmpty) {
             MessageUtils.sendMessage(event.channel, "No results")
             return
@@ -28,6 +29,5 @@ object SearchCommand : AbstractCommand("search", 1) {
             return
         }
         MessageUtils.sendFile(event.channel, c.fileImg, "idol.png", c.toEmbedMessage())
-
     }
 }

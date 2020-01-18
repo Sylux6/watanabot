@@ -4,13 +4,13 @@ import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.CARD
 import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.getCardByID
 import com.github.sylux6.watanabot.commands.love_live.entities.Card
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import org.json.JSONArray
 import com.github.sylux6.watanabot.utils.HttpRequest
 import com.github.sylux6.watanabot.utils.JsonUtils
 import com.github.sylux6.watanabot.utils.MessageUtils.mentionAt
 import com.github.sylux6.watanabot.utils.MessageUtils.sendFile
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import org.json.JSONArray
 import kotlin.random.Random
 
 object ScoutCommand : AbstractCommand("scout", 1) {
@@ -47,7 +47,8 @@ object ScoutCommand : AbstractCommand("scout", 1) {
         }
 
         jsonArray = JsonUtils.stringToJsonArray(
-                HttpRequest.getRequest(CARD_ID_API_URL, "idol_main_unit=$unit", "rarity=$rarity"))
+            HttpRequest.getRequest(CARD_ID_API_URL, "idol_main_unit=$unit", "rarity=$rarity")
+        )
         c = getCardByID(jsonArray.getInt(Random.nextInt(jsonArray.length())), event.author)
 
         if (c == null) {

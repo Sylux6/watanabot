@@ -2,11 +2,11 @@ package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.utils.MessageUtils.sendDM
+import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import com.github.sylux6.watanabot.utils.MessageUtils.sendDM
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
 
 object GetRoleCommand : AbstractCommand("getrole", 1) {
     override val template: String

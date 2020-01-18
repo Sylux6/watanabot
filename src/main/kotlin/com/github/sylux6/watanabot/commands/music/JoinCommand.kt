@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.commands.music
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object JoinCommand : AbstractCommand("join") {
     override val template: String

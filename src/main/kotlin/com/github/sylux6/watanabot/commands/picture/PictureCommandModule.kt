@@ -9,9 +9,9 @@ import net.kodehawa.lib.imageboards.DefaultImageBoards.DANBOORU
 import net.kodehawa.lib.imageboards.entities.Rating
 
 object PictureCommandModule : AbstractCommandModule(
-        "Picture",
-        "p",
-        setOf(NsfwCommand, SafeCommand)
+    "Picture",
+    "p",
+    setOf(NsfwCommand, SafeCommand)
 ) {
     override val moduleDescription: String
         get() = "Commands to search for pictures from Danbooru."
@@ -23,11 +23,13 @@ object PictureCommandModule : AbstractCommandModule(
             when {
                 images.isNotEmpty() -> {
                     val image = images.random()
-                    sendMessage(event.channel, EmbedUtils.buildEmbedImageBooru(
+                    sendMessage(
+                        event.channel, EmbedUtils.buildEmbedImageBooru(
                             image.url,
                             image.tag_string_character,
                             image.tag_string_artist,
-                            image.url)
+                            image.url
+                        )
                     )
                 }
                 rating == Rating.EXPLICIT -> // If no explicit image has been found, try again with questionable rating
@@ -39,6 +41,5 @@ object PictureCommandModule : AbstractCommandModule(
         } catch (e: Exception) {
             throw CommandException(e.message)
         }
-
     }
 }

@@ -19,7 +19,9 @@ object QueueCommand : AbstractCommand("queue", 1, levelAccess = listOf(CommandLe
             return
         }
 
-        MusicCommandModule.playerManager.loadItemOrdered(musicManager, args.first(),
-                AudioHandler(musicManager, event.channel, args.first()))
+        MusicCommandModule.playerManager.loadItemOrdered(
+            musicManager, args.first(),
+            AudioHandler(musicManager, event.channel, args.first())
+        )
     }
 }

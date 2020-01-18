@@ -1,8 +1,8 @@
 package com.github.sylux6.watanabot.threads
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.BotUtils
 import com.github.sylux6.watanabot.utils.MessageUtils
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 class ThreadMentionBehaviour(event: MessageReceivedEvent) : ThreadGeneralBehaviour(event) {
 
@@ -14,12 +14,13 @@ class ThreadMentionBehaviour(event: MessageReceivedEvent) : ThreadGeneralBehavio
             MessageUtils.sendMessage(event.channel, answer.append("I'm not lewd!").toString())
         } else {
             if (BotUtils.yousoroEmojiExists(event.guild)) {
-                MessageUtils.sendMessage(event.channel, answer.append(BotUtils.getEmojiMessage(event.guild, "yousoro")).toString())
+                MessageUtils.sendMessage(
+                    event.channel,
+                    answer.append(BotUtils.getEmojiMessage(event.guild, "yousoro")).toString()
+                )
             } else {
                 MessageUtils.sendMessage(event.channel, answer.append("(> ᴗ •)ゞ aaaa").toString())
             }
         }
-
     }
-
 }
