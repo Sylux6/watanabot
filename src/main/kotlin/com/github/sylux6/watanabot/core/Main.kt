@@ -32,7 +32,6 @@ object Main {
         BotUtils.randomStatus()
 
         QuartzScheduler.run()
-
     }
 
 }

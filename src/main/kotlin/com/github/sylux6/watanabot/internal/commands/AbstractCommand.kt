@@ -11,9 +11,13 @@ import com.github.sylux6.watanabot.utils.MessageUtils
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 abstract class AbstractCommand(val name: String, private val minArgs: Int = 0,
                                val levelAccess: List<CommandLevelAccess> = listOf(CommandLevelAccess.ALL)) {
+
+    val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     abstract val template: String
 
@@ -53,6 +57,9 @@ abstract class AbstractCommand(val name: String, private val minArgs: Int = 0,
                     e.message ?: "Error during ${commandModule.name} command",
                     BotMessageType.ERROR
             )
+        } catch (e: Exception) {
+            // Something unexpected happened
+            logger.error(e.message)
         }
     }
 
