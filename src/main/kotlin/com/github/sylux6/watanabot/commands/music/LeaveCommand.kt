@@ -1,10 +1,10 @@
 package com.github.sylux6.watanabot.commands.music
 
-import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.commands.music.MusicCommandModule.getGuildAudioPlayer
+import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object LeaveCommand : AbstractCommand("leave", levelAccess = listOf(CommandLevelAccess.BOT_IN_VOICE)) {
     override val template: String

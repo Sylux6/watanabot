@@ -3,13 +3,11 @@ package com.github.sylux6.watanabot.commands.birthday
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.models.Settings
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import net.dv8tion.jda.api.Permission
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.DBUtils.query
 import com.github.sylux6.watanabot.utils.DBUtils.saveOrUpdate
 import com.github.sylux6.watanabot.utils.MessageUtils.linkTextChannel
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessageAt
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object SetChannelCommand : AbstractCommand("setchannel", 1, listOf(CommandLevelAccess.MOD)) {
     override val template: String
@@ -24,8 +22,10 @@ object SetChannelCommand : AbstractCommand("setchannel", 1, listOf(CommandLevelA
             settings.id = res[0] as Int
         }
         saveOrUpdate(settings)
-        sendMessage(event.channel, "Birthdays will be announced in "
+        sendMessage(
+            event.channel, "Birthdays will be announced in "
                 + linkTextChannel(event.channel)
-                + " (note that I'll check your birthdays everyday on CEST timezone (> ᴗ •)ゞ)")
+                + " (note that I'll check your birthdays everyday on CEST timezone (> ᴗ •)ゞ)"
+        )
     }
 }

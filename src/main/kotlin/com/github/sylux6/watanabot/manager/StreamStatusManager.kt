@@ -1,12 +1,12 @@
 package com.github.sylux6.watanabot.manager
 
+import com.github.sylux6.watanabot.utils.BotUtils
+import com.github.sylux6.watanabot.utils.BotUtils.addRole
+import com.github.sylux6.watanabot.utils.BotUtils.removeRole
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.user.UserActivityStartEvent
-import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.BotUtils.addRole
-import com.github.sylux6.watanabot.utils.BotUtils.removeRole
 
 object StreamStatusManager {
 

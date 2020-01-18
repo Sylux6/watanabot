@@ -1,9 +1,9 @@
 package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.EmbedUtils
 import com.github.sylux6.watanabot.utils.MessageUtils
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object ServerIconCommand : AbstractCommand("icon") {
     override val template: String
@@ -19,5 +19,4 @@ object ServerIconCommand : AbstractCommand("icon") {
         }
         MessageUtils.sendMessage(event.channel, EmbedUtils.buildEmbedImageOnly(event.guild.name, iconUrl))
     }
-
 }

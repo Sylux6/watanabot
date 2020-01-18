@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object ScreenShareCommand : AbstractCommand("screenshare", levelAccess = listOf(CommandLevelAccess.IN_VOICE)) {
     override val template: String
@@ -16,8 +16,10 @@ object ScreenShareCommand : AbstractCommand("screenshare", levelAccess = listOf(
             sendMessage(event.channel, "Please join a voice channel")
             return
         }
-        sendMessage(event.channel,
-                "There you go for screen sharing:\n <https://www.discordapp.com/channels/"
-                        + "${event.guild.id}/${event.member!!.voiceState!!.channel!!.id}>")
+        sendMessage(
+            event.channel,
+            "There you go for screen sharing:\n <https://www.discordapp.com/channels/"
+                + "${event.guild.id}/${event.member!!.voiceState!!.channel!!.id}>"
+        )
     }
 }

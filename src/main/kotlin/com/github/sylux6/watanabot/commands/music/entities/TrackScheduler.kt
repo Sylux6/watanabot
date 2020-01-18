@@ -4,7 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
-import java.util.*
+import java.util.ArrayList
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -17,7 +17,7 @@ class TrackScheduler
  * @param player
  * The audio player this scheduler uses
  */
-(private val player: AudioPlayer) : AudioEventAdapter() {
+    (private val player: AudioPlayer) : AudioEventAdapter() {
     private val queue: BlockingQueue<AudioTrack>
 
     val tracklist: List<AudioTrack>

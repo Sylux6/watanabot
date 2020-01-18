@@ -2,15 +2,15 @@ package com.github.sylux6.watanabot.commands.love_live
 
 import com.github.sylux6.watanabot.commands.love_live.entities.Card
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
-import net.dv8tion.jda.api.entities.User
 import com.github.sylux6.watanabot.utils.HttpRequest
 import com.github.sylux6.watanabot.utils.JsonUtils
+import net.dv8tion.jda.api.entities.User
 import java.io.IOException
 
 object LoveLiveCommandModule : AbstractCommandModule(
-        "Love Live!",
-        "ll",
-        setOf(InfoCommand, ScoutCommand, IdCommand, IdolizedIdCommand, SearchCommand)
+    "Love Live!",
+    "ll",
+    setOf(InfoCommand, ScoutCommand, IdCommand, IdolizedIdCommand, SearchCommand)
 ) {
     override val moduleDescription: String
         get() = "Commands related to Love Live!"
@@ -25,6 +25,5 @@ object LoveLiveCommandModule : AbstractCommandModule(
         } catch (e: IOException) {
             null
         }
-
     }
 }

@@ -1,11 +1,11 @@
 package com.github.sylux6.watanabot.core.listeners
 
 import com.github.sylux6.watanabot.internal.models.Member
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent
-import net.dv8tion.jda.api.hooks.ListenerAdapter
 import com.github.sylux6.watanabot.utils.BotUtils
 import com.github.sylux6.watanabot.utils.DBUtils
 import com.github.sylux6.watanabot.utils.MessageUtils
+import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent
+import net.dv8tion.jda.api.hooks.ListenerAdapter
 
 class LeaverListener : ListenerAdapter() {
 

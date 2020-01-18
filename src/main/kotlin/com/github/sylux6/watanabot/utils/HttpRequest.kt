@@ -16,12 +16,10 @@ object HttpRequest {
             s.append("$`val`&")
 
         val request = Request.Builder()
-                .url(s.toString())
-                .build()
+            .url(s.toString())
+            .build()
 
         val response = client.newCall(request).execute()
         return response.body()!!.string()
     }
-
-
 }

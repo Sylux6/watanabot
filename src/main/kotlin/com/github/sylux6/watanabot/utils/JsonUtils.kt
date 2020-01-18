@@ -20,7 +20,5 @@ object JsonUtils {
         } catch (e: JSONException) {
             return ""
         }
-
     }
-
 }

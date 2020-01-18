@@ -1,16 +1,15 @@
 package com.github.sylux6.watanabot.commands.love_live.entities
 
-import java.awt.Color
-import java.io.IOException
-import java.net.MalformedURLException
-import java.net.URL
-
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.internal.utils.IOUtil
 import org.json.JSONObject
+import java.awt.Color
+import java.io.IOException
+import java.net.MalformedURLException
+import java.net.URL
 
 class Card(json: JSONObject, user: User) {
 
@@ -56,22 +55,27 @@ class Card(json: JSONObject, user: User) {
         else
             this.roundImage = "https:" + json.getString("round_card_image")
         this.roundIdolizedImage = "https:" + json.getString("round_card_idolized_image")
-
     }
 
     fun toEmbedMessage(): Message {
 
         val embed = EmbedBuilder()
-                .setTitle(name)
-                .setImage("attachment://idol.png")
-                .addField("ID", "$id", true)
-                .addField("Rarity", rarity.toString(), true)
-                .addBlankField(true)
-                .addField("Attribute", attribute.toString(), true)
-                .addField("Owner", user, true)
-                .addBlankField(true)
-                .setColor(if (this.attribute === Attribute.COOL) Color(0, 187, 255) else if (this.attribute === Attribute.PURE) Color(0, 187, 68) else Color(238, 27, 143))
-                .build()
+            .setTitle(name)
+            .setImage("attachment://idol.png")
+            .addField("ID", "$id", true)
+            .addField("Rarity", rarity.toString(), true)
+            .addBlankField(true)
+            .addField("Attribute", attribute.toString(), true)
+            .addField("Owner", user, true)
+            .addBlankField(true)
+            .setColor(
+                if (this.attribute === Attribute.COOL) Color(
+                    0,
+                    187,
+                    255
+                ) else if (this.attribute === Attribute.PURE) Color(0, 187, 68) else Color(238, 27, 143)
+            )
+            .build()
         return MessageBuilder(embed).build()
     }
 }

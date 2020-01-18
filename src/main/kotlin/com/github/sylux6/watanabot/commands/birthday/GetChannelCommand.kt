@@ -2,10 +2,10 @@ package com.github.sylux6.watanabot.commands.birthday
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.DBUtils.query
 import com.github.sylux6.watanabot.utils.MessageUtils.linkTextChannel
 import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object GetChannelCommand : AbstractCommand("getchannel") {
     override val template: String

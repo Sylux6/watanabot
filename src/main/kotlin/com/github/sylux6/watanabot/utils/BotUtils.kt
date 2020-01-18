@@ -2,8 +2,13 @@ package com.github.sylux6.watanabot.utils
 
 import com.github.sylux6.watanabot.commands.poll.entity.SmashPass
 import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.entities.*
-import java.util.*
+import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.entities.Emote
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.Role
+import java.util.ArrayList
+import java.util.HashMap
 import kotlin.math.abs
 
 object BotUtils {
@@ -26,8 +31,11 @@ object BotUtils {
     /////////////////////////////////////////////
 
     fun randomStatus() {
-        bot.presence.setPresence(listOf(
-                Activity.playing("with Chika-chan"), Activity.watching("Chika-chan")).random(), true)
+        bot.presence.setPresence(
+            listOf(
+                Activity.playing("with Chika-chan"), Activity.watching("Chika-chan")
+            ).random(), true
+        )
     }
 
     /**
@@ -92,5 +100,4 @@ object BotUtils {
         val emote = getEmote(guild, "yousoro", false) ?: return "(> ᴗ •)ゞ"
         return "<:yousoro:" + emote.id + ">"
     }
-
 }

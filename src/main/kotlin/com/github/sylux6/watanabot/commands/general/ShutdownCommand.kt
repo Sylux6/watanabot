@@ -3,7 +3,6 @@ package com.github.sylux6.watanabot.commands.general
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.EmbedUtils
 import com.github.sylux6.watanabot.utils.MessageUtils
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import kotlin.system.exitProcess

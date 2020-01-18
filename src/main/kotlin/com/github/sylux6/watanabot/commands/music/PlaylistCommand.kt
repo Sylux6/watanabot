@@ -9,7 +9,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
-
 object PlaylistCommand : AbstractCommand("playlist") {
     override val template: String
         get() = ""
@@ -18,8 +17,8 @@ object PlaylistCommand : AbstractCommand("playlist") {
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val embedMessage = EmbedBuilder()
-                .setColor(PRIMARY_COLOR)
-                .setAuthor("Playlist")
+            .setColor(PRIMARY_COLOR)
+            .setAuthor("Playlist")
         val message = StringBuilder()
         val musicManager: GuildMusicManager = getGuildAudioPlayer(event.guild)
         val playlist: List<AudioTrack> = musicManager.scheduler.tracklist

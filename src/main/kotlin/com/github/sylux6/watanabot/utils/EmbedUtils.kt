@@ -8,9 +8,9 @@ object EmbedUtils {
 
     fun buildEmbedImageBooru(url: String, title: String, artist: String, imgURL: String): MessageEmbed {
         val embedMessage = EmbedBuilder()
-                .setTitle(title, url)
-                .setAuthor(artist)
-                .setImage(imgURL)
+            .setTitle(title, url)
+            .setAuthor(artist)
+            .setImage(imgURL)
         return embedMessage.build()
     }
 
@@ -42,8 +42,8 @@ object EmbedUtils {
             embed.setAuthor(type.display)
         }
         return embed
-                .setColor(type.color)
-                .setDescription(message)
-                .build()
+            .setColor(type.color)
+            .setDescription(message)
+            .build()
     }
 }

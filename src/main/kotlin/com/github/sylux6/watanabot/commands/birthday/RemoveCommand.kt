@@ -2,11 +2,10 @@ package com.github.sylux6.watanabot.commands.birthday
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.models.Member
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import com.github.sylux6.watanabot.utils.DBUtils.query
 import com.github.sylux6.watanabot.utils.DBUtils.saveOrUpdate
 import com.github.sylux6.watanabot.utils.MessageUtils.sendBotMessage
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessageAt
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object RemoveCommand : AbstractCommand("remove") {
     override val template: String
