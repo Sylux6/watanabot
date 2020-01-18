@@ -14,8 +14,8 @@ java {
 repositories {
     mavenCentral()
     jcenter()
-    maven(url="https://jitpack.io")
-    maven (url="https://dl.bintray.com/kodehawa/maven")
+    maven("https://jitpack.io")
+    maven ("https://dl.bintray.com/kodehawa/maven")
 }
 
 dependencies {
@@ -53,4 +53,11 @@ tasks.withType<Test> {
     testLogging {
         events("passed", "skipped", "failed")
     }
+}
+
+tasks.create<Delete>("cleanLogs") {
+    group = "log"
+    delete = setOf (
+            "yousolog-error.log", "yousolog-info.log"
+    )
 }
