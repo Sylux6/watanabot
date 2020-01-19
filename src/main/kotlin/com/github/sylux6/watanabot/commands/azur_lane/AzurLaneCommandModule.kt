@@ -29,7 +29,7 @@ object AzurLaneCommandModule : AbstractCommandModule(
             .setTitle(ship.names.en + " (" + ship.names.jp + ")", ship.wikiUrl)
             .setColor(getRarityByName(ship.rarity).colorCode)
             .setThumbnail(ship.thumbnail)
-            .setImage(ship.skins.first().image)
+            .setImage(if (ship.skins.isNotEmpty()) ship.skins.first().image else null)
             .setDescription("ID No. ${ship.id}")
             .addField("Class", ship.shipClass, true)
             .addField("Nationality", ship.nationality, true)

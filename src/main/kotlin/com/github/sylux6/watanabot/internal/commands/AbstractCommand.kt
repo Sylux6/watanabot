@@ -62,6 +62,11 @@ abstract class AbstractCommand(
         } catch (e: Exception) {
             // Something unexpected happened
             logger.error(e.message)
+            MessageUtils.sendBotMessage(
+                event.channel,
+                "$e",
+                BotMessageType.ERROR
+            )
         }
     }
 
