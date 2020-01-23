@@ -24,7 +24,7 @@ object BotUtils {
     var SRID = java.lang.Long.parseLong("181478842274283520")
 
     // Non persistent memory
-    var smashPassInstances = HashMap<String, SmashPass>()
+    val smashPassInstances = HashMap<String, SmashPass>()
 
     /////////////////////////////////////////////
     ////////      FUNCTIONS         /////////////
