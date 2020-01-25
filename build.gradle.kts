@@ -22,7 +22,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
 
-    implementation("net.dv8tion:JDA:4.1.0_95")
+    implementation("net.dv8tion:JDA:4.1.1_101")
     implementation("com.sedmelluq:lavaplayer:1.3.33")
 
     implementation("org.hibernate:hibernate-core:5.4.8.Final")
@@ -32,7 +32,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     implementation("net.kodehawa:imageboard-api:2.1")
-    implementation("com.github.AzurAPI:AzurApi-Kotlin:3.0.0")
+    implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.1")
 
     testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
     testImplementation("io.mockk:mockk:1.9.3")

@@ -7,8 +7,10 @@ class AzurLaneTestCase : CommandsTestCase() {
     init {
 
         "it should get Atago info"{
-            val atago = InfoCommand.runCommand(mockMessageReceivedEvent, listOf("atago"))
-            atago.names.en.shouldBe("Atago")
+            InfoCommand.runCommand(mockMessageReceivedEvent, listOf("atago")).id.shouldBe("201")
+            InfoCommand.runCommand(mockMessageReceivedEvent, listOf("犬")).id.shouldBe("201")
+            InfoCommand.runCommand(mockMessageReceivedEvent, listOf("愛宕")).id.shouldBe("201")
+            InfoCommand.runCommand(mockMessageReceivedEvent, listOf("아타고")).id.shouldBe("201")
         }
     }
 }

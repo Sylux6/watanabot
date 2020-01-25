@@ -45,6 +45,10 @@ object MessageUtils {
         BotUtils.bot.getGuildById(BotUtils.SRID)!!.getTextChannelsByName("log", true)[0].sendMessage(message).queue()
     }
 
+    fun sendLog(message: MessageEmbed) {
+        BotUtils.bot.getGuildById(BotUtils.SRID)!!.getTextChannelsByName("log", true)[0].sendMessage(message).queue()
+    }
+
     fun sendFile(channel: MessageChannel, file: ByteArray, attachment: String, message: Message) {
         channel.sendMessage(message).addFile(file, attachment).queue()
     }
