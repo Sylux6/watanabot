@@ -4,12 +4,13 @@ import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.CARD
 import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.getCardByID
 import com.github.sylux6.watanabot.commands.love_live.entities.Card
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.utils.HttpRequest
-import com.github.sylux6.watanabot.utils.JsonUtils
-import com.github.sylux6.watanabot.utils.MessageUtils.mentionAt
-import com.github.sylux6.watanabot.utils.MessageUtils.sendFile
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import com.github.sylux6.watanabot.utils.getRequest
+import com.github.sylux6.watanabot.utils.mentionAt
+import com.github.sylux6.watanabot.utils.sendFile
+import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.stringToJsonArray
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import okhttp3.OkHttpClient
 import org.json.JSONArray
 import kotlin.random.Random
 
@@ -46,8 +47,9 @@ object ScoutCommand : AbstractCommand("scout", 1) {
             else -> "R"
         }
 
-        jsonArray = JsonUtils.stringToJsonArray(
-            HttpRequest.getRequest(CARD_ID_API_URL, "idol_main_unit=$unit", "rarity=$rarity")
+        val client = OkHttpClient()
+        jsonArray = stringToJsonArray(
+            getRequest(client, CARD_ID_API_URL, "idol_main_unit=$unit", "rarity=$rarity")
         )
         c = getCardByID(jsonArray.getInt(Random.nextInt(jsonArray.length())), event.author)
 

@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.commands.music
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.MessageUtils
+import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
@@ -19,8 +19,8 @@ object NowCommand : AbstractCommand("now") {
         val embedTrack = EmbedBuilder()
             .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
             .setAuthor("Now playing")
-            .setColor(BotUtils.PRIMARY_COLOR)
+            .setColor(PRIMARY_COLOR)
             .build()
-        MessageUtils.sendMessage(event.channel, embedTrack)
+        sendMessage(event.channel, embedTrack)
     }
 }

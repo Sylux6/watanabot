@@ -5,7 +5,7 @@ import com.github.azurapi.azurapikotlin.internal.entities.Ship
 import com.github.azurapi.azurapikotlin.internal.exceptions.ShipNotFoundException
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object ChibiCommand : AbstractCommand("chibi", 1) {

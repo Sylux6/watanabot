@@ -1,6 +1,8 @@
 package com.github.sylux6.watanabot.threads
 
-import com.github.sylux6.watanabot.utils.MessageUtils
+import com.github.sylux6.watanabot.utils.mentionAt
+import com.github.sylux6.watanabot.utils.reactMessage
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 open class ThreadGeneralBehaviour(internal var event: MessageReceivedEvent) : Runnable {
@@ -13,24 +15,24 @@ open class ThreadGeneralBehaviour(internal var event: MessageReceivedEvent) : Ru
         // We don't use else if since we want to match multiple cases
 
         if (message.matches("(.*(?i)yousoro.*)|(.*sylux6Yo.*)".toRegex())) {
-            if (!MessageUtils.reactMessage(event.message, "yousoro")) {
+            if (!reactMessage(event.message, "yousoro")) {
                 // Blue heart
                 event.message.addReaction("\uD83D\uDC99").queue()
             }
         }
 
         when {
-            message.matches("(.*\\W+|)((?i)zensoku+ +zenshi+n+)(\\W+.*|)".toRegex()) -> MessageUtils.sendMessage(
+            message.matches("(.*\\W+|)((?i)zensoku+ +zenshi+n+)(\\W+.*|)".toRegex()) -> sendMessage(
                 event.channel,
                 "YOUSORO!~ (> ᴗ •)ゞ"
             )
-            message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)".toRegex()) -> MessageUtils.sendMessage(
+            message.matches("(.*\\W+|)((?i)best +waifu)(\\W+.*|)".toRegex()) -> sendMessage(
                 event.channel,
                 "わたし？"
             )
-            message.matches("(?i).*hello.*|.*ohayo.*|.*good +morning.*".toRegex()) -> MessageUtils.sendMessage(
+            message.matches("(?i).*hello.*|.*ohayo.*|.*good +morning.*".toRegex()) -> sendMessage(
                 event.channel,
-                MessageUtils.mentionAt(event.author) + " Ohayousoro! (> ᴗ •)ゞ"
+                mentionAt(event.author) + " Ohayousoro! (> ᴗ •)ゞ"
             )
         }
     }

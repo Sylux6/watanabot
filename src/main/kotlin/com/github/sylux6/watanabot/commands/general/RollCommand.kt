@@ -1,9 +1,9 @@
 package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.MessageUtils
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import com.github.sylux6.watanabot.utils.getEmojiMessage
+import com.github.sylux6.watanabot.utils.mentionAt
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import kotlin.random.Random
 
@@ -16,8 +16,8 @@ object RollCommand : AbstractCommand("roll") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         sendMessage(
             event.channel,
-            "${MessageUtils.mentionAt(event.author)} ${Random.nextInt(100) + 1} "
-                + BotUtils.getEmojiMessage(event.guild, "yousoro")
+            "${mentionAt(event.author)} ${Random.nextInt(100) + 1} "
+                + getEmojiMessage(event.guild, "yousoro")
         )
     }
 }

@@ -4,7 +4,7 @@ import com.github.sylux6.watanabot.commands.music.MusicCommandModule.getGuildAud
 import com.github.sylux6.watanabot.commands.music.entities.GuildMusicManager
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object NextCommand : AbstractCommand("next", levelAccess = listOf(CommandLevelAccess.IN_VOICE_WITH_BOT)) {

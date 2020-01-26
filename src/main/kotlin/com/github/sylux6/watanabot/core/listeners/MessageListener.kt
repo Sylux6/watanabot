@@ -10,8 +10,8 @@ import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.threads.ThreadCommand
 import com.github.sylux6.watanabot.threads.ThreadGeneralBehaviour
 import com.github.sylux6.watanabot.threads.ThreadMentionBehaviour
-import com.github.sylux6.watanabot.utils.BotUtils.BOT_PREFIX
-import com.github.sylux6.watanabot.utils.MessageUtils
+import com.github.sylux6.watanabot.utils.BOT_PREFIX
+import com.github.sylux6.watanabot.utils.sendBotMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
@@ -81,7 +81,7 @@ class MessageListener : ListenerAdapter() {
                 try {
                     PictureCommandModule.getImage(event, args)
                 } catch (e: CommandException) {
-                    MessageUtils.sendBotMessage(
+                    sendBotMessage(
                         event.channel,
                         e.message ?: "Error during ${commandModule.name} command",
                         BotMessageType.ERROR

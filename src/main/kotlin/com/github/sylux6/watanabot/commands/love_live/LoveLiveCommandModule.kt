@@ -2,9 +2,10 @@ package com.github.sylux6.watanabot.commands.love_live
 
 import com.github.sylux6.watanabot.commands.love_live.entities.Card
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
-import com.github.sylux6.watanabot.utils.HttpRequest
-import com.github.sylux6.watanabot.utils.JsonUtils
+import com.github.sylux6.watanabot.utils.getRequest
+import com.github.sylux6.watanabot.utils.stringToJsonObject
 import net.dv8tion.jda.api.entities.User
+import okhttp3.OkHttpClient
 import java.io.IOException
 
 object LoveLiveCommandModule : AbstractCommandModule(
@@ -20,7 +21,8 @@ object LoveLiveCommandModule : AbstractCommandModule(
 
     fun getCardByID(id: Int, user: User): Card? {
         return try {
-            val json = JsonUtils.stringToJsonObject(HttpRequest.getRequest("$CARD_API_URL/${Integer.valueOf(id)}"))
+            val client = OkHttpClient()
+            val json = stringToJsonObject(getRequest(client, "$CARD_API_URL/${Integer.valueOf(id)}"))
             if (json.has("detail")) null else Card(json, user)
         } catch (e: IOException) {
             null

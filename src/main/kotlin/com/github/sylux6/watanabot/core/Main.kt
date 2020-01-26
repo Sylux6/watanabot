@@ -5,7 +5,8 @@ import com.github.sylux6.watanabot.core.listeners.LeaverListener
 import com.github.sylux6.watanabot.core.listeners.MessageListener
 import com.github.sylux6.watanabot.core.listeners.ReactionListener
 import com.github.sylux6.watanabot.reminder.QuartzScheduler
-import com.github.sylux6.watanabot.utils.BotUtils
+import com.github.sylux6.watanabot.utils.bot
+import com.github.sylux6.watanabot.utils.randomStatus
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
 
@@ -20,7 +21,7 @@ object Main {
         }
 
         // Building bot
-        BotUtils.bot = JDABuilder(AccountType.BOT).setToken(args[0])
+        bot = JDABuilder(AccountType.BOT).setToken(args[0])
             .addEventListeners(
                 MessageListener(),
                 ActivityListener(),
@@ -29,7 +30,7 @@ object Main {
             )
             .build()
             .awaitReady()
-        BotUtils.randomStatus()
+        randomStatus()
 
         QuartzScheduler.run()
     }

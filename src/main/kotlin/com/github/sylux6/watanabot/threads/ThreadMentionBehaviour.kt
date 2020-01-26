@@ -1,25 +1,27 @@
 package com.github.sylux6.watanabot.threads
 
-import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.MessageUtils
+import com.github.sylux6.watanabot.utils.getEmojiMessage
+import com.github.sylux6.watanabot.utils.mentionAt
+import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.yousoroEmojiExists
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 class ThreadMentionBehaviour(event: MessageReceivedEvent) : ThreadGeneralBehaviour(event) {
 
     override fun run() {
         message = event.message.contentDisplay
-        val answer = StringBuilder(MessageUtils.mentionAt(event.author) + " ")
+        val answer = StringBuilder(mentionAt(event.author) + " ")
 
         if (message.matches(".*(?i)lewd.*".toRegex())) {
-            MessageUtils.sendMessage(event.channel, answer.append("I'm not lewd!").toString())
+            sendMessage(event.channel, answer.append("I'm not lewd!").toString())
         } else {
-            if (BotUtils.yousoroEmojiExists(event.guild)) {
-                MessageUtils.sendMessage(
+            if (yousoroEmojiExists(event.guild)) {
+                sendMessage(
                     event.channel,
-                    answer.append(BotUtils.getEmojiMessage(event.guild, "yousoro")).toString()
+                    answer.append(getEmojiMessage(event.guild, "yousoro")).toString()
                 )
             } else {
-                MessageUtils.sendMessage(event.channel, answer.append("(> ᴗ •)ゞ aaaa").toString())
+                sendMessage(event.channel, answer.append("(> ᴗ •)ゞ aaaa").toString())
             }
         }
     }
