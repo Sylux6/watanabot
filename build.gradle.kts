@@ -32,7 +32,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     implementation("net.kodehawa:imageboard-api:2.1")
-    implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.1")
+    implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.2")
 
     testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
     testImplementation("io.mockk:mockk:1.9.3")
