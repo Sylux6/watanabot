@@ -6,8 +6,12 @@ import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.MessageUtils
+import com.github.sylux6.watanabot.utils.BOT_PREFIX
+import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.SRID
+import com.github.sylux6.watanabot.utils.bot
+import com.github.sylux6.watanabot.utils.sendBotMessage
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -27,18 +31,18 @@ abstract class AbstractCommand(
 
     private fun help(commandModule: AbstractCommandModule, channel: MessageChannel) {
         val message = EmbedBuilder()
-            .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
-            .setColor(BotUtils.PRIMARY_COLOR)
+            .setAuthor(bot.selfUser.name, null, bot.selfUser.effectiveAvatarUrl)
+            .setColor(PRIMARY_COLOR)
             .setTitle("Documentation for `$name`")
             .addField(
                 "Usage",
-                "`${BotUtils.BOT_PREFIX} "
+                "`${BOT_PREFIX} "
                     + (if (commandModule != GeneralCommandModule) "${commandModule.shortName} " else "")
                     + "$name $template`",
                 true
             )
             .addField("Description", description, false)
-        MessageUtils.sendMessage(channel, message.build())
+        sendMessage(channel, message.build())
     }
 
     fun preRunCommand(commandModule: AbstractCommandModule, event: MessageReceivedEvent, args: List<String>) {
@@ -54,7 +58,7 @@ abstract class AbstractCommand(
                 else -> runCommand(event, args)
             }
         } catch (e: CommandException) {
-            MessageUtils.sendBotMessage(
+            sendBotMessage(
                 event.channel,
                 e.message ?: "Error during ${commandModule.name} command",
                 BotMessageType.ERROR
@@ -62,7 +66,7 @@ abstract class AbstractCommand(
         } catch (e: Exception) {
             // Something unexpected happened
             logger.error(e.message)
-            MessageUtils.sendBotMessage(
+            sendBotMessage(
                 event.channel,
                 "$e",
                 BotMessageType.ERROR
@@ -79,8 +83,8 @@ fun checkCommandAccess(event: MessageReceivedEvent, access: CommandLevelAccess):
         CommandLevelAccess.IN_VOICE_WITH_BOT -> MusicCommandModule.isInBotVoiceChannel(event)
         CommandLevelAccess.BOT_IN_VOICE -> event.guild.audioManager.isConnected
         CommandLevelAccess.ADMIN -> event.member!!.isOwner
-        CommandLevelAccess.OWNER -> event.author == BotUtils.bot.retrieveApplicationInfo().complete().owner
-        CommandLevelAccess.PRIVATE -> event.guild.idLong == BotUtils.SRID
+        CommandLevelAccess.OWNER -> event.author == bot.retrieveApplicationInfo().complete().owner
+        CommandLevelAccess.PRIVATE -> event.guild.idLong == SRID
         else -> true
     }
 }

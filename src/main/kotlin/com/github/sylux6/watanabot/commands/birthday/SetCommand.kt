@@ -6,10 +6,10 @@ import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.internal.models.Member
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.DBUtils.query
-import com.github.sylux6.watanabot.utils.DBUtils.saveOrUpdate
-import com.github.sylux6.watanabot.utils.DateUtils.dayFormatter
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessageAt
+import com.github.sylux6.watanabot.utils.dayFormatter
+import com.github.sylux6.watanabot.utils.query
+import com.github.sylux6.watanabot.utils.saveOrUpdate
+import com.github.sylux6.watanabot.utils.sendMessageAt
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.text.ParseException
 import java.text.SimpleDateFormat

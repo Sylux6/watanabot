@@ -1,6 +1,6 @@
 package com.github.sylux6.watanabot.commands.music.entities
 
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import com.github.sylux6.watanabot.utils.sendMessage
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist

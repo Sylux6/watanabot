@@ -4,22 +4,17 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
 
-object HttpRequest {
+@Throws(IOException::class)
+fun getRequest(client: OkHttpClient, url: String, vararg values: String): String {
 
-    private val client = OkHttpClient()
+    val s = StringBuilder("$url?")
+    for (`val` in values)
+        s.append("$`val`&")
 
-    @Throws(IOException::class)
-    fun getRequest(url: String, vararg values: String): String {
+    val request = Request.Builder()
+        .url(s.toString())
+        .build()
 
-        val s = StringBuilder("$url?")
-        for (`val` in values)
-            s.append("$`val`&")
-
-        val request = Request.Builder()
-            .url(s.toString())
-            .build()
-
-        val response = client.newCall(request).execute()
-        return response.body()!!.string()
-    }
+    val response = client.newCall(request).execute()
+    return response.body()!!.string()
 }

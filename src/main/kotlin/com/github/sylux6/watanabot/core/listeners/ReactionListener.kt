@@ -1,6 +1,6 @@
 package com.github.sylux6.watanabot.core.listeners
 
-import com.github.sylux6.watanabot.utils.BotUtils
+import com.github.sylux6.watanabot.utils.bot
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 class ReactionListener : ListenerAdapter() {
 
     override fun onMessageReactionAdd(event: MessageReactionAddEvent) {
-        if (event.user === BotUtils.bot.selfUser) {
+        if (event.user === bot.selfUser) {
             return
         }
 //        if (BotUtils.smashPassInstances.containsKey(event.messageId)) {
@@ -17,7 +17,7 @@ class ReactionListener : ListenerAdapter() {
     }
 
     override fun onMessageReactionRemove(event: MessageReactionRemoveEvent) {
-        if (event.user === BotUtils.bot.selfUser) {
+        if (event.user === bot.selfUser) {
             return
         }
 //        if (BotUtils.smashPassInstances.containsKey(event.messageId)) {

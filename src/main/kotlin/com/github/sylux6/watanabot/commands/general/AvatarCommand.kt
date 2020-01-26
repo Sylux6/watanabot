@@ -1,9 +1,9 @@
 package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.utils.BotUtils.findMember
-import com.github.sylux6.watanabot.utils.EmbedUtils
-import com.github.sylux6.watanabot.utils.MessageUtils.sendMessage
+import com.github.sylux6.watanabot.utils.buildEmbedImageOnly
+import com.github.sylux6.watanabot.utils.findMember
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object AvatarCommand : AbstractCommand("avatar") {
@@ -15,7 +15,7 @@ object AvatarCommand : AbstractCommand("avatar") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         if (args.isEmpty()) {
             sendMessage(
-                event.channel, EmbedUtils.buildEmbedImageOnly(
+                event.channel, buildEmbedImageOnly(
                     event.author.name + "#" + event.author.discriminator,
                     event.author.effectiveAvatarUrl
                 )
@@ -27,7 +27,7 @@ object AvatarCommand : AbstractCommand("avatar") {
 
         if (member != null) {
             sendMessage(
-                event.channel, EmbedUtils.buildEmbedImageOnly(
+                event.channel, buildEmbedImageOnly(
                     member.user.name + "#" + event.author.discriminator,
                     member.user.effectiveAvatarUrl
                 )

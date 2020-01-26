@@ -1,9 +1,14 @@
 package com.github.sylux6.watanabot.reminder
 
 import com.github.azurapi.azurapikotlin.api.Atago
-import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.DBUtils
-import com.github.sylux6.watanabot.utils.MessageUtils
+import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.bot
+import com.github.sylux6.watanabot.utils.getYousoro
+import com.github.sylux6.watanabot.utils.mentionAt
+import com.github.sylux6.watanabot.utils.query
+import com.github.sylux6.watanabot.utils.randomStatus
+import com.github.sylux6.watanabot.utils.sendLog
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import org.quartz.Job
 import org.quartz.JobExecutionContext
@@ -18,19 +23,19 @@ class Batch : Job {
     override fun execute(context: JobExecutionContext) {
         val today = LocalDate.now()
         val messageLog = EmbedBuilder()
-            .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
-            .setColor(BotUtils.PRIMARY_COLOR)
+            .setAuthor(bot.selfUser.name, null, bot.selfUser.effectiveAvatarUrl)
+            .setColor(PRIMARY_COLOR)
             .setTitle("Daily batch ($today)")
 
         // Random status
-        BotUtils.randomStatus()
+        randomStatus()
 
         // Update Azur Lane database
         addJob(messageLog, "Update Azur Lane database") { Atago.reloadDatabase() }
 
         // Birthday
         addJob(messageLog, "Check members' birthday") {
-            val l = DBUtils.query(
+            val l = query(
                 "select guildid, userid from member where extract(month from birthday) = " + today.monthValue
                     + " and extract(day from birthday) = " + today.dayOfMonth
             )
@@ -46,33 +51,33 @@ class Batch : Job {
                     members.add(o[1] as BigInteger)
                 }
                 for ((key, value) in res) {
-                    val settings = DBUtils.query("select birthdaychannelid from settings where guildid = $key")
+                    val settings = query("select birthdaychannelid from settings where guildid = $key")
                     val channel =
-                        BotUtils.bot.getGuildById(key.toString())!!.getTextChannelById(settings[0].toString())
+                        bot.getGuildById(key.toString())!!.getTextChannelById(settings[0].toString())
                     if (res.size == 0 || channel == null) {
                         continue
                     }
                     var found = false
                     val wish =
-                        StringBuilder("Happy Birthday ${BotUtils.getYousoro(BotUtils.bot.getGuildById(key.toString())!!)} \uD83C\uDF82\n")
+                        StringBuilder("Happy Birthday ${getYousoro(bot.getGuildById(key.toString())!!)} \uD83C\uDF82\n")
                     for (id in value) {
                         // FIXME: dirty
-                        val user = BotUtils.bot.getUserById(id.toString())
+                        val user = bot.getUserById(id.toString())
                         if (user != null) {
                             found = true
-                            wish.append(MessageUtils.mentionAt(user))
+                            wish.append(mentionAt(user))
                             wish.append("\n")
                         }
                     }
                     if (found) {
-                        MessageUtils.sendMessage(channel, wish.toString())
+                        sendMessage(channel, wish.toString())
                     }
                 }
             }
         }
 
         // Send log
-        MessageUtils.sendLog(messageLog.build())
+        sendLog(messageLog.build())
     }
 
     private fun addJob(embed: EmbedBuilder, jobTitle: String, job: () -> Unit): EmbedBuilder {

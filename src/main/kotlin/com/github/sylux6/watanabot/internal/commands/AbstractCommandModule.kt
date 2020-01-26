@@ -1,8 +1,9 @@
 package com.github.sylux6.watanabot.internal.commands
 
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.BotUtils
-import com.github.sylux6.watanabot.utils.MessageUtils
+import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.bot
+import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
@@ -23,8 +24,8 @@ abstract class AbstractCommandModule(
 
             override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
                 val message = EmbedBuilder()
-                    .setAuthor(BotUtils.bot.selfUser.name, null, BotUtils.bot.selfUser.effectiveAvatarUrl)
-                    .setColor(BotUtils.PRIMARY_COLOR)
+                    .setAuthor(bot.selfUser.name, null, bot.selfUser.effectiveAvatarUrl)
+                    .setColor(PRIMARY_COLOR)
                     .setTitle("List of commands")
                     .setDescription(moduleDescription)
                 for ((commandName, command) in commandMap.toSortedMap()) {
@@ -44,7 +45,7 @@ abstract class AbstractCommandModule(
                     }
                     message.addField("`$commandName`", command.description, false)
                 }
-                MessageUtils.sendMessage(event.channel, message.build())
+                sendMessage(event.channel, message.build())
             }
         }
         for (command in commands) {
