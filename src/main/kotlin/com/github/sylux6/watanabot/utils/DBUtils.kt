@@ -51,7 +51,7 @@ fun selectAll(table: Class<*>): List<Any> {
     return result
 }
 
-fun query(sql: String): List<Any> {
+fun query(sql: String): List<Any?> {
     val session = sessionFactory.openSession()
     val query = session.createNativeQuery(sql)
     val result = query.resultList

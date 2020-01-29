@@ -31,7 +31,7 @@ object GetCommand : AbstractCommand("get") {
         }
 
         val res = query("select birthday from member where userid = ${member.user.id} and guildid = ${event.guild.id}")
-        if (res.isNotEmpty()) {
+        if (res.isNotEmpty() && res[0] != null) {
             birthdayEmbedMessage(event.channel, member, res[0] as Date)
         } else {
             throw CommandException("**${member.effectiveName}** didn't set a birthday")
