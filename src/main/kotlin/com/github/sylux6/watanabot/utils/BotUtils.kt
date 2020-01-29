@@ -1,13 +1,12 @@
 package com.github.sylux6.watanabot.utils
 
+import info.debatty.java.stringsimilarity.Cosine
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.entities.Emote
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role
-import java.util.ArrayList
-import kotlin.math.abs
 
 // Bot
 lateinit var bot: JDA
@@ -40,31 +39,31 @@ fun randomStatus() {
  *
  * @param guild the guild to look in
  * @param searchText the name to look for
- * @return IUser | null
+ * @return member
  */
 fun findMember(guild: Guild, searchText: String): Member? {
-    val users = guild.members
-    val potential = ArrayList<Member>()
-    var smallestDiffIndex = 0
-    var smallestDiff = -1
-    for (u in users) {
-        val nick = u.effectiveName
-        val username = u.user.name
-        if (nick.equals(searchText, ignoreCase = true) || username.equals(searchText, ignoreCase = true)) {
-            return u
+    val cosine = Cosine()
+    var bestMatch: Pair<Double, Member?> = Pair(0.0, null)
+    for (member in guild.members) {
+        val nickname = member.effectiveName
+        val username = member.user.name
+        if (nickname.equals(searchText, ignoreCase = true) || username.equals(
+                searchText,
+                ignoreCase = true
+            ) || member.user.id == searchText
+        ) {
+            return member
         }
-        if (nick.toLowerCase().contains(searchText) || username.toLowerCase().contains(searchText)) {
-            potential.add(u)
-            val d = abs(nick.length - searchText.length)
-            if (d < smallestDiff || smallestDiff == -1) {
-                smallestDiff = d
-                smallestDiffIndex = potential.size - 1
-            }
+        // Score similarity
+        val scoreUserName: Double = cosine.similarity(username.toLowerCase(), searchText.toLowerCase())
+        val scoreEffectiveName: Double = cosine.similarity(nickname.toLowerCase(), searchText.toLowerCase())
+        bestMatch = when {
+            scoreUserName > bestMatch.first -> Pair(scoreUserName, member)
+            scoreEffectiveName > bestMatch.first -> Pair(scoreEffectiveName, member)
+            else -> bestMatch
         }
     }
-    return if (potential.isNotEmpty()) {
-        potential[smallestDiffIndex]
-    } else null
+    return bestMatch.second
 }
 
 ///////// ROLE FUNCTION ////////

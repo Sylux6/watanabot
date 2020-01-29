@@ -25,11 +25,13 @@ dependencies {
     implementation("net.dv8tion:JDA:4.1.1_101")
     implementation("com.sedmelluq:lavaplayer:1.3.33")
 
+    implementation("org.postgresql", "postgresql", "42.2.9")
     implementation("org.hibernate:hibernate-core:5.4.8.Final")
     implementation("org.quartz-scheduler:quartz:2.3.2")
-    implementation("org.postgresql", "postgresql", "42.2.9")
-    implementation("org.json", "json", "20190722")
+
     implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("org.json", "json", "20190722")
+    implementation("info.debatty", "java-string-similarity", "1.2.1")
 
     implementation("net.kodehawa:imageboard-api:2.1")
     implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.2")
