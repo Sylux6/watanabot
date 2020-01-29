@@ -1,14 +1,14 @@
 package com.github.sylux6.watanabot.reminder
 
 import com.github.azurapi.azurapikotlin.api.Atago
-import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.bot
-import com.github.sylux6.watanabot.utils.getYousoro
-import com.github.sylux6.watanabot.utils.mentionAt
-import com.github.sylux6.watanabot.utils.query
-import com.github.sylux6.watanabot.utils.randomStatus
-import com.github.sylux6.watanabot.utils.sendLog
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.bot.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.bot.bot
+import com.github.sylux6.watanabot.utils.bot.getYousoro
+import com.github.sylux6.watanabot.utils.message.mentionAt
+import com.github.sylux6.watanabot.utils.misc.query
+import com.github.sylux6.watanabot.utils.bot.randomStatus
+import com.github.sylux6.watanabot.utils.message.sendLog
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import org.quartz.Job
 import org.quartz.JobExecutionContext
@@ -51,7 +51,8 @@ class Batch : Job {
                     members.add(o[1] as BigInteger)
                 }
                 for ((key, value) in res) {
-                    val settings = query("select birthdaychannelid from settings where guildid = $key")
+                    val settings =
+                        query("select birthdaychannelid from settings where guildid = $key")
                     val channel =
                         bot.getGuildById(key.toString())!!.getTextChannelById(settings[0].toString())
                     if (res.size == 0 || channel == null) {
@@ -59,7 +60,9 @@ class Batch : Job {
                     }
                     var found = false
                     val wish =
-                        StringBuilder("Happy Birthday ${getYousoro(bot.getGuildById(key.toString())!!)} \uD83C\uDF82\n")
+                        StringBuilder("Happy Birthday ${getYousoro(
+                            bot.getGuildById(key.toString())!!
+                        )} \uD83C\uDF82\n")
                     for (id in value) {
                         // FIXME: dirty
                         val user = bot.getUserById(id.toString())
@@ -70,7 +73,10 @@ class Batch : Job {
                         }
                     }
                     if (found) {
-                        sendMessage(channel, wish.toString())
+                        sendMessage(
+                            channel,
+                            wish.toString()
+                        )
                     }
                 }
             }

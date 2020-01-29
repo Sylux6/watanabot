@@ -1,4 +1,4 @@
-package com.github.sylux6.watanabot.utils
+package com.github.sylux6.watanabot.utils.misc
 
 import org.json.JSONArray
 import org.json.JSONException

@@ -1,4 +1,4 @@
-package com.github.sylux6.watanabot.utils
+package com.github.sylux6.watanabot.utils.message
 
 /**
  * Format a string date returned by SimpleDateFormat

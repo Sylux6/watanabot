@@ -1,8 +1,8 @@
 package com.github.sylux6.watanabot.threads
 
-import com.github.sylux6.watanabot.utils.mentionAt
-import com.github.sylux6.watanabot.utils.reactMessage
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.mentionAt
+import com.github.sylux6.watanabot.utils.message.reactMessage
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 open class ThreadGeneralBehaviour(internal var event: MessageReceivedEvent) : Runnable {

@@ -1,6 +1,6 @@
 package com.github.sylux6.watanabot.commands.music.entities
 
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
@@ -14,7 +14,10 @@ class AudioHandler(
 ) : AudioLoadResultHandler {
 
     override fun trackLoaded(track: AudioTrack) {
-        sendMessage(channel, "Adding to queue ${track.info.title}")
+        sendMessage(
+            channel,
+            "Adding to queue ${track.info.title}"
+        )
         musicManager.scheduler.queue(track)
     }
 
@@ -25,13 +28,19 @@ class AudioHandler(
             // Users picked a track from a playlist: only load this one
             track = playlist.tracks[0]
             musicManager.scheduler.queue(track)
-            sendMessage(channel, "Adding to queue ${track!!.info.title} (first track of playlist ${playlist.name})")
+            sendMessage(
+                channel,
+                "Adding to queue ${track!!.info.title} (first track of playlist ${playlist.name})"
+            )
         } else {
             // Load all the tracks from the playlist
             for (t in playlist.tracks)
                 musicManager.scheduler.queue(t)
 
-            sendMessage(channel, "Adding to queue all tracks from playlist ${playlist.name}")
+            sendMessage(
+                channel,
+                "Adding to queue all tracks from playlist ${playlist.name}"
+            )
         }
     }
 
@@ -40,6 +49,9 @@ class AudioHandler(
     }
 
     override fun loadFailed(e: FriendlyException) {
-        sendMessage(channel, "Could not play: ${e.message}")
+        sendMessage(
+            channel,
+            "Could not play: ${e.message}"
+        )
     }
 }

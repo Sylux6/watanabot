@@ -1,10 +1,10 @@
 package com.github.sylux6.watanabot.reminder
 
-import com.github.sylux6.watanabot.utils.SRID
-import com.github.sylux6.watanabot.utils.bot
-import com.github.sylux6.watanabot.utils.getEmojiMessage
-import com.github.sylux6.watanabot.utils.getYousoro
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.bot.SRID
+import com.github.sylux6.watanabot.utils.bot.bot
+import com.github.sylux6.watanabot.utils.bot.getEmojiMessage
+import com.github.sylux6.watanabot.utils.bot.getYousoro
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import org.quartz.Job
 import org.quartz.JobExecutionContext
@@ -18,8 +18,16 @@ class WatanabeYou : Job {
             .setTitle("Birthday")
             .setDescription(
                 "TODAY IS MY BIRTHDAY! "
-                    + getEmojiMessage(bot.getGuildById(SRID)!!, "poiBuki")
-                    + getYousoro(bot.getGuildById(SRID)!!)
+                    + getEmojiMessage(
+                    bot.getGuildById(
+                        SRID
+                    )!!, "poiBuki"
+                )
+                    + getYousoro(
+                    bot.getGuildById(
+                        SRID
+                    )!!
+                )
             )
             .setImage("https://i.imgur.com/7ODxoKY.png")
             .build()
@@ -40,8 +48,16 @@ class Maia : Job {
             .setTitle("Birthday")
             .setDescription(
                 "TODAY IS MAIA-NEE BIRTHDAY! "
-                    + getEmojiMessage(bot.getGuildById(SRID)!!, "poiBuki")
-                    + getYousoro(bot.getGuildById(SRID)!!)
+                    + getEmojiMessage(
+                    bot.getGuildById(
+                        SRID
+                    )!!, "poiBuki"
+                )
+                    + getYousoro(
+                    bot.getGuildById(
+                        SRID
+                    )!!
+                )
             )
             .setImage("https://i.imgur.com/BWyowqe.png")
             .build()

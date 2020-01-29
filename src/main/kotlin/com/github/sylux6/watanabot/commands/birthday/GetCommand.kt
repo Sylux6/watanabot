@@ -2,11 +2,11 @@ package com.github.sylux6.watanabot.commands.birthday
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.dayFormatter
-import com.github.sylux6.watanabot.utils.findMember
-import com.github.sylux6.watanabot.utils.query
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.bot.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.message.dayFormatter
+import com.github.sylux6.watanabot.utils.bot.findMember
+import com.github.sylux6.watanabot.utils.misc.query
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
@@ -30,7 +30,8 @@ object GetCommand : AbstractCommand("get") {
             findMember(event.guild, username) ?: throw CommandException("Cannot find **${username}** in this server")
         }
 
-        val res = query("select birthday from member where userid = ${member.user.id} and guildid = ${event.guild.id}")
+        val res =
+            query("select birthday from member where userid = ${member.user.id} and guildid = ${event.guild.id}")
         if (res.isNotEmpty() && res[0] != null) {
             birthdayEmbedMessage(event.channel, member, res[0] as Date)
         } else {
@@ -42,7 +43,9 @@ object GetCommand : AbstractCommand("get") {
         val message = EmbedBuilder()
             .setColor(PRIMARY_COLOR)
             .setAuthor(member.effectiveName, null, member.user.effectiveAvatarUrl)
-            .setDescription("\uD83C\uDF82 ${dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date))}")
+            .setDescription("\uD83C\uDF82 ${dayFormatter(
+                SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date)
+            )}")
         sendMessage(channel, message.build())
     }
 }

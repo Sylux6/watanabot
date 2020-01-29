@@ -1,9 +1,9 @@
 package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.utils.buildEmbedImageOnly
-import com.github.sylux6.watanabot.utils.findMember
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.buildEmbedImageOnly
+import com.github.sylux6.watanabot.utils.bot.findMember
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object AvatarCommand : AbstractCommand("avatar") {
@@ -34,6 +34,9 @@ object AvatarCommand : AbstractCommand("avatar") {
             )
             return
         }
-        sendMessage(event.channel, "Cannot find user in the server")
+        sendMessage(
+            event.channel,
+            "Cannot find user in the server"
+        )
     }
 }

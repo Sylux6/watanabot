@@ -1,8 +1,8 @@
 package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.utils.buildEmbedImageOnly
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.buildEmbedImageOnly
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object LewdCommand : AbstractCommand("lewd") {
@@ -12,6 +12,9 @@ object LewdCommand : AbstractCommand("lewd") {
         get() = "I'm not LEWD."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        sendMessage(event.channel, buildEmbedImageOnly("https://i.imgur.com/VGXNX82.jpg"))
+        sendMessage(
+            event.channel,
+            buildEmbedImageOnly("https://i.imgur.com/VGXNX82.jpg")
+        )
     }
 }

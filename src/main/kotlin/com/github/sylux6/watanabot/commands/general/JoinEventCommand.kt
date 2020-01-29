@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.mentionAt
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.mentionAt
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object JoinEventCommand : AbstractCommand("joinevent", levelAccess = listOf(CommandLevelAccess.PRIVATE)) {
@@ -17,7 +17,8 @@ object JoinEventCommand : AbstractCommand("joinevent", levelAccess = listOf(Comm
         if (!event.member!!.roles.contains(eventRole)) {
             event.guild.addRoleToMember(event.member!!, eventRole).queue()
             sendMessage(
-                event.channel, "${mentionAt(event.author)} "
+                event.channel,
+                "${mentionAt(event.author)} "
                     + "${eventRole.name} role added"
             )
         }

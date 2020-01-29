@@ -3,10 +3,10 @@ package com.github.sylux6.watanabot.commands.birthday
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.models.Settings
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.linkTextChannel
-import com.github.sylux6.watanabot.utils.query
-import com.github.sylux6.watanabot.utils.saveOrUpdate
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.linkTextChannel
+import com.github.sylux6.watanabot.utils.misc.query
+import com.github.sylux6.watanabot.utils.misc.saveOrUpdate
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object SetChannelCommand : AbstractCommand("setchannel", 1, listOf(CommandLevelAccess.MOD)) {
@@ -17,7 +17,8 @@ object SetChannelCommand : AbstractCommand("setchannel", 1, listOf(CommandLevelA
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val settings = Settings(event.guild.idLong, event.channel.idLong)
-        val res = query("select id from settings where guildid = ${event.guild.id}")
+        val res =
+            query("select id from settings where guildid = ${event.guild.id}")
         if (res.isNotEmpty()) {
             settings.id = res[0] as Int
         }

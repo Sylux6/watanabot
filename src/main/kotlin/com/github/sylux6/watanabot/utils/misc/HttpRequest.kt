@@ -1,4 +1,4 @@
-package com.github.sylux6.watanabot.utils
+package com.github.sylux6.watanabot.utils.misc
 
 import okhttp3.OkHttpClient
 import okhttp3.Request

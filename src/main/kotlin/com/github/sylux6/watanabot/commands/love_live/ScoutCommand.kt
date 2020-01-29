@@ -4,11 +4,11 @@ import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.CARD
 import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule.getCardByID
 import com.github.sylux6.watanabot.commands.love_live.entities.Card
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.utils.getRequest
-import com.github.sylux6.watanabot.utils.mentionAt
-import com.github.sylux6.watanabot.utils.sendFile
-import com.github.sylux6.watanabot.utils.sendMessage
-import com.github.sylux6.watanabot.utils.stringToJsonArray
+import com.github.sylux6.watanabot.utils.misc.getRequest
+import com.github.sylux6.watanabot.utils.message.mentionAt
+import com.github.sylux6.watanabot.utils.message.sendFile
+import com.github.sylux6.watanabot.utils.message.sendMessage
+import com.github.sylux6.watanabot.utils.misc.stringToJsonArray
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import okhttp3.OkHttpClient
 import org.json.JSONArray
@@ -27,7 +27,10 @@ object ScoutCommand : AbstractCommand("scout", 1) {
             "u's" -> "µ's"
             "aqours" -> "aqours"
             else -> {
-                sendMessage(event.channel, "I don't know this unit")
+                sendMessage(
+                    event.channel,
+                    "I don't know this unit"
+                )
                 return
             }
         }
@@ -49,14 +52,27 @@ object ScoutCommand : AbstractCommand("scout", 1) {
 
         val client = OkHttpClient()
         jsonArray = stringToJsonArray(
-            getRequest(client, CARD_ID_API_URL, "idol_main_unit=$unit", "rarity=$rarity")
+            getRequest(
+                client,
+                CARD_ID_API_URL,
+                "idol_main_unit=$unit",
+                "rarity=$rarity"
+            )
         )
         c = getCardByID(jsonArray.getInt(Random.nextInt(jsonArray.length())), event.author)
 
         if (c == null) {
-            sendMessage(event.channel, "${mentionAt(event.author)} Not found")
+            sendMessage(
+                event.channel,
+                "${mentionAt(event.author)} Not found"
+            )
             return
         }
-        sendFile(event.channel, c.fileImg, "idol.png", c.toEmbedMessage())
+        sendFile(
+            event.channel,
+            c.fileImg,
+            "idol.png",
+            c.toEmbedMessage()
+        )
     }
 }

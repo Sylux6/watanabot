@@ -5,8 +5,8 @@ import com.github.sylux6.watanabot.core.listeners.LeaverListener
 import com.github.sylux6.watanabot.core.listeners.MessageListener
 import com.github.sylux6.watanabot.core.listeners.ReactionListener
 import com.github.sylux6.watanabot.reminder.QuartzScheduler
-import com.github.sylux6.watanabot.utils.bot
-import com.github.sylux6.watanabot.utils.randomStatus
+import com.github.sylux6.watanabot.utils.bot.bot
+import com.github.sylux6.watanabot.utils.bot.randomStatus
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
 

@@ -1,4 +1,4 @@
-package com.github.sylux6.watanabot.utils
+package com.github.sylux6.watanabot.utils.bot
 
 import info.debatty.java.stringsimilarity.Cosine
 import net.dv8tion.jda.api.JDA

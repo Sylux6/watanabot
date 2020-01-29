@@ -1,6 +1,7 @@
-package com.github.sylux6.watanabot.utils
+package com.github.sylux6.watanabot.utils.message
 
 import com.github.sylux6.watanabot.internal.types.BotMessageType
+import com.github.sylux6.watanabot.utils.bot.bot
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
 

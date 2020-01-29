@@ -3,8 +3,8 @@ package com.github.sylux6.watanabot.commands.music
 import com.github.sylux6.watanabot.commands.music.MusicCommandModule.getGuildAudioPlayer
 import com.github.sylux6.watanabot.commands.music.entities.GuildMusicManager
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.bot.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent

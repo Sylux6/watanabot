@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import com.github.sylux6.watanabot.utils.sendDM
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.sendDM
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -29,7 +29,10 @@ object GetRoleCommand : AbstractCommand("getrole", 1) {
             message.append("- ${u.user.name}#${u.user.discriminator}\n")
 
         if (l.size > 10) {
-            sendMessage(event.channel, "List of **$roleName** (**${l.size}**) sent in DM")
+            sendMessage(
+                event.channel,
+                "List of **$roleName** (**${l.size}**) sent in DM"
+            )
             sendDM(event.author, message.toString())
         } else {
             sendMessage(event.channel, message.toString())

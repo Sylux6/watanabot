@@ -1,5 +1,6 @@
-package com.github.sylux6.watanabot.utils
+package com.github.sylux6.watanabot.utils.message
 
+import com.github.sylux6.watanabot.utils.message.dayFormatter
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 

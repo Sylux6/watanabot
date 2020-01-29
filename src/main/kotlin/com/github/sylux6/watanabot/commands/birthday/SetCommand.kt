@@ -6,10 +6,10 @@ import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.internal.models.Member
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.dayFormatter
-import com.github.sylux6.watanabot.utils.query
-import com.github.sylux6.watanabot.utils.saveOrUpdate
-import com.github.sylux6.watanabot.utils.sendMessageAt
+import com.github.sylux6.watanabot.utils.message.dayFormatter
+import com.github.sylux6.watanabot.utils.misc.query
+import com.github.sylux6.watanabot.utils.misc.saveOrUpdate
+import com.github.sylux6.watanabot.utils.message.sendMessageAt
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -50,7 +50,12 @@ object SetCommand : AbstractCommand("set", 1) {
             sendMessageAt(
                 event.channel, event.author,
                 "${event.guild.getMemberById(member.getUserId())!!.effectiveName} birthday is set to the "
-                    + dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date))
+                    + dayFormatter(
+                    SimpleDateFormat(
+                        "dd MMM",
+                        Locale.ENGLISH
+                    ).format(date)
+                )
             )
         } catch (e: ParseException) {
             throw CommandException("Cannot get your birthday, please give your birthday following this format: dd/MM")

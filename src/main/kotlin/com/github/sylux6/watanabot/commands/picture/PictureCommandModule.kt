@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.commands.picture
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import com.github.sylux6.watanabot.utils.buildEmbedImageBooru
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.buildEmbedImageBooru
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.kodehawa.lib.imageboards.DefaultImageBoards.DANBOORU
 import net.kodehawa.lib.imageboards.entities.Rating
@@ -24,7 +24,8 @@ object PictureCommandModule : AbstractCommandModule(
                 images.isNotEmpty() -> {
                     val image = images.random()
                     sendMessage(
-                        event.channel, buildEmbedImageBooru(
+                        event.channel,
+                        buildEmbedImageBooru(
                             image.url,
                             image.tag_string_character,
                             image.tag_string_artist,

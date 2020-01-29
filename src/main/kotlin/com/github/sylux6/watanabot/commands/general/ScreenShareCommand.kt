@@ -2,7 +2,7 @@ package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object ScreenShareCommand : AbstractCommand("screenshare", levelAccess = listOf(CommandLevelAccess.IN_VOICE)) {
@@ -13,7 +13,10 @@ object ScreenShareCommand : AbstractCommand("screenshare", levelAccess = listOf(
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         if (!event.member!!.voiceState!!.inVoiceChannel()) {
-            sendMessage(event.channel, "Please join a voice channel")
+            sendMessage(
+                event.channel,
+                "Please join a voice channel"
+            )
             return
         }
         sendMessage(

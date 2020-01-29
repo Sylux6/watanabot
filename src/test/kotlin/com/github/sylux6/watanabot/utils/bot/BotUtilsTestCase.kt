@@ -1,5 +1,6 @@
-package com.github.sylux6.watanabot.utils
+package com.github.sylux6.watanabot.utils.bot
 
+import com.github.sylux6.watanabot.utils.bot.BOT_PREFIX
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 

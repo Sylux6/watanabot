@@ -10,8 +10,8 @@ import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.threads.ThreadCommand
 import com.github.sylux6.watanabot.threads.ThreadGeneralBehaviour
 import com.github.sylux6.watanabot.threads.ThreadMentionBehaviour
-import com.github.sylux6.watanabot.utils.BOT_PREFIX
-import com.github.sylux6.watanabot.utils.sendBotMessage
+import com.github.sylux6.watanabot.utils.bot.BOT_PREFIX
+import com.github.sylux6.watanabot.utils.message.sendBotMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 

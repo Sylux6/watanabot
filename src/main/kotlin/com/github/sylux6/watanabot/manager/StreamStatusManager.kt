@@ -1,8 +1,8 @@
 package com.github.sylux6.watanabot.manager
 
-import com.github.sylux6.watanabot.utils.SRID
-import com.github.sylux6.watanabot.utils.addRole
-import com.github.sylux6.watanabot.utils.removeRole
+import com.github.sylux6.watanabot.utils.bot.SRID
+import com.github.sylux6.watanabot.utils.bot.addRole
+import com.github.sylux6.watanabot.utils.bot.removeRole
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member

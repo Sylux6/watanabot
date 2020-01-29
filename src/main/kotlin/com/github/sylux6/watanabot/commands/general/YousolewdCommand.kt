@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.commands.general
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.mentionAt
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.mentionAt
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object YousolewdCommand : AbstractCommand("yousolewd", levelAccess = listOf(CommandLevelAccess.PRIVATE)) {
@@ -22,7 +22,10 @@ object YousolewdCommand : AbstractCommand("yousolewd", levelAccess = listOf(Comm
             )
         } else {
             event.guild.removeRoleFromMember(event.member!!, eventRole).queue()
-            sendMessage(event.channel, "${mentionAt(event.author)} you're pure (**Lewd** role removed)")
+            sendMessage(
+                event.channel,
+                "${mentionAt(event.author)} you're pure (**Lewd** role removed)"
+            )
         }
     }
 }

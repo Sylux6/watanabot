@@ -6,7 +6,7 @@ import com.github.sylux6.watanabot.commands.love_live.LoveLiveCommandModule
 import com.github.sylux6.watanabot.commands.music.MusicCommandModule
 import com.github.sylux6.watanabot.commands.picture.PictureCommandModule
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
-import com.github.sylux6.watanabot.utils.NB_THREAD
+import com.github.sylux6.watanabot.utils.bot.NB_THREAD
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

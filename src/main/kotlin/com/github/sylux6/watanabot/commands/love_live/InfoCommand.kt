@@ -2,7 +2,7 @@ package com.github.sylux6.watanabot.commands.love_live
 
 import com.github.sylux6.watanabot.commands.love_live.entities.Idol
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object InfoCommand : AbstractCommand("info", 1) {
@@ -15,7 +15,10 @@ object InfoCommand : AbstractCommand("info", 1) {
         for (idol in Idol.values()) {
             for (term in args) {
                 if ("""(.*(?i)$term.*)""".toRegex().matches(idol.toString())) {
-                    sendMessage(event.channel, idol.toEmbed())
+                    sendMessage(
+                        event.channel,
+                        idol.toEmbed()
+                    )
                     return
                 }
             }

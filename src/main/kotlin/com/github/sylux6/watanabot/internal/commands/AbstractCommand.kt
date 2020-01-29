@@ -6,12 +6,12 @@ import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
-import com.github.sylux6.watanabot.utils.BOT_PREFIX
-import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.SRID
-import com.github.sylux6.watanabot.utils.bot
-import com.github.sylux6.watanabot.utils.sendBotMessage
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.bot.BOT_PREFIX
+import com.github.sylux6.watanabot.utils.bot.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.bot.SRID
+import com.github.sylux6.watanabot.utils.bot.bot
+import com.github.sylux6.watanabot.utils.message.sendBotMessage
+import com.github.sylux6.watanabot.utils.message.sendMessage
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -36,7 +36,7 @@ abstract class AbstractCommand(
             .setTitle("Documentation for `$name`")
             .addField(
                 "Usage",
-                "`${BOT_PREFIX} "
+                "`$BOT_PREFIX "
                     + (if (commandModule != GeneralCommandModule) "${commandModule.shortName} " else "")
                     + "$name $template`",
                 true

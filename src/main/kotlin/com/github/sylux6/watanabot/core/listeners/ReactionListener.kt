@@ -1,6 +1,6 @@
 package com.github.sylux6.watanabot.core.listeners
 
-import com.github.sylux6.watanabot.utils.bot
+import com.github.sylux6.watanabot.utils.bot.bot
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter

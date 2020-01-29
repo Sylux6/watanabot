@@ -1,4 +1,4 @@
-package com.github.sylux6.watanabot.utils
+package com.github.sylux6.watanabot.utils.misc
 
 import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
