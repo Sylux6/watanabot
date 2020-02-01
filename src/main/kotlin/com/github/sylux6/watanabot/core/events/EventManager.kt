@@ -28,7 +28,7 @@ val manager: ReactiveEventManager = createManager {
     isDispose = false
 }
 
-fun initEventReactor() {
+fun initReactiveEventManager() {
     manager.on<MessageReceivedEvent>()
         .filter { !it.message.author.isBot && !it.message.author.isFake }
         .subscribe { onMessageReceivedEvent(it) }

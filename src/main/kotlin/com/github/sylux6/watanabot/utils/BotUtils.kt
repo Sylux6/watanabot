@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.Role
 lateinit var jda: JDA
 
 // CONSTANTS
-const val BOT_PREFIX = "//"
+const val BOT_PREFIX = "o7"
 const val PRIMARY_COLOR = 3447003
 
 val PRIVATE_SERVER_ID = java.lang.Long.parseLong("181478842274283520")
@@ -41,6 +41,12 @@ fun randomStatus() {
  * @return member
  */
 fun findMember(guild: Guild, searchText: String): Member? {
+    if (DISCORD_MENTION.matches(searchText)) {
+        return guild.getMemberById(searchText.drop(2).dropLast(1))
+    }
+    if (DISCORD_TAG.matches(searchText)) {
+        return guild.getMemberByTag(searchText)
+    }
     val cosine = Cosine()
     var bestMatch: Pair<Double, Member?> = Pair(0.0, null)
     for (member in guild.members) {
