@@ -20,7 +20,7 @@ object NowCommand : AbstractCommand("now") {
         val track = musicManager.player.playingTrack ?: throw CommandException("Nothing is played")
         val embedTrack = EmbedBuilder()
             .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
-            .setAuthor("Now playing")
+            .setAuthor("Now playing", null, event.jda.selfUser.effectiveAvatarUrl)
             .setColor(PRIMARY_COLOR)
             .build()
         sendMessage(event.channel, embedTrack)

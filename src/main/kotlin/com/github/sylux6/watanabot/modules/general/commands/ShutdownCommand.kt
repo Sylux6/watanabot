@@ -14,7 +14,7 @@ object ShutdownCommand : AbstractCommand("shutdown", levelAccess = listOf(Comman
         get() = "Shutdown the bot."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>): Any {
-        sendBotMessage(event.channel, "Shutting down bot...")
+        sendBotMessage(event.channel, message = "Shutting down bot...")
         jda.shutdown()
         exitProcess(0)
     }

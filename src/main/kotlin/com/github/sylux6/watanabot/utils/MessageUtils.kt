@@ -16,8 +16,13 @@ val DISCORD_MENTION = Regex("<@\\d{17}>")
 val DISCORD_CHANNEL = Regex("<#{18}>")
 val DISCORD_ROL = Regex("<@&\\d{18}>")
 
-fun sendBotMessage(channel: MessageChannel, message: String, type: BotMessageType = BotMessageType.NORMAL) {
-    channel.sendMessage(buildBotMessage(message, type)).queue()
+fun sendBotMessage(
+    channel: MessageChannel,
+    title: String? = null,
+    message: String,
+    type: BotMessageType = BotMessageType.NORMAL
+) {
+    channel.sendMessage(buildBotMessage(title, message, type)).queue()
 }
 
 fun sendMessage(channel: MessageChannel, message: String) {
@@ -47,8 +52,8 @@ fun sendMessageAt(channel: MessageChannel, user: User, message: MessageEmbed) {
 fun sendLog(message: String, type: BotMessageType = BotMessageType.NORMAL) {
     jda.getGuildById(PRIVATE_SERVER_ID)!!.getTextChannelsByName("log", true)[0].sendMessage(
         buildBotMessage(
-            message,
-            type
+            message = message,
+            type = type
         )
     ).queue()
 }

@@ -1,6 +1,7 @@
 package com.github.sylux6.watanabot.modules.music.entities
 
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.internal.types.BotMessageType
+import com.github.sylux6.watanabot.utils.sendBotMessage
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
@@ -14,7 +15,7 @@ class AudioHandler(
 ) : AudioLoadResultHandler {
 
     override fun trackLoaded(track: AudioTrack) {
-        sendMessage(channel, "Adding to queue ${track.info.title}")
+        sendBotMessage(channel, "Music player", "Adding to queue ${track.info.title}")
         musicManager.scheduler.queue(track)
     }
 
@@ -25,21 +26,25 @@ class AudioHandler(
             // Users picked a track from a playlist: only load this one
             track = playlist.tracks[0]
             musicManager.scheduler.queue(track)
-            sendMessage(channel, "Adding to queue ${track!!.info.title} (first track of playlist ${playlist.name})")
+            sendBotMessage(
+                channel,
+                "Music player",
+                "Adding to queue ${track!!.info.title} (first track of playlist ${playlist.name})"
+            )
         } else {
             // Load all the tracks from the playlist
-            for (t in playlist.tracks)
+            for (t in playlist.tracks) {
                 musicManager.scheduler.queue(t)
-
-            sendMessage(channel, "Adding to queue all tracks from playlist ${playlist.name}")
+            }
+            sendBotMessage(channel, "Music player", "Adding to queue all tracks from playlist ${playlist.name}")
         }
     }
 
     override fun noMatches() {
-        sendMessage(channel, "Nothing found by $track")
+        sendBotMessage(channel, "Music player", "Nothing found by $track", BotMessageType.ERROR)
     }
 
     override fun loadFailed(e: FriendlyException) {
-        sendMessage(channel, "Could not play: ${e.message}")
+        sendBotMessage(channel, "Music player", "Could not play: ${e.message}", BotMessageType.ERROR)
     }
 }
