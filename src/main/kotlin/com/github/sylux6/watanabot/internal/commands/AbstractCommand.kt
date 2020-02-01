@@ -62,16 +62,16 @@ abstract class AbstractCommand(
         } catch (e: CommandException) {
             sendBotMessage(
                 event.channel,
-                e.message ?: "Error during ${commandModule.name} command",
-                BotMessageType.ERROR
+                message = e.message ?: "Error during ${commandModule.name} command",
+                type = BotMessageType.ERROR
             )
         } catch (e: Exception) {
             // Something unexpected happened
             logger.error(e.message)
             sendBotMessage(
                 event.channel,
-                "$e",
-                BotMessageType.ERROR
+                message = "$e",
+                type = BotMessageType.ERROR
             )
         }
     }

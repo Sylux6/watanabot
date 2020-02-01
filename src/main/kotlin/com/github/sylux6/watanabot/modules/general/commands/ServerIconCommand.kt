@@ -15,7 +15,7 @@ object ServerIconCommand : AbstractCommand("icon") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val iconUrl = event.guild.iconUrl
         if (iconUrl == null) {
-            sendMessage(event.channel, buildBotMessage("No icon found"))
+            sendMessage(event.channel, buildBotMessage(message = "No icon found"))
             return
         }
         sendMessage(event.channel, buildEmbedImageOnly(event.guild.name, iconUrl))

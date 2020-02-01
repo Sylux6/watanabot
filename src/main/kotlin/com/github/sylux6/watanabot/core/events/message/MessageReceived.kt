@@ -42,8 +42,8 @@ fun onMessageReceivedEvent(event: MessageReceivedEvent) {
             } catch (e: CommandException) {
                 sendBotMessage(
                     event.channel,
-                    e.message ?: "Error during ${selectedModule.name} command",
-                    BotMessageType.ERROR
+                    message = e.message ?: "Error during ${selectedModule.name} command",
+                    type = BotMessageType.ERROR
                 )
             }
         else -> selectedModule.commandMap[args.getOrNull(2)]?.preRunCommand(selectedModule, event, args.drop(3))

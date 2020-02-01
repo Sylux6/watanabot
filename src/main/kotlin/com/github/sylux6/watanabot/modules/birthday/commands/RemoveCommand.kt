@@ -20,6 +20,6 @@ object RemoveCommand : AbstractCommand("remove") {
             member.setId(res[0] as Int)
         }
         saveOrUpdate(member)
-        sendBotMessage(event.channel, "**${event.member!!.effectiveName}** birthday has been removed")
+        sendBotMessage(event.channel, message = "**${event.member!!.effectiveName}** birthday has been removed")
     }
 }

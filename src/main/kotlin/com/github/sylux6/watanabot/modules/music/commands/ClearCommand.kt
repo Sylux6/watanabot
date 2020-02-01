@@ -4,7 +4,7 @@ import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.modules.music.MusicCommandModule.getGuildAudioPlayer
 import com.github.sylux6.watanabot.modules.music.entities.GuildMusicManager
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.sendBotMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object ClearCommand : AbstractCommand("clear", levelAccess = listOf(CommandLevelAccess.IN_VOICE_WITH_BOT)) {
@@ -16,6 +16,6 @@ object ClearCommand : AbstractCommand("clear", levelAccess = listOf(CommandLevel
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val musicManager: GuildMusicManager = getGuildAudioPlayer(event.guild)
         musicManager.scheduler.purgeQueue()
-        sendMessage(event.channel, "Playlist has been cleared")
+        sendBotMessage(event.channel, "Music player", "Playlist has been cleared")
     }
 }

@@ -4,7 +4,7 @@ import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.modules.music.MusicCommandModule.getGuildAudioPlayer
 import com.github.sylux6.watanabot.modules.music.entities.GuildMusicManager
-import com.github.sylux6.watanabot.utils.sendMessage
+import com.github.sylux6.watanabot.utils.sendBotMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object NextCommand : AbstractCommand("next", levelAccess = listOf(CommandLevelAccess.IN_VOICE_WITH_BOT)) {
@@ -16,6 +16,10 @@ object NextCommand : AbstractCommand("next", levelAccess = listOf(CommandLevelAc
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val musicManager: GuildMusicManager = getGuildAudioPlayer(event.guild)
         musicManager.scheduler.nextTrack()
-        sendMessage(event.channel, "Playing next track: ${musicManager.player.playingTrack.info.title}")
+        sendBotMessage(
+            event.channel,
+            "Music player",
+            "Playing next track: ${musicManager.player.playingTrack.info.title}"
+        )
     }
 }

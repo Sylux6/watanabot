@@ -18,7 +18,7 @@ object PlaylistCommand : AbstractCommand("playlist") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val embedMessage = EmbedBuilder()
             .setColor(PRIMARY_COLOR)
-            .setAuthor("Playlist")
+            .setAuthor("Playlist", null, event.jda.selfUser.effectiveAvatarUrl)
         val message = StringBuilder()
         val musicManager: GuildMusicManager = getGuildAudioPlayer(event.guild)
         val playlist: List<AudioTrack> = musicManager.scheduler.tracklist

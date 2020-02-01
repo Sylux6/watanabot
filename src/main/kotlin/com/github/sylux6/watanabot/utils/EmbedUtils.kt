@@ -32,12 +32,16 @@ fun buildEmbedImageOnly(title: String, imgURL: String): MessageEmbed {
     return embedMessage.build()
 }
 
-fun buildBotMessage(message: String, type: BotMessageType = BotMessageType.NORMAL): MessageEmbed {
+fun buildBotMessage(
+    title: String? = null,
+    message: String,
+    type: BotMessageType = BotMessageType.NORMAL
+): MessageEmbed {
     val embed = EmbedBuilder()
     if (type == BotMessageType.NORMAL) {
-        embed.setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
+        embed.setAuthor(title ?: jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
     } else {
-        embed.setAuthor(type.display)
+        embed.setAuthor(title ?: type.display)
     }
     return embed
         .setColor(type.color)
