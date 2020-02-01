@@ -13,7 +13,10 @@ import net.kodehawa.lib.imageboards.entities.Rating
 object PictureCommandModule : AbstractCommandModule(
     "Picture",
     "p",
-    setOf(NsfwCommand, SafeCommand)
+    setOf(
+        NsfwCommand,
+        SafeCommand
+    )
 ) {
     override val moduleDescription: String
         get() = "Commands to search for pictures from Danbooru."

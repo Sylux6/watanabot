@@ -25,11 +25,17 @@ object MusicCommandModule : AbstractCommandModule(
     "m",
     setOf(
         JoinCommand,
-        LeaveCommand, PlayCommand, StopCommand,
+        LeaveCommand,
+        PlayCommand,
+        StopCommand,
         PauseCommand,
-        ResumeCommand, ShuffleCommand,
-        NextCommand, PlaylistCommand,
-        ClearCommand, QueueCommand, NowCommand
+        ResumeCommand,
+        ShuffleCommand,
+        NextCommand,
+        PlaylistCommand,
+        ClearCommand,
+        QueueCommand,
+        NowCommand
     )
 ) {
     override val moduleDescription: String

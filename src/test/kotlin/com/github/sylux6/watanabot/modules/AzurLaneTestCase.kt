@@ -5,7 +5,7 @@ import io.kotlintest.shouldBe
 
 class AzurLaneTestCase : CommandsTestCase() {
     init {
-        "it should get Atago info" {
+        "should get Atago info" {
             InfoCommand.runCommand(mockMessageReceivedEvent, listOf("atago")).id.shouldBe("201")
             InfoCommand.runCommand(mockMessageReceivedEvent, listOf("犬")).id.shouldBe("201")
             InfoCommand.runCommand(mockMessageReceivedEvent, listOf("愛宕")).id.shouldBe("201")

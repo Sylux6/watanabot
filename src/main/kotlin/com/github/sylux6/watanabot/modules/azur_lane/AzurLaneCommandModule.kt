@@ -14,7 +14,8 @@ object AzurLaneCommandModule : AbstractCommandModule(
     "Azur Lane",
     "al",
     setOf(
-        InfoCommand, SkinsCommand,
+        InfoCommand,
+        SkinsCommand,
         SkinCommand,
         ChibiCommand
     )

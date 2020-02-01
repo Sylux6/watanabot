@@ -13,8 +13,10 @@ object BirthdayCommandModule : AbstractCommandModule(
     "birthday",
     setOf(
         SetCommand,
-        GetCommand, SetChannelCommand,
-        GetChannelCommand, RemoveCommand,
+        GetCommand,
+        SetChannelCommand,
+        GetChannelCommand,
+        RemoveCommand,
         MonthCommand
     )
 ) {

@@ -17,9 +17,11 @@ object LoveLiveCommandModule : AbstractCommandModule(
     "Love Live!",
     "ll",
     setOf(
-        InfoCommand, ScoutCommand,
+        InfoCommand,
+        ScoutCommand,
         IdCommand,
-        IdolizedIdCommand, SearchCommand
+        IdolizedIdCommand,
+        SearchCommand
     )
 ) {
     override val moduleDescription: String

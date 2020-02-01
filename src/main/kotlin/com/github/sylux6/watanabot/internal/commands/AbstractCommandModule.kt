@@ -8,7 +8,9 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 abstract class AbstractCommandModule(
-    val name: String, val shortName: String, commands: Set<AbstractCommand>,
+    val name: String,
+    val shortName: String,
+    val commands: Set<AbstractCommand>,
     val restrict: Boolean = false
 ) {
 

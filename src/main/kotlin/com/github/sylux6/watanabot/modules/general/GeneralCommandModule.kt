@@ -26,15 +26,18 @@ object GeneralCommandModule : AbstractCommandModule(
         ChooseCommand,
         GetRoleCommand,
         HentaiCommand,
-        JoinEventCommand, LeaveEventCommand,
+        JoinEventCommand,
+        LeaveEventCommand,
         LewdCommand,
         NyaCommand,
         RollCommand,
         SayCommand,
-        ScreenShareCommand, YousolewdCommand,
+        ScreenShareCommand,
+        YousolewdCommand,
         YousoroCommand,
         ModulesCommand,
-        ServerIconCommand, ShutdownCommand
+        ServerIconCommand,
+        ShutdownCommand
     )
 ) {
     override val moduleDescription: String
