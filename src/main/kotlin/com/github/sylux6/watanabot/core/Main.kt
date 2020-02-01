@@ -1,7 +1,7 @@
 package com.github.sylux6.watanabot.core
 
 import club.minnced.jda.reactor.on
-import com.github.sylux6.watanabot.core.events.initEventReactor
+import com.github.sylux6.watanabot.core.events.initReactiveEventManager
 import com.github.sylux6.watanabot.core.events.manager
 import com.github.sylux6.watanabot.reminder.QuartzScheduler
 import com.github.sylux6.watanabot.utils.jda
@@ -16,7 +16,7 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         // Building bot
-        initEventReactor()
+        initReactiveEventManager()
         jda = JDABuilder(AccountType.BOT)
             .setToken(getToken(args))
             .setActivity(Activity.playing("with Chika-chan"))
