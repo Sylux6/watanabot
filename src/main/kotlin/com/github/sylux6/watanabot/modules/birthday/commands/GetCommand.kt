@@ -24,7 +24,7 @@ object GetCommand : AbstractCommand("get") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         // No member provided, get self birthday
         val member = if (args.isEmpty()) {
-            event.member!!
+            event.member ?: throw CommandException("You must run this command in a guild")
         } else {
             val username = args.joinToString(" ")
             findMember(event.guild, username) ?: throw CommandException("Cannot find **${username}** in this server")

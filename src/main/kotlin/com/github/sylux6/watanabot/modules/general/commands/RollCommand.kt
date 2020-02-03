@@ -17,7 +17,11 @@ object RollCommand : AbstractCommand("roll") {
         sendMessage(
             event.channel,
             "${mentionAt(event.author)} ${Random.nextInt(100) + 1} "
-                + getEmojiMessage(event.guild, "yousoro")
+                + try {
+                getEmojiMessage(event.guild, "yousoro")
+            } catch (e: IllegalStateException) {
+                "(> ᴗ •)ゞ"
+            }
         )
     }
 }
