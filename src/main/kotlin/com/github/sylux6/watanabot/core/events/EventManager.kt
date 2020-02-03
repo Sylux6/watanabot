@@ -5,11 +5,13 @@ import club.minnced.jda.reactor.createManager
 import club.minnced.jda.reactor.on
 import com.github.sylux6.watanabot.core.events.guild.onGuildMemberLeaveEvent
 import com.github.sylux6.watanabot.core.events.message.onMessageReceivedEvent
-import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityOrder
+import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityEnd
+import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityStart
 import com.github.sylux6.watanabot.utils.isPrivateServer
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import net.dv8tion.jda.api.events.user.update.UserUpdateActivityOrderEvent
+import net.dv8tion.jda.api.events.user.UserActivityEndEvent
+import net.dv8tion.jda.api.events.user.UserActivityStartEvent
 import reactor.core.scheduler.Scheduler
 import reactor.core.scheduler.Schedulers
 import java.util.concurrent.Executors
@@ -37,7 +39,11 @@ fun initReactiveEventManager() {
         .filter { isPrivateServer(it.guild.idLong) }
         .subscribe { onGuildMemberLeaveEvent(it) }
 
-    manager.on<UserUpdateActivityOrderEvent>()
+    manager.on<UserActivityStartEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { onUserUpdateActivityOrder(it) }
+        .subscribe { onUserUpdateActivityStart(it) }
+
+    manager.on<UserActivityEndEvent>()
+        .filter { isPrivateServer(it.guild.idLong) }
+        .subscribe { onUserUpdateActivityEnd(it) }
 }
