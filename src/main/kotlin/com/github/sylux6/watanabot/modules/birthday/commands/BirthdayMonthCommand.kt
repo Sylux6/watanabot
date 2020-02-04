@@ -2,24 +2,22 @@ package com.github.sylux6.watanabot.modules.birthday.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.query
+import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.sendMessage
-import java.sql.Timestamp
+import db.models.Members
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
-import java.util.ArrayList
-import java.util.Calendar
-import java.util.Calendar.DAY_OF_MONTH
-import java.util.Calendar.getInstance
-import java.util.Date
 import java.util.Locale
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.jodatime.month
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object BirthdayMonthCommand : AbstractCommand("month") {
     override val template: String
@@ -34,48 +32,37 @@ object BirthdayMonthCommand : AbstractCommand("month") {
             throw CommandException("Invalid month")
         }
 
-        val l = query(
-            "select userid, birthday from member where " +
-                "extract(month from birthday) = $month and guildid = ${event.guild.id} order by birthday"
-        )
-
-        val result = ArrayList<Pair<Member, Date>>()
-        l.forEach { o ->
-            o as Array<Any>
-            val member = event.guild.getMemberById(o[0].toString())
-            if (member != null) {
-                result.add(Pair(member, Date((o[1] as Timestamp).time)))
-            }
+        val birthdays: Map<Int, List<Member>> = transaction {
+            Members
+                .slice(Members.userId, Members.birthday)
+                .select { Members.birthday.month() eq month and (Members.guildId eq event.guild.idLong) }
+                .orderBy(Members.birthday)
+                .groupBy { it[Members.birthday]!!.dayOfMonth }
+                .mapValues { it.value.mapNotNull { member -> event.guild.getMemberById(member[Members.userId]) } }
         }
         birthdayInMonthEmbedMessage(
             event.channel,
             month,
-            result
+            birthdays
         )
     }
 
-    private fun birthdayInMonthEmbedMessage(channel: MessageChannel, month: Int, members: List<Pair<Member, Date>>) {
-        val group = members.groupBy { member ->
-            kotlin.run {
-                val calendar: Calendar = getInstance()
-                calendar.time = member.second
-                calendar.get(DAY_OF_MONTH)
-            }
-        }
+    private fun birthdayInMonthEmbedMessage(channel: MessageChannel, month: Int, birthdays: Map<Int, List<Member>>) {
         val message = EmbedBuilder()
-            .setColor(PRIMARY_COLOR)
+            .setColor(BOT_PRIMARY_COLOR)
             .setTitle("Birthdays in ${Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH)}")
-        if (group.isEmpty()) {
+        if (birthdays.isEmpty()) {
             message.setDescription("No birthday")
             sendMessage(channel, message.build())
             return
         }
-        for (groupDay in group) {
+        for ((day, members) in birthdays) {
             val memberList = StringBuilder()
-            for (member in groupDay.value)
-                memberList.append("${member.first.effectiveName}\n")
+            for (member in members) {
+                memberList.append("${member.effectiveName}\n")
+            }
             message.addField(
-                "\uD83C\uDF82 ${groupDay.key}/${DecimalFormat("00").format(month)}",
+                "\uD83C\uDF82 $day/${DecimalFormat("00").format(month)}",
                 memberList.toString(),
                 false
             )

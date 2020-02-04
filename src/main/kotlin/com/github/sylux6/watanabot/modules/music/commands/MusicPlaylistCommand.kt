@@ -3,7 +3,7 @@ package com.github.sylux6.watanabot.modules.music.commands
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.modules.music.MusicCommandModule.getGuildAudioPlayer
 import com.github.sylux6.watanabot.modules.music.entities.GuildMusicManager
-import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.sendMessage
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.EmbedBuilder
@@ -17,7 +17,7 @@ object MusicPlaylistCommand : AbstractCommand("playlist") {
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val embedMessage = EmbedBuilder()
-            .setColor(PRIMARY_COLOR)
+            .setColor(BOT_PRIMARY_COLOR)
             .setAuthor("Playlist", null, event.jda.selfUser.effectiveAvatarUrl)
         val message = StringBuilder()
         val musicManager: GuildMusicManager = getGuildAudioPlayer(event.guild)

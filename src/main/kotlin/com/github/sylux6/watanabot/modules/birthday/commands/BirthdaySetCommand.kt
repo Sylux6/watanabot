@@ -4,17 +4,18 @@ import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.commands.checkCommandAccess
 import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import com.github.sylux6.watanabot.internal.models.Member
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.utils.dayFormatter
-import com.github.sylux6.watanabot.utils.query
-import com.github.sylux6.watanabot.utils.saveOrUpdate
 import com.github.sylux6.watanabot.utils.sendMessageAt
+import db.models.Members
+import db.utils.insertOrUpdate
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
+import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.joda.time.DateTime
 
 object BirthdaySetCommand : AbstractCommand("set", 1) {
     override val template: String
@@ -24,33 +25,27 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val formatter = SimpleDateFormat("dd/MM", Locale.ENGLISH)
-        val date: Date
-        val member: Member
         try {
             // Check if all conditions are met to set another member birthday
-            if (args.size > 1) {
+            val (date: DateTime, member: Member) = if (args.size > 1) {
                 if (!checkCommandAccess(event, CommandLevelAccess.ADMIN)) {
                     throw CommandAccessException("You cannot set a birthday for another member")
                 }
-                if (event.guild.getMemberById(args.first()) == null) {
-                    throw CommandException("Cannot find member id")
-                }
-                date = formatter.parse(args[1])
-                member = Member(args.first().toLong(), event.guild.idLong, date)
+                Pair(DateTime(formatter.parse(args[1])), event.guild.getMemberById(args.first()) ?: throw CommandException("Cannot find member id"))
             } else {
-                date = formatter.parse(args.first())
-                member = Member(event.author.idLong, event.guild.idLong, date)
+                Pair(DateTime(formatter.parse(args.first())), event.member!!)
             }
-            val result =
-                query("select id from member where userid = ${event.author.id} and guildid = ${event.guild.id}")
-            if (result.isNotEmpty()) {
-                member.setId(result[0] as Int)
+            transaction {
+                Members.insertOrUpdate(Members.guildId, Members.userId) {
+                    it[guildId] = event.guild.idLong
+                    it[userId] = event.author.idLong
+                    it[birthday] = date
+                }
             }
-            saveOrUpdate(member)
             sendMessageAt(
                 event.channel, event.author,
-                "${event.guild.getMemberById(member.getUserId())!!.effectiveName} birthday is set to the " +
-                    dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date))
+                "${member.effectiveName} birthday is set to the " +
+                    dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date.toDate()))
             )
         } catch (e: ParseException) {
             throw CommandException("Cannot get your birthday, please give your birthday following this format: dd/MM")
