@@ -6,26 +6,22 @@ import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.modules.general.GeneralCommandModule
 import com.github.sylux6.watanabot.modules.music.MusicCommandModule
-import com.github.sylux6.watanabot.utils.PREFIX
-import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
+import com.github.sylux6.watanabot.utils.BOT_PREFIX
+import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
 import com.github.sylux6.watanabot.utils.jda
 import com.github.sylux6.watanabot.utils.sendBotMessage
 import com.github.sylux6.watanabot.utils.sendMessage
+import mu.KLogging
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 abstract class AbstractCommand(
     val name: String,
     private val minArgs: Int = 0,
     val levelAccess: List<CommandLevelAccess> = listOf(CommandLevelAccess.EVERYONE)
-) {
-
-    val logger: Logger = LoggerFactory.getLogger(this.javaClass)
-
+) : KLogging() {
     abstract val template: String
 
     abstract val description: String
@@ -33,11 +29,11 @@ abstract class AbstractCommand(
     private fun help(commandModule: AbstractCommandModule, channel: MessageChannel) {
         val message = EmbedBuilder()
             .setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
-            .setColor(PRIMARY_COLOR)
+            .setColor(BOT_PRIMARY_COLOR)
             .setTitle("Documentation for `$name`")
             .addField(
                 "Usage",
-                "`$PREFIX " +
+                "`$BOT_PREFIX " +
                     (if (commandModule != GeneralCommandModule) "${commandModule.shortName} " else "") +
                     "$name $template`",
                 true

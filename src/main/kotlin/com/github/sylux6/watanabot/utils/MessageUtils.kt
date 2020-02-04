@@ -4,6 +4,7 @@ import com.github.sylux6.watanabot.internal.types.BotMessageType
 import java.io.IOException
 import java.net.URL
 import net.dv8tion.jda.api.MessageBuilder
+import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.entities.MessageEmbed
@@ -113,6 +114,15 @@ fun reactMessage(message: Message, name: String): Boolean {
  */
 fun mentionAt(user: User): String {
     return "<@" + user.id + ">"
+}
+
+/**
+ * Returns mention syntax for message
+ * @param member member
+ * @return mention syntax
+ */
+fun mentionAt(member: Member): String {
+    return "<@" + member.id + ">"
 }
 
 /**

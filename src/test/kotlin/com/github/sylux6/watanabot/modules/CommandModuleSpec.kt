@@ -24,6 +24,7 @@ import com.github.sylux6.watanabot.modules.birthday.commands.BirthdaySetCommand
 import com.github.sylux6.watanabot.modules.general.GeneralCommandModule
 import com.github.sylux6.watanabot.modules.general.commands.AvatarCommand
 import com.github.sylux6.watanabot.modules.general.commands.ChooseCommand
+import com.github.sylux6.watanabot.modules.general.commands.DebugCommand
 import com.github.sylux6.watanabot.modules.general.commands.GetRoleCommand
 import com.github.sylux6.watanabot.modules.general.commands.HentaiCommand
 import com.github.sylux6.watanabot.modules.general.commands.JoinEventCommand
@@ -86,7 +87,7 @@ object CommandModuleSpec : Spek({
 
         it("should define all commands") {
             val commandList = COMMAND_MODULES.flatMap { it.commandMap.values } + GeneralCommandModule.commandMap.values
-            expect(commandList.size).toBe(51)
+            expect(commandList.size).toBe(52)
             expect(commandList).contains(
                 AzurLaneChibiCommand,
                 AzurLaneInfoCommand,
@@ -100,6 +101,7 @@ object CommandModuleSpec : Spek({
                 BirthdaySetCommand,
                 AvatarCommand,
                 ChooseCommand,
+                DebugCommand,
                 GetRoleCommand,
                 HentaiCommand,
                 JoinEventCommand,

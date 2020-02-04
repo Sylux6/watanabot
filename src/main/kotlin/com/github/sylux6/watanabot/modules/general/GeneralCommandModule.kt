@@ -3,6 +3,7 @@ package com.github.sylux6.watanabot.modules.general
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
 import com.github.sylux6.watanabot.modules.general.commands.AvatarCommand
 import com.github.sylux6.watanabot.modules.general.commands.ChooseCommand
+import com.github.sylux6.watanabot.modules.general.commands.DebugCommand
 import com.github.sylux6.watanabot.modules.general.commands.GetRoleCommand
 import com.github.sylux6.watanabot.modules.general.commands.HentaiCommand
 import com.github.sylux6.watanabot.modules.general.commands.JoinEventCommand
@@ -24,6 +25,7 @@ object GeneralCommandModule : AbstractCommandModule(
     setOf(
         AvatarCommand,
         ChooseCommand,
+        DebugCommand,
         GetRoleCommand,
         HentaiCommand,
         JoinEventCommand,

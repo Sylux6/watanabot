@@ -1,4 +1,4 @@
-package com.github.sylux6.watanabot.reminder
+package com.github.sylux6.watanabot.scheduler
 
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
 import com.github.sylux6.watanabot.utils.getEmojiMessage

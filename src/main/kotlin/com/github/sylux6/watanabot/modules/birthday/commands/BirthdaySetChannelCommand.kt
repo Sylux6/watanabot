@@ -1,13 +1,13 @@
 package com.github.sylux6.watanabot.modules.birthday.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.internal.models.Settings
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.utils.linkTextChannel
-import com.github.sylux6.watanabot.utils.query
-import com.github.sylux6.watanabot.utils.saveOrUpdate
 import com.github.sylux6.watanabot.utils.sendMessage
+import db.models.Settings
+import db.utils.insertOrUpdate
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object BirthdaySetChannelCommand : AbstractCommand("setchannel", 1, listOf(CommandLevelAccess.MOD)) {
     override val template: String
@@ -16,12 +16,12 @@ object BirthdaySetChannelCommand : AbstractCommand("setchannel", 1, listOf(Comma
         get() = "Set text channel to announce birthdays."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        val settings = Settings(event.guild.idLong, event.channel.idLong)
-        val res = query("select id from settings where guildid = ${event.guild.id}")
-        if (res.isNotEmpty()) {
-            settings.id = res[0] as Int
+        transaction {
+            Settings.insertOrUpdate(Settings.guildId) {
+                it[guildId] = event.guild.idLong
+                it[birthdayChannelId] = event.channel.idLong
+            }
         }
-        saveOrUpdate(settings)
         sendMessage(
             event.channel, "Birthdays will be announced in " +
                 linkTextChannel(event.channel) +

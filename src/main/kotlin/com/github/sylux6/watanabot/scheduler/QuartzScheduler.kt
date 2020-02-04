@@ -1,4 +1,4 @@
-package com.github.sylux6.watanabot.reminder
+package com.github.sylux6.watanabot.scheduler
 
 import org.quartz.CronScheduleBuilder.cronSchedule
 import org.quartz.DateBuilder
