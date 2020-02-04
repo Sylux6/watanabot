@@ -19,14 +19,14 @@ val config = EnvironmentVariables overriding ConfigurationProperties.fromFile(Fi
 /**
  * Discord bot token
  */
-val bot_token = Key("bot.token", stringType)
+val BOT_TOKEN = Key("bot.token", stringType)
 
 /**
  * Bot prefix command
  */
-val bot_prefix = Key("bot.prefix", stringType)
+val BOT_PREFIX = Key("bot.prefix", stringType)
 
 /**
  * Guild server id, used to print logs and other specific stuff. You should not need this
  */
-val bot_private_server = Key("bot_private_server", longType)
+val BOT_PRIVATE_SERVER_ID = Key("bot.private_server_id", longType)

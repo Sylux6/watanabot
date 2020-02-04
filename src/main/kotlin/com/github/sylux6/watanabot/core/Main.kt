@@ -4,7 +4,7 @@ import club.minnced.jda.reactor.on
 import com.github.sylux6.watanabot.core.events.initReactiveEventManager
 import com.github.sylux6.watanabot.core.events.manager
 import com.github.sylux6.watanabot.reminder.QuartzScheduler
-import com.github.sylux6.watanabot.utils.bot_token
+import com.github.sylux6.watanabot.utils.BOT_TOKEN
 import com.github.sylux6.watanabot.utils.config
 import com.github.sylux6.watanabot.utils.jda
 import com.natpryce.konfig.Misconfiguration
@@ -34,7 +34,7 @@ object Main {
 
     private fun getToken(): String {
         try {
-            return config[bot_token]
+            return config[BOT_TOKEN]
         } catch (e: Misconfiguration) {
             println("Please define a bot.token property in watanabot.properties file")
             exitProcess(1)

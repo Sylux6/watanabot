@@ -8,7 +8,7 @@ import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.modules.general.GeneralCommandModule
 import com.github.sylux6.watanabot.modules.picture.PictureCommandModule
 import com.github.sylux6.watanabot.modules.picture.PictureCommandModule.getImage
-import com.github.sylux6.watanabot.utils.BOT_PREFIX
+import com.github.sylux6.watanabot.utils.PREFIX
 import com.github.sylux6.watanabot.utils.sendBotMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
@@ -19,7 +19,7 @@ fun onMessageReceivedEvent(event: MessageReceivedEvent) {
     }
 
     // No bot prefix
-    if (!args.first().startsWith(BOT_PREFIX)) {
+    if (!args.first().startsWith(PREFIX)) {
         if (event.message.mentionedUsers.contains(event.jda.selfUser)) {
             botMention(event)
         } else {

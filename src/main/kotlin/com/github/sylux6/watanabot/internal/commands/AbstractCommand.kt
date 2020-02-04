@@ -6,7 +6,7 @@ import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.modules.general.GeneralCommandModule
 import com.github.sylux6.watanabot.modules.music.MusicCommandModule
-import com.github.sylux6.watanabot.utils.BOT_PREFIX
+import com.github.sylux6.watanabot.utils.PREFIX
 import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
 import com.github.sylux6.watanabot.utils.jda
@@ -37,7 +37,7 @@ abstract class AbstractCommand(
             .setTitle("Documentation for `$name`")
             .addField(
                 "Usage",
-                "`${BOT_PREFIX} "
+                "`${PREFIX} "
                     + (if (commandModule != GeneralCommandModule) "${commandModule.shortName} " else "")
                     + "$name $template`",
                 true

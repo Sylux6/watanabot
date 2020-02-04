@@ -12,8 +12,8 @@ import net.dv8tion.jda.api.entities.Role
 lateinit var jda: JDA
 
 // CONSTANTS
-val BOT_PREFIX = config.getOrElse(bot_prefix, "o7")
-val PRIVATE_SERVER_ID = config.getOrNull(bot_private_server)
+val PREFIX = config.getOrElse(BOT_PREFIX, "o7")
+val PRIVATE_SERVER_ID = config.getOrNull(BOT_PRIVATE_SERVER_ID)
 const val PRIMARY_COLOR = 3447003
 
 val isPrivateServer: (Long?) -> (Boolean) = { id: Long? -> id == PRIVATE_SERVER_ID }
