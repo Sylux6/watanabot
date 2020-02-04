@@ -33,6 +33,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.json", "json", "20190722")
     implementation("info.debatty", "java-string-similarity", "1.2.1")
+    implementation("com.natpryce:konfig:1.6.10.0")
 
     implementation("net.kodehawa:imageboard-api:2.1")
     implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.2")

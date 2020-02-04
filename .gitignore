@@ -42,3 +42,6 @@ gradle-app.setting
 /out/
 /.idea/
 /src/META-INF/
+
+# bot properties
+watanabot.properties
