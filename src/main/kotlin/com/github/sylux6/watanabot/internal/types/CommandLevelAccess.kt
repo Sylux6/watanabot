@@ -4,7 +4,7 @@ enum class CommandLevelAccess(val info: String) {
     /**
      * Everyone can use
      */
-    ALL(""),
+    EVERYONE(""),
     /**
      * Restricted to users in a voice channel
      */

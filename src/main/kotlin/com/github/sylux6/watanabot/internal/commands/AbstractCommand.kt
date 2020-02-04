@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory
 abstract class AbstractCommand(
     val name: String,
     private val minArgs: Int = 0,
-    val levelAccess: List<CommandLevelAccess> = listOf(CommandLevelAccess.ALL)
+    val levelAccess: List<CommandLevelAccess> = listOf(CommandLevelAccess.EVERYONE)
 ) {
 
     val logger: Logger = LoggerFactory.getLogger(this.javaClass)
