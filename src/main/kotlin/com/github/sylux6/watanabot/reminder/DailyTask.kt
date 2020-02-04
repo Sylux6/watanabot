@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.reminder
 
 import com.github.azurapi.azurapikotlin.api.Atago
 import com.github.sylux6.watanabot.utils.PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.jda
 import com.github.sylux6.watanabot.utils.getYousoro
+import com.github.sylux6.watanabot.utils.jda
 import com.github.sylux6.watanabot.utils.mentionAt
 import com.github.sylux6.watanabot.utils.query
 import com.github.sylux6.watanabot.utils.randomStatus
@@ -18,14 +18,14 @@ import java.util.ArrayList
 import java.util.HashMap
 import kotlin.system.measureTimeMillis
 
-class Batch : Job {
+class DailyTask : Job {
 
     override fun execute(context: JobExecutionContext) {
         val today = LocalDate.now()
         val messageLog = EmbedBuilder()
             .setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
             .setColor(PRIMARY_COLOR)
-            .setTitle("Daily batch ($today)")
+            .setTitle("Daily task ($today)")
 
         // Random status
         randomStatus()

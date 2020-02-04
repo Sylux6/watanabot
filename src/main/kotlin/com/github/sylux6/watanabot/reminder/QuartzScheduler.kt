@@ -20,7 +20,7 @@ object QuartzScheduler {
 
         sched.scheduleJob(newJob(WatanabeYou::class.java).build(), youBirthday)
         sched.scheduleJob(newJob(Maia::class.java).build(), maiaBirthday)
-        sched.scheduleJob(newJob(Batch::class.java).build(), dailyTrigger)
+        sched.scheduleJob(newJob(DailyTask::class.java).build(), dailyTrigger)
         sched.start()
     }
 }
