@@ -12,11 +12,11 @@ import net.dv8tion.jda.api.entities.Role
 lateinit var jda: JDA
 
 // CONSTANTS
-const val BOT_PREFIX = "o7"
+val BOT_PREFIX = config.getOrElse(bot_prefix, "o7")
+val PRIVATE_SERVER_ID = config.getOrNull(bot_private_server)
 const val PRIMARY_COLOR = 3447003
 
-val PRIVATE_SERVER_ID = java.lang.Long.parseLong("181478842274283520")
-val isPrivateServer: (Long) -> (Boolean) = { id: Long -> id == PRIVATE_SERVER_ID }
+val isPrivateServer: (Long?) -> (Boolean) = { id: Long? -> id == PRIVATE_SERVER_ID }
 
 // Non persistent memory
 // val smashPassInstances = HashMap<String, SmashPass>()

@@ -14,6 +14,9 @@ class WatanabeYou : Job {
 
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
+        if (PRIVATE_SERVER_ID == null) {
+            return
+        }
         val m = EmbedBuilder()
             .setTitle("Birthday")
             .setDescription(
@@ -36,6 +39,9 @@ class Maia : Job {
 
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
+        if (PRIVATE_SERVER_ID == null) {
+            return
+        }
         val m = EmbedBuilder()
             .setTitle("Birthday")
             .setDescription(

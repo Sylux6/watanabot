@@ -5,8 +5,5 @@ import io.kotlintest.specs.StringSpec
 
 class BotUtilsTestCase : StringSpec() {
     init {
-        "should be o7" {
-            BOT_PREFIX.shouldBe("o7")
-        }
     }
 }

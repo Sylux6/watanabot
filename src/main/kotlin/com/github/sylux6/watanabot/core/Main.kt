@@ -4,7 +4,10 @@ import club.minnced.jda.reactor.on
 import com.github.sylux6.watanabot.core.events.initReactiveEventManager
 import com.github.sylux6.watanabot.core.events.manager
 import com.github.sylux6.watanabot.reminder.QuartzScheduler
+import com.github.sylux6.watanabot.utils.bot_token
+import com.github.sylux6.watanabot.utils.config
 import com.github.sylux6.watanabot.utils.jda
+import com.natpryce.konfig.Misconfiguration
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
@@ -18,7 +21,7 @@ object Main {
         // Building bot
         initReactiveEventManager()
         jda = JDABuilder(AccountType.BOT)
-            .setToken(getToken(args))
+            .setToken(getToken())
             .setActivity(Activity.playing("with Chika-chan"))
             .setGuildSubscriptionsEnabled(true)
             .setEventManager(manager)
@@ -29,11 +32,11 @@ object Main {
         QuartzScheduler.run()
     }
 
-    private fun getToken(args: Array<String>): String {
+    private fun getToken(): String {
         try {
-            return args[0]
-        } catch (e: IndexOutOfBoundsException) {
-            println("Please enter the bot token in argument")
+            return config[bot_token]
+        } catch (e: Misconfiguration) {
+            println("Please define a bot.token property in watanabot.properties file")
             exitProcess(1)
         }
     }
