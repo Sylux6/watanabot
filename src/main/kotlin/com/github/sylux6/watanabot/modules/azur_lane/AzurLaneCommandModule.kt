@@ -2,10 +2,10 @@ package com.github.sylux6.watanabot.modules.azur_lane
 
 import com.github.azurapi.azurapikotlin.internal.entities.Ship
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
-import com.github.sylux6.watanabot.modules.azur_lane.commands.ChibiCommand
-import com.github.sylux6.watanabot.modules.azur_lane.commands.InfoCommand
-import com.github.sylux6.watanabot.modules.azur_lane.commands.SkinCommand
-import com.github.sylux6.watanabot.modules.azur_lane.commands.SkinsCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneChibiCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneInfoCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneSkinCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneSkinsCommand
 import com.github.sylux6.watanabot.modules.azur_lane.entities.Rarity
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
@@ -14,10 +14,10 @@ object AzurLaneCommandModule : AbstractCommandModule(
     "Azur Lane",
     "al",
     setOf(
-        InfoCommand,
-        SkinsCommand,
-        SkinCommand,
-        ChibiCommand
+        AzurLaneInfoCommand,
+        AzurLaneSkinsCommand,
+        AzurLaneSkinCommand,
+        AzurLaneChibiCommand
     )
 ) {
     override val moduleDescription: String

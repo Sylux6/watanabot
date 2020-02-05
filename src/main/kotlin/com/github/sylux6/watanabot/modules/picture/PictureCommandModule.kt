@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.modules.picture
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
-import com.github.sylux6.watanabot.modules.picture.commands.NsfwCommand
-import com.github.sylux6.watanabot.modules.picture.commands.SafeCommand
+import com.github.sylux6.watanabot.modules.picture.commands.PictureNsfwCommand
+import com.github.sylux6.watanabot.modules.picture.commands.PictureSafeCommand
 import com.github.sylux6.watanabot.utils.buildEmbedImageBooru
 import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -14,8 +14,8 @@ object PictureCommandModule : AbstractCommandModule(
     "Picture",
     "p",
     setOf(
-        NsfwCommand,
-        SafeCommand
+        PictureNsfwCommand,
+        PictureSafeCommand
     )
 ) {
     override val moduleDescription: String

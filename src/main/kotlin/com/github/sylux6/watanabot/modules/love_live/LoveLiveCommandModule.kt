@@ -1,11 +1,11 @@
 package com.github.sylux6.watanabot.modules.love_live
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
-import com.github.sylux6.watanabot.modules.love_live.commands.IdCommand
-import com.github.sylux6.watanabot.modules.love_live.commands.IdolizedIdCommand
-import com.github.sylux6.watanabot.modules.love_live.commands.InfoCommand
-import com.github.sylux6.watanabot.modules.love_live.commands.ScoutCommand
-import com.github.sylux6.watanabot.modules.love_live.commands.SearchCommand
+import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveIdCommand
+import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveIdolizedIdCommand
+import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveInfoCommand
+import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveScoutCommand
+import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveSearchCommand
 import com.github.sylux6.watanabot.modules.love_live.entities.Card
 import com.github.sylux6.watanabot.utils.getRequest
 import com.github.sylux6.watanabot.utils.stringToJsonObject
@@ -17,11 +17,11 @@ object LoveLiveCommandModule : AbstractCommandModule(
     "Love Live!",
     "ll",
     setOf(
-        InfoCommand,
-        ScoutCommand,
-        IdCommand,
-        IdolizedIdCommand,
-        SearchCommand
+        LoveLiveInfoCommand,
+        LoveLiveScoutCommand,
+        LoveLiveIdCommand,
+        LoveLiveIdolizedIdCommand,
+        LoveLiveSearchCommand
     )
 ) {
     override val moduleDescription: String
