@@ -1,4 +1,5 @@
 val kotlinVersion = "1.3.61"
+val spekVersion = "2.0.9"
 
 plugins {
     java
@@ -38,8 +39,11 @@ dependencies {
     implementation("net.kodehawa:imageboard-api:2.1")
     implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.2")
 
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+    testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
+    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
+    testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("ch.tutteli.atrium:atrium-fluent-en_GB:0.9.1")
 }
 
 tasks.withType<JavaCompile> {
@@ -53,9 +57,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
+    useJUnitPlatform {
+        includeEngines("spek2")
     }
 }
 

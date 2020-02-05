@@ -1,18 +1,18 @@
 package com.github.sylux6.watanabot.modules.music
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
-import com.github.sylux6.watanabot.modules.music.commands.ClearCommand
-import com.github.sylux6.watanabot.modules.music.commands.JoinCommand
-import com.github.sylux6.watanabot.modules.music.commands.LeaveCommand
-import com.github.sylux6.watanabot.modules.music.commands.NextCommand
-import com.github.sylux6.watanabot.modules.music.commands.NowCommand
-import com.github.sylux6.watanabot.modules.music.commands.PauseCommand
-import com.github.sylux6.watanabot.modules.music.commands.PlayCommand
-import com.github.sylux6.watanabot.modules.music.commands.PlaylistCommand
-import com.github.sylux6.watanabot.modules.music.commands.QueueCommand
-import com.github.sylux6.watanabot.modules.music.commands.ResumeCommand
-import com.github.sylux6.watanabot.modules.music.commands.ShuffleCommand
-import com.github.sylux6.watanabot.modules.music.commands.StopCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicClearCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicJoinCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicLeaveCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicNextCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicNowCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicPauseCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicPlayCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicPlaylistCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicQueueCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicResumeCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicShuffleCommand
+import com.github.sylux6.watanabot.modules.music.commands.MusicStopCommand
 import com.github.sylux6.watanabot.modules.music.entities.GuildMusicManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
@@ -24,18 +24,18 @@ object MusicCommandModule : AbstractCommandModule(
     "Music",
     "m",
     setOf(
-        JoinCommand,
-        LeaveCommand,
-        PlayCommand,
-        StopCommand,
-        PauseCommand,
-        ResumeCommand,
-        ShuffleCommand,
-        NextCommand,
-        PlaylistCommand,
-        ClearCommand,
-        QueueCommand,
-        NowCommand
+        MusicJoinCommand,
+        MusicLeaveCommand,
+        MusicPlayCommand,
+        MusicStopCommand,
+        MusicPauseCommand,
+        MusicResumeCommand,
+        MusicShuffleCommand,
+        MusicNextCommand,
+        MusicPlaylistCommand,
+        MusicClearCommand,
+        MusicQueueCommand,
+        MusicNowCommand
     )
 ) {
     override val moduleDescription: String
