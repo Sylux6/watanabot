@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 val kotlinVersion = "1.3.61"
 val spekVersion = "2.0.9"
 
@@ -5,6 +7,7 @@ plugins {
     java
     maven
     kotlin("jvm") version "1.3.61"
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 java {
@@ -64,7 +67,13 @@ tasks.withType<Test> {
 
 tasks.create<Delete>("cleanLogs") {
     group = "log"
-    delete = setOf (
-            "yousolog-error.log", "yousolog-info.log"
+    delete = setOf(
+        "yousolog-error.log", "yousolog-info.log"
     )
+}
+
+tasks.withType<ShadowJar> {
+    manifest {
+        attributes["Main-Class"] = "com.github.sylux6.watanabot.core.Main"
+    }
 }
