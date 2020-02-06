@@ -18,8 +18,8 @@ object ScreenShareCommand : AbstractCommand("screenshare", levelAccess = listOf(
         }
         sendMessage(
             event.channel,
-            "There you go for screen sharing:\n <https://www.discordapp.com/channels/"
-                + "${event.guild.id}/${event.member!!.voiceState!!.channel!!.id}>"
+            "There you go for screen sharing:\n <https://www.discordapp.com/channels/" +
+                "${event.guild.id}/${event.member!!.voiceState!!.channel!!.id}>"
         )
     }
 }

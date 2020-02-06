@@ -1,8 +1,8 @@
 package com.github.sylux6.watanabot.utils
 
+import java.io.IOException
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.io.IOException
 
 @Throws(IOException::class)
 fun getRequest(client: OkHttpClient, url: String, vararg values: String): String {

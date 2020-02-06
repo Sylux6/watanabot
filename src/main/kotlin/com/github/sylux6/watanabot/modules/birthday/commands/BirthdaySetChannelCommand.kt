@@ -23,9 +23,9 @@ object BirthdaySetChannelCommand : AbstractCommand("setchannel", 1, listOf(Comma
         }
         saveOrUpdate(settings)
         sendMessage(
-            event.channel, "Birthdays will be announced in "
-                + linkTextChannel(event.channel)
-                + " (note that I'll check your birthdays everyday on CEST timezone (> ᴗ •)ゞ)"
+            event.channel, "Birthdays will be announced in " +
+                linkTextChannel(event.channel) +
+                " (note that I'll check your birthdays everyday on CEST timezone (> ᴗ •)ゞ)"
         )
     }
 }

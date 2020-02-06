@@ -9,9 +9,9 @@ import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveSearchComm
 import com.github.sylux6.watanabot.modules.love_live.entities.Card
 import com.github.sylux6.watanabot.utils.getRequest
 import com.github.sylux6.watanabot.utils.stringToJsonObject
+import java.io.IOException
 import net.dv8tion.jda.api.entities.User
 import okhttp3.OkHttpClient
-import java.io.IOException
 
 object LoveLiveCommandModule : AbstractCommandModule(
     "Love Live!",

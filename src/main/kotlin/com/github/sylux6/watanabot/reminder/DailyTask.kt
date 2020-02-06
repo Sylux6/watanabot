@@ -9,14 +9,14 @@ import com.github.sylux6.watanabot.utils.query
 import com.github.sylux6.watanabot.utils.randomStatus
 import com.github.sylux6.watanabot.utils.sendLog
 import com.github.sylux6.watanabot.utils.sendMessage
-import net.dv8tion.jda.api.EmbedBuilder
-import org.quartz.Job
-import org.quartz.JobExecutionContext
 import java.math.BigInteger
 import java.time.LocalDate
 import java.util.ArrayList
 import java.util.HashMap
 import kotlin.system.measureTimeMillis
+import net.dv8tion.jda.api.EmbedBuilder
+import org.quartz.Job
+import org.quartz.JobExecutionContext
 
 class DailyTask : Job {
 
@@ -36,8 +36,8 @@ class DailyTask : Job {
         // Birthday
         addJob(messageLog, "Check members' birthday") {
             val l = query(
-                "select guildid, userid from member where extract(month from birthday) = " + today.monthValue
-                    + " and extract(day from birthday) = " + today.dayOfMonth
+                "select guildid, userid from member where extract(month from birthday) = " + today.monthValue +
+                    " and extract(day from birthday) = " + today.dayOfMonth
             )
             if (l.size > 0) {
                 val res = HashMap<BigInteger, ArrayList<BigInteger>>()

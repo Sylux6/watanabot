@@ -20,9 +20,9 @@ class WatanabeYou : Job {
         val m = EmbedBuilder()
             .setTitle("Birthday")
             .setDescription(
-                "TODAY IS MY BIRTHDAY! "
-                    + getEmojiMessage(jda.getGuildById(PRIVATE_SERVER_ID)!!, "poiBuki")
-                    + getYousoro(jda.getGuildById(PRIVATE_SERVER_ID)!!)
+                "TODAY IS MY BIRTHDAY! " +
+                    getEmojiMessage(jda.getGuildById(PRIVATE_SERVER_ID)!!, "poiBuki") +
+                    getYousoro(jda.getGuildById(PRIVATE_SERVER_ID)!!)
             )
             .setImage("https://i.imgur.com/7ODxoKY.png")
             .build()
@@ -45,9 +45,9 @@ class Maia : Job {
         val m = EmbedBuilder()
             .setTitle("Birthday")
             .setDescription(
-                "TODAY IS MAIA-NEE BIRTHDAY! "
-                    + getEmojiMessage(jda.getGuildById(PRIVATE_SERVER_ID)!!, "poiBuki")
-                    + getYousoro(jda.getGuildById(PRIVATE_SERVER_ID)!!)
+                "TODAY IS MAIA-NEE BIRTHDAY! " +
+                    getEmojiMessage(jda.getGuildById(PRIVATE_SERVER_ID)!!, "poiBuki") +
+                    getYousoro(jda.getGuildById(PRIVATE_SERVER_ID)!!)
             )
             .setImage("https://i.imgur.com/BWyowqe.png")
             .build()

@@ -8,6 +8,7 @@ plugins {
     `maven-publish`
     kotlin("jvm") version "1.3.61"
     id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("org.jlleitschuh.gradle.ktlint") version "9.1.1"
 }
 
 java {
@@ -19,7 +20,7 @@ repositories {
     mavenCentral()
     jcenter()
     maven("https://jitpack.io")
-    maven ("https://dl.bintray.com/kodehawa/maven")
+    maven("https://dl.bintray.com/kodehawa/maven")
 }
 
 dependencies {

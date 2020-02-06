@@ -16,9 +16,9 @@ import com.github.sylux6.watanabot.modules.music.commands.MusicStopCommand
 import com.github.sylux6.watanabot.modules.music.entities.GuildMusicManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
+import java.util.HashMap
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import java.util.HashMap
 
 object MusicCommandModule : AbstractCommandModule(
     "Music",

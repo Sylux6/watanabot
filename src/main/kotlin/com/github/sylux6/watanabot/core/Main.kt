@@ -8,11 +8,11 @@ import com.github.sylux6.watanabot.utils.BOT_TOKEN
 import com.github.sylux6.watanabot.utils.config
 import com.github.sylux6.watanabot.utils.jda
 import com.natpryce.konfig.Misconfiguration
+import kotlin.system.exitProcess
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.events.ShutdownEvent
-import kotlin.system.exitProcess
 
 object Main {
 
