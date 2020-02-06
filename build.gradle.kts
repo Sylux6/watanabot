@@ -1,14 +1,17 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 val kotlinVersion = "1.3.61"
 val spekVersion = "2.0.9"
 
 plugins {
+    application
     java
     `maven-publish`
     kotlin("jvm") version "1.3.61"
     id("com.github.johnrengelman.shadow") version "5.2.0"
-    id("org.jlleitschuh.gradle.ktlint") version "9.1.1"
+    id("org.jmailen.kotlinter") version "2.3.0"
+}
+
+application {
+    mainClassName = "com.github.sylux6.watanabot.core.Main"
 }
 
 java {
@@ -50,31 +53,30 @@ dependencies {
     testImplementation("ch.tutteli.atrium:atrium-fluent-en_GB:0.9.1")
 }
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "1.8"
+tasks {
+    test {
+        useJUnitPlatform {
+            includeEngines("spek2")
+        }
     }
-}
 
-tasks.withType<Test> {
-    useJUnitPlatform {
-        includeEngines("spek2")
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
     }
-}
+    compileJava {
+        options.encoding = "UTF-8"
+    }
 
-tasks.create<Delete>("cleanLogs") {
-    group = "log"
-    delete = setOf(
-        "yousolog-error.log", "yousolog-info.log"
-    )
-}
+    shadowJar {
+        manifest {
+            attributes["Main-Class"] = "com.github.sylux6.watanabot.core.Main"
+        }
+    }
 
-tasks.withType<ShadowJar> {
-    manifest {
-        attributes["Main-Class"] = "com.github.sylux6.watanabot.core.Main"
+    create("cleanLogs", Delete::class) {
+        group = "log"
+        delete = setOf(
+            "yousolog-error.log", "yousolog-info.log"
+        )
     }
 }

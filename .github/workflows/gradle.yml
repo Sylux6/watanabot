@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Linting with ktlint
-      run: gradle ktlintCheck
+      run: gradle lintKotlin
 
     - name: Test with gradle
       run: gradle test
