@@ -5,7 +5,7 @@ val spekVersion = "2.0.9"
 
 plugins {
     java
-    maven
+    `maven-publish`
     kotlin("jvm") version "1.3.61"
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
