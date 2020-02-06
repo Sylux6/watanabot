@@ -37,9 +37,9 @@ abstract class AbstractCommand(
             .setTitle("Documentation for `$name`")
             .addField(
                 "Usage",
-                "`${PREFIX} "
-                    + (if (commandModule != GeneralCommandModule) "${commandModule.shortName} " else "")
-                    + "$name $template`",
+                "`$PREFIX " +
+                    (if (commandModule != GeneralCommandModule) "${commandModule.shortName} " else "") +
+                    "$name $template`",
                 true
             )
             .addField("Description", description, false)

@@ -7,13 +7,13 @@ import com.github.sylux6.watanabot.utils.dayFormatter
 import com.github.sylux6.watanabot.utils.findMember
 import com.github.sylux6.watanabot.utils.query
 import com.github.sylux6.watanabot.utils.sendMessage
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 object BirthdayGetCommand : AbstractCommand("get") {
     override val template: String
@@ -27,7 +27,7 @@ object BirthdayGetCommand : AbstractCommand("get") {
             event.member ?: throw CommandException("You must run this command in a guild")
         } else {
             val username = args.joinToString(" ")
-            findMember(event.guild, username) ?: throw CommandException("Cannot find **${username}** in this server")
+            findMember(event.guild, username) ?: throw CommandException("Cannot find **$username** in this server")
         }
 
         val res = query("select birthday from member where userid = ${member.user.id} and guildid = ${event.guild.id}")

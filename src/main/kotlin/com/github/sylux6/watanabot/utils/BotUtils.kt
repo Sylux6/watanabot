@@ -21,9 +21,9 @@ val isPrivateServer: (Long?) -> (Boolean) = { id: Long? -> id == PRIVATE_SERVER_
 // Non persistent memory
 // val smashPassInstances = HashMap<String, SmashPass>()
 
-/////////////////////////////////////////////
-////////      FUNCTIONS         /////////////
-/////////////////////////////////////////////
+// ///////////////////////////////////////////
+// //////      FUNCTIONS         /////////////
+// ///////////////////////////////////////////
 
 fun randomStatus() {
     jda.presence.setPresence(
@@ -67,7 +67,7 @@ fun findMember(guild: Guild, searchText: String): Member? {
     return bestMatch.second
 }
 
-///////// ROLE FUNCTION ////////
+// /////// ROLE FUNCTION ////////
 fun addRole(guild: Guild, member: Member, role: Role) {
     guild.addRoleToMember(member, role).queue()
 }

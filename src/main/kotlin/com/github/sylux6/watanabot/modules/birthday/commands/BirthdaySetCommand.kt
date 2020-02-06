@@ -10,11 +10,11 @@ import com.github.sylux6.watanabot.utils.dayFormatter
 import com.github.sylux6.watanabot.utils.query
 import com.github.sylux6.watanabot.utils.saveOrUpdate
 import com.github.sylux6.watanabot.utils.sendMessageAt
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object BirthdaySetCommand : AbstractCommand("set", 1) {
     override val template: String
@@ -49,8 +49,8 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
             saveOrUpdate(member)
             sendMessageAt(
                 event.channel, event.author,
-                "${event.guild.getMemberById(member.getUserId())!!.effectiveName} birthday is set to the "
-                    + dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date))
+                "${event.guild.getMemberById(member.getUserId())!!.effectiveName} birthday is set to the " +
+                    dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date))
             )
         } catch (e: ParseException) {
             throw CommandException("Cannot get your birthday, please give your birthday following this format: dd/MM")

@@ -1,0 +1,15 @@
+name: Dev CI
+
+on: [push]
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Linting with ktlint
+      run: gradle ktlintFormat
+
+    - name: Test with gradle
+      run: gradle test

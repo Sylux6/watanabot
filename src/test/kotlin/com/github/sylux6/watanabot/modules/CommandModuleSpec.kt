@@ -63,7 +63,7 @@ import com.github.sylux6.watanabot.modules.picture.commands.PictureSafeCommand
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-object CommandModuleTestCase : Spek({
+object CommandModuleSpec : Spek({
     describe("Command modules") {
         it("should not have conflicts in general commands and modules name") {
             expect(COMMAND_MODULE_MAP.keys.intersect(GeneralCommandModule.commandMap.keys)).isEmpty()
@@ -137,4 +137,3 @@ object CommandModuleTestCase : Spek({
         }
     }
 })
-

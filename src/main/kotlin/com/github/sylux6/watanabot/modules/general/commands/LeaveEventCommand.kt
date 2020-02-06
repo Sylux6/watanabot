@@ -17,8 +17,8 @@ object LeaveEventCommand : AbstractCommand("leaveevent", levelAccess = listOf(Co
         if (event.member!!.roles.contains(eventRole)) {
             event.guild.removeRoleFromMember(event.member!!, eventRole).queue()
             sendMessage(
-                event.channel, "${mentionAt(event.author)} "
-                    + "${eventRole.name} role removed"
+                event.channel, "${mentionAt(event.author)} " +
+                    "${eventRole.name} role removed"
             )
         }
     }
