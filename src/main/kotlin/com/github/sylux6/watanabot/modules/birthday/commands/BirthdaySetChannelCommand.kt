@@ -4,7 +4,7 @@ import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.utils.linkTextChannel
 import com.github.sylux6.watanabot.utils.sendMessage
-import db.models.Settings
+import db.models.Guilds
 import db.utils.insertOrUpdate
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -17,7 +17,7 @@ object BirthdaySetChannelCommand : AbstractCommand("setchannel", 1, listOf(Comma
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         transaction {
-            Settings.insertOrUpdate(Settings.guildId) {
+            Guilds.insertOrUpdate(Guilds.guildId) {
                 it[guildId] = event.guild.idLong
                 it[birthdayChannelId] = event.channel.idLong
             }

@@ -7,7 +7,7 @@ import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.utils.dayFormatter
 import com.github.sylux6.watanabot.utils.sendMessageAt
-import db.models.Members
+import db.models.Users
 import db.utils.insertOrUpdate
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -36,8 +36,7 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
                 Pair(DateTime(formatter.parse(args.first())), event.member!!)
             }
             transaction {
-                Members.insertOrUpdate(Members.guildId, Members.userId) {
-                    it[guildId] = event.guild.idLong
+                Users.insertOrUpdate(Users.userId) {
                     it[userId] = event.author.idLong
                     it[birthday] = date
                 }
