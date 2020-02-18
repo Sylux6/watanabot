@@ -21,20 +21,20 @@ val DB_PASSWORD = config[CONFIG_DB_PASSWORD]
 
 // INSERT_OR_UPDATE implementation
 fun <T : Table> T.insertOrUpdate(vararg keys: Column<*>, body: T.(InsertStatement<Number>) -> Unit) =
-    InsertOrUpdate<Number>(this, keys = *keys).apply {
+    InsertOrUpdate<Number>(keys, this).apply {
         body(this)
         execute(TransactionManager.current())
     }
 
 class InsertOrUpdate<Key : Any>(
+    private val keys: Array<out Column<*>>,
     table: Table,
-    isIgnore: Boolean = false,
-    private vararg val keys: Column<*>
+    isIgnore: Boolean = false
 ) : InsertStatement<Key>(table, isIgnore) {
     override fun prepareSQL(transaction: Transaction): String {
-        val tm = TransactionManager.current()
-        val updateSetter = table.columns.joinToString { "${tm.identity(it)} = EXCLUDED.${tm.identity(it)}" }
-        val onConflict = "ON CONFLICT (${keys.joinToString { tm.identity(it) }}) DO UPDATE SET $updateSetter"
+        val updateSetter = super.values.keys.joinToString { "${it.name} = EXCLUDED.${it.name}" }
+        val keyColumns = keys.joinToString(",") { it.name }
+        val onConflict = "ON CONFLICT ($keyColumns) DO UPDATE SET $updateSetter"
         return "${super.prepareSQL(transaction)} $onConflict"
     }
 }
