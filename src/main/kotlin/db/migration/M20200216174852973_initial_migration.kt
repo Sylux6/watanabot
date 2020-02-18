@@ -7,22 +7,21 @@ import com.improve_future.harmonica.core.AbstractMigration
  */
 class M20200216174852973_initial_migration : AbstractMigration() {
     override fun up() {
-        createTable("settings") {
+        createTable("guilds") {
             bigInteger("guild_id", nullable = false)
             bigInteger("birthday_channel_id", nullable = true)
         }
-        createIndex("settings", "guild_id", true)
+        createIndex("guilds", "guild_id", true)
 
-        createTable("members") {
-            date("birthday", nullable = true)
-            bigInteger("guild_id", nullable = false)
+        createTable("users") {
             bigInteger("user_id", nullable = false)
+            date("birthday", nullable = true)
         }
-        createIndex("members", arrayOf("guild_id", "user_id"), true)
+        createIndex("users", "user_id", true)
     }
 
     override fun down() {
-        dropTable("members")
-        dropTable("settings")
+        dropTable("users")
+        dropTable("guilds")
     }
 }

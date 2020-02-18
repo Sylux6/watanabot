@@ -4,7 +4,7 @@ import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.sendMessage
-import db.models.Members
+import db.models.Users
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.Month
@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.jodatime.month
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -33,12 +32,12 @@ object BirthdayMonthCommand : AbstractCommand("month") {
         }
 
         val birthdays: Map<Int, List<Member>> = transaction {
-            Members
-                .slice(Members.userId, Members.birthday)
-                .select { Members.birthday.month() eq month and (Members.guildId eq event.guild.idLong) }
-                .orderBy(Members.birthday)
-                .groupBy { it[Members.birthday]!!.dayOfMonth }
-                .mapValues { it.value.mapNotNull { member -> event.guild.getMemberById(member[Members.userId]) } }
+            Users
+                .slice(Users.userId, Users.birthday)
+                .select { Users.birthday.month() eq month }
+                .orderBy(Users.birthday)
+                .groupBy { it[Users.birthday]!!.dayOfMonth }
+                .mapValues { it.value.mapNotNull { member -> event.guild.getMemberById(member[Users.userId]) } }
         }
         birthdayInMonthEmbedMessage(
             event.channel,

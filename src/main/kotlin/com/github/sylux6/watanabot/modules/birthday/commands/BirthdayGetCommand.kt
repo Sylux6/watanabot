@@ -6,7 +6,7 @@ import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.dayFormatter
 import com.github.sylux6.watanabot.utils.findMember
 import com.github.sylux6.watanabot.utils.sendMessage
-import db.models.Members
+import db.models.Users
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
@@ -35,10 +34,10 @@ object BirthdayGetCommand : AbstractCommand("get") {
         }
 
         val birthday: DateTime = transaction {
-            Members
-                .slice(Members.birthday)
-                .select { (Members.userId eq member.idLong) and (Members.guildId eq member.guild.idLong) }
-                .firstOrNull()?.get(Members.birthday)
+            Users
+                .slice(Users.birthday)
+                .select { Users.userId eq member.idLong }
+                .singleOrNull()?.get(Users.birthday)
                 ?: throw CommandException("**${member.effectiveName}** didn't set a birthday")
         }
         birthdayEmbedMessage(event.channel, member, birthday.toDate())

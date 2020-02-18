@@ -4,7 +4,7 @@ import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.utils.linkTextChannel
 import com.github.sylux6.watanabot.utils.sendMessage
-import db.models.Settings
+import db.models.Guilds
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -17,10 +17,11 @@ object BirthdayGetChannelCommand : AbstractCommand("getchannel") {
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val birthdayChannelId: Long = transaction {
-            Settings
-                .slice(Settings.birthdayChannelId)
-                .select { Settings.guildId eq event.guild.idLong }
-                .firstOrNull()?.get(Settings.birthdayChannelId) ?: throw CommandException("Birthday channel is not set")
+            Guilds
+                .slice(Guilds.birthdayChannelId)
+                .select { Guilds.guildId eq event.guild.idLong }
+                .singleOrNull()?.get(Guilds.birthdayChannelId)
+                ?: throw CommandException("Birthday channel is not set")
         }
         val birthdayChannelName = event.guild.getTextChannelById(birthdayChannelId)!!
         sendMessage(event.channel, "Birthdays are announced in " + linkTextChannel(birthdayChannelName))
