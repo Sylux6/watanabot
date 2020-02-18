@@ -49,7 +49,7 @@ class DailyTask : Job {
                     .slice(Guilds.guildId, Guilds.birthdayChannelId)
                     .select { Guilds.birthdayChannelId.isNotNull() }
                     .associateBy { it[Guilds.guildId] }
-                    .mapValues { (_, value) -> value[Guilds.birthdayChannelId]!! }
+                    .mapValues { (_, guild) -> guild[Guilds.birthdayChannelId]!! }
             }
 
             for ((guildId, channelId) in channelIdsByGuildId) {

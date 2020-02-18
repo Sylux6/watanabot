@@ -12,8 +12,11 @@ import com.github.sylux6.watanabot.core.CommandHandler.COMMAND_MODULE_MAP
 import com.github.sylux6.watanabot.modules.azur_lane.AzurLaneCommandModule
 import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneChibiCommand
 import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneInfoCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneMarryCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLanePopularityCommand
 import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneSkinCommand
 import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneSkinsCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneWaifuCommand
 import com.github.sylux6.watanabot.modules.birthday.BirthdayCommandModule
 import com.github.sylux6.watanabot.modules.birthday.commands.BirthdayGetChannelCommand
 import com.github.sylux6.watanabot.modules.birthday.commands.BirthdayGetCommand
@@ -87,12 +90,15 @@ object CommandModuleSpec : Spek({
 
         it("should define all commands") {
             val commandList = COMMAND_MODULES.flatMap { it.commandMap.values } + GeneralCommandModule.commandMap.values
-            expect(commandList.size).toBe(52)
+            expect(commandList.size).toBe(55)
             expect(commandList).contains(
                 AzurLaneChibiCommand,
                 AzurLaneInfoCommand,
                 AzurLaneSkinCommand,
                 AzurLaneSkinsCommand,
+                AzurLanePopularityCommand,
+                AzurLaneWaifuCommand,
+                AzurLaneMarryCommand,
                 BirthdayGetChannelCommand,
                 BirthdayGetCommand,
                 BirthdayMonthCommand,

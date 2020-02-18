@@ -7,7 +7,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("org.jetbrains.kotlin", "kotlin-script-util", "1.3.61")
+        classpath("org.jetbrains.kotlin:kotlin-script-util:1.3.61")
         classpath("com.github.KenjiOhtsuka:harmonica:develop-SNAPSHOT")
         classpath("com.github.cesarferreira:kotlin-pluralizer:0.2.9")
     }
@@ -46,14 +46,16 @@ dependencies {
     implementation("club.minnced:jda-reactor:1.0.0")
 
     // Database
-    implementation("org.postgresql", "postgresql", "42.2.10")
+    implementation("org.postgresql:postgresql:42.2.10")
     implementation("org.quartz-scheduler:quartz:2.3.2")
-    implementation("org.jetbrains.exposed", "exposed-core", "0.21.1")
-    implementation("org.jetbrains.exposed", "exposed-dao", "0.21.1")
-    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.21.1")
-    implementation("org.jetbrains.exposed", "exposed-jodatime", "0.21.1")
+    implementation("org.jetbrains.exposed:exposed-core:0.21.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.21.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.21.1")
+    implementation("org.jetbrains.exposed:exposed-jodatime:0.21.1")
+
+    // Database migration
     implementation("com.github.KenjiOhtsuka:harmonica:develop-SNAPSHOT")
-    implementation("org.reflections", "reflections", "0.9.12")
+    implementation("org.reflections:reflections:0.9.12")
     implementation("org.jetbrains.kotlin:kotlin-script-runtime:1.3.61")
 
     // Logging
@@ -61,13 +63,13 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:1.7.8")
 
     // Utils
-    implementation("org.json", "json", "20190722")
-    implementation("info.debatty", "java-string-similarity", "1.2.1")
+    implementation("org.json:json:20190722")
+    implementation("info.debatty:java-string-similarity:1.2.1")
     implementation("com.natpryce:konfig:1.6.10.0")
 
     // API
     implementation("net.kodehawa:imageboard-api:2.1")
-    implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.2")
+    implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.3")
 
     // Test
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
@@ -95,6 +97,11 @@ tasks {
     shadowJar {
         manifest {
             attributes["Main-Class"] = "com.github.sylux6.watanabot.core.Main"
+        }
+        dependencies {
+            exclude(dependency("com.github.KenjiOhtsuka:harmonica"))
+            exclude(dependency("org.reflections:reflections"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-script-runtime"))
         }
     }
     create("cleanLogs", Delete::class) {

@@ -37,7 +37,7 @@ object BirthdayMonthCommand : AbstractCommand("month") {
                 .select { Users.birthday.month() eq month }
                 .orderBy(Users.birthday)
                 .groupBy { it[Users.birthday]!!.dayOfMonth }
-                .mapValues { it.value.mapNotNull { member -> event.guild.getMemberById(member[Users.userId]) } }
+                .mapValues { (_, users) -> users.mapNotNull { user -> event.guild.getMemberById(user[Users.userId]) } }
         }
         birthdayInMonthEmbedMessage(
             event.channel,
