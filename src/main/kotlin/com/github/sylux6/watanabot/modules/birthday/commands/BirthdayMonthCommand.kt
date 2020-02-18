@@ -56,15 +56,13 @@ object BirthdayMonthCommand : AbstractCommand("month") {
             return
         }
         for ((day, members) in birthdays) {
-            val memberList = StringBuilder()
-            for (member in members) {
-                memberList.append("${member.effectiveName}\n")
+            if (members.isNotEmpty()) {
+                message.addField(
+                    "\uD83C\uDF82 $day/${DecimalFormat("00").format(month)}",
+                    members.joinToString("\n") { it.effectiveName },
+                    false
+                )
             }
-            message.addField(
-                "\uD83C\uDF82 $day/${DecimalFormat("00").format(month)}",
-                memberList.toString(),
-                false
-            )
         }
         sendMessage(channel, message.build())
     }
