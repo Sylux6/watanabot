@@ -9,11 +9,11 @@ import db.utils.insertOrUpdate
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object BirthdaySetChannelCommand : AbstractCommand("setchannel", 1, listOf(CommandLevelAccess.MOD)) {
+object BirthdaySetChannelCommand : AbstractCommand("setchannel", levelAccess = listOf(CommandLevelAccess.MOD)) {
     override val template: String
-        get() = "<channel>"
+        get() = ""
     override val description: String
-        get() = "Set text channel to announce birthdays."
+        get() = "Set the current text channel to announce birthdays."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         transaction {
