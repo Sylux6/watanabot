@@ -2,7 +2,7 @@ package com.github.sylux6.watanabot.modules.general.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.utils.buildEmbedImageOnly
-import com.github.sylux6.watanabot.utils.findMember
+import com.github.sylux6.watanabot.utils.findMemberOrNull
 import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
@@ -23,7 +23,7 @@ object AvatarCommand : AbstractCommand("avatar") {
             return
         }
         val username = args.joinToString(" ")
-        val member = findMember(event.guild, username)
+        val member = findMemberOrNull(event.guild, username)
 
         if (member != null) {
             sendMessage(

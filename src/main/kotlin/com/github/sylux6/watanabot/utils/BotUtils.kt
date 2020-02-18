@@ -40,7 +40,7 @@ fun randomStatus() {
  * @param searchText the name to look for
  * @return member
  */
-fun findMember(guild: Guild, searchText: String): Member? {
+fun findMemberOrNull(guild: Guild, searchText: String): Member? {
     if (DISCORD_MENTION.matches(searchText)) {
         return guild.getMemberById(searchText.drop(2).dropLast(1))
     }

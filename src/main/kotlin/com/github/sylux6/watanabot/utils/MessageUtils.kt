@@ -21,9 +21,10 @@ fun sendBotMessage(
     channel: MessageChannel,
     title: String? = null,
     message: String,
-    type: BotMessageType = BotMessageType.NORMAL
+    type: BotMessageType = BotMessageType.NORMAL,
+    thumbnail: String? = null
 ) {
-    channel.sendMessage(buildBotMessage(title, message, type)).queue()
+    channel.sendMessage(buildBotMessage(title, message, type, thumbnail)).queue()
 }
 
 fun sendMessage(channel: MessageChannel, message: String) {

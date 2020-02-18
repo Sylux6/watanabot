@@ -4,8 +4,11 @@ import com.github.azurapi.azurapikotlin.internal.entities.Ship
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
 import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneChibiCommand
 import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneInfoCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneMarryCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLanePopularityCommand
 import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneSkinCommand
 import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneSkinsCommand
+import com.github.sylux6.watanabot.modules.azur_lane.commands.AzurLaneWaifuCommand
 import com.github.sylux6.watanabot.modules.azur_lane.entities.Rarity
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
@@ -17,7 +20,10 @@ object AzurLaneCommandModule : AbstractCommandModule(
         AzurLaneInfoCommand,
         AzurLaneSkinsCommand,
         AzurLaneSkinCommand,
-        AzurLaneChibiCommand
+        AzurLaneChibiCommand,
+        AzurLaneMarryCommand,
+        AzurLaneWaifuCommand,
+        AzurLanePopularityCommand
     )
 ) {
     override val moduleDescription: String

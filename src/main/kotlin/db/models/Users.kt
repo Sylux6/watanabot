@@ -8,4 +8,5 @@ import org.joda.time.DateTime
 object Users : IntIdTable() {
     val userId: Column<Long> = long("user_id").uniqueIndex()
     val birthday: Column<DateTime?> = date("birthday").nullable()
+    val azurLaneWaifuId: Column<String?> = varchar("azur_lane_waifu_id", 128).nullable()
 }

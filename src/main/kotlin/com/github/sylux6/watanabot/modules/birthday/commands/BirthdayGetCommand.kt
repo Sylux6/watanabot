@@ -4,7 +4,7 @@ import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.dayFormatter
-import com.github.sylux6.watanabot.utils.findMember
+import com.github.sylux6.watanabot.utils.findMemberOrNull
 import com.github.sylux6.watanabot.utils.sendMessage
 import db.models.Users
 import java.text.SimpleDateFormat
@@ -30,7 +30,7 @@ object BirthdayGetCommand : AbstractCommand("get") {
             event.member ?: throw CommandException("You must run this command in a guild")
         } else {
             val username = args.joinToString(" ")
-            findMember(event.guild, username) ?: throw CommandException("Cannot find **$username** in this server")
+            findMemberOrNull(event.guild, username) ?: throw CommandException("Cannot find **$username** in this server")
         }
 
         val birthday: DateTime = transaction {
