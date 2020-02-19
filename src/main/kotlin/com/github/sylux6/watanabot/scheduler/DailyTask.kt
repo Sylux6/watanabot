@@ -12,6 +12,7 @@ import db.models.Guilds
 import db.models.Users
 import java.time.LocalDate
 import kotlin.system.measureTimeMillis
+import mu.KotlinLogging
 import net.dv8tion.jda.api.EmbedBuilder
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.jodatime.day
@@ -20,6 +21,8 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.quartz.Job
 import org.quartz.JobExecutionContext
+
+private val logger = KotlinLogging.logger {}
 
 class DailyTask : Job {
 
@@ -71,6 +74,7 @@ class DailyTask : Job {
             embed.addField(jobTitle, "${measureTimeMillis(job)}ms", false)
         } catch (e: Exception) {
             embed.addField(jobTitle, "failed because: ${e.message}", false)
+            logger.error("$jobTitle failed because $e")
         }
         return embed
     }
