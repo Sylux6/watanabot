@@ -2,7 +2,6 @@ package com.github.sylux6.watanabot.modules.music.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.modules.music.MusicCommandModule.getGuildAudioPlayer
-import com.github.sylux6.watanabot.modules.music.entities.GuildMusicManager
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.sendMessage
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack

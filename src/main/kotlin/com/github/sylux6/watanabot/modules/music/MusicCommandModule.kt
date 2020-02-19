@@ -13,7 +13,6 @@ import com.github.sylux6.watanabot.modules.music.commands.MusicQueueCommand
 import com.github.sylux6.watanabot.modules.music.commands.MusicResumeCommand
 import com.github.sylux6.watanabot.modules.music.commands.MusicShuffleCommand
 import com.github.sylux6.watanabot.modules.music.commands.MusicStopCommand
-import com.github.sylux6.watanabot.modules.music.entities.GuildMusicManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import java.util.HashMap

@@ -12,7 +12,7 @@ object MusicResumeCommand : AbstractCommand("resume", levelAccess = listOf(Comma
         get() = "Resume song."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        val musicManager = getGuildAudioPlayer(event.guild)
-        musicManager.player.isPaused = false
+        // val musicManager = getGuildAudioPlayer(event.guild)
+        // musicManager.player.isPaused = false
     }
 }

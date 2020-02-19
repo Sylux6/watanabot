@@ -1,5 +1,6 @@
 package com.github.sylux6.watanabot.utils
 
+import com.natpryce.konfig.Misconfiguration
 import info.debatty.java.stringsimilarity.Cosine
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
@@ -7,9 +8,19 @@ import net.dv8tion.jda.api.entities.Emote
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role
+import kotlin.system.exitProcess
 
 // Bot
 lateinit var jda: JDA
+
+fun getToken(): String {
+    try {
+        return config[CONFIG_TOKEN]
+    } catch (e: Misconfiguration) {
+        println("Please define a bot.token property in watanabot.properties file")
+        exitProcess(1)
+    }
+}
 
 // CONSTANTS
 val BOT_PREFIX = config.getOrElse(CONFIG_PREFIX, "o7")

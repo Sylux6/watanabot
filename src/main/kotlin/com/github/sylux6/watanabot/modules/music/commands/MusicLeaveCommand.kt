@@ -13,8 +13,8 @@ object MusicLeaveCommand : AbstractCommand("leave", levelAccess = listOf(Command
         get() = "Make Watanabot leave the voice channel."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        event.guild.audioManager.closeAudioConnection()
-        getGuildAudioPlayer(event.guild).player.destroy()
-        sendBotMessage(event.channel, "Music player", "Bye bye!~ (> ᴗ •)ゞ")
+        // event.guild.audioManager.closeAudioConnection()
+        // getGuildAudioPlayer(event.guild).player.destroy()
+        // sendBotMessage(event.channel, "Music player", "Bye bye!~ (> ᴗ •)ゞ")
     }
 }

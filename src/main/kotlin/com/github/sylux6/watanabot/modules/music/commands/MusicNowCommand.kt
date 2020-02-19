@@ -15,14 +15,14 @@ object MusicNowCommand : AbstractCommand("now") {
         get() = "Show the title of the current song."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        val musicManager =
-            MusicCommandModule.getGuildAudioPlayer(event.guild)
-        val track = musicManager.player.playingTrack ?: commandFail("Nothing is played")
-        val embedTrack = EmbedBuilder()
-            .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
-            .setAuthor("Now playing", null, event.jda.selfUser.effectiveAvatarUrl)
-            .setColor(BOT_PRIMARY_COLOR)
-            .build()
-        sendMessage(event.channel, embedTrack)
+        // val musicManager =
+        //     MusicCommandModule.getGuildAudioPlayer(event.guild)
+        // val track = musicManager.player.playingTrack ?: commandFail("Nothing is played")
+        // val embedTrack = EmbedBuilder()
+        //     .setTitle("\uD83C\uDFB6 ${track.info.title}", track.info.uri)
+        //     .setAuthor("Now playing", null, event.jda.selfUser.effectiveAvatarUrl)
+        //     .setColor(BOT_PRIMARY_COLOR)
+        //     .build()
+        // sendMessage(event.channel, embedTrack)
     }
 }

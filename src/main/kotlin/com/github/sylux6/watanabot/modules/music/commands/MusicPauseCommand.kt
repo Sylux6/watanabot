@@ -12,7 +12,7 @@ object MusicPauseCommand : AbstractCommand("pause", levelAccess = listOf(Command
         get() = "Pause the current song."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        val musicManager = getGuildAudioPlayer(event.guild)
-        musicManager.player.isPaused = true
+        // val musicManager = getGuildAudioPlayer(event.guild)
+        // musicManager.player.isPaused = true
     }
 }
