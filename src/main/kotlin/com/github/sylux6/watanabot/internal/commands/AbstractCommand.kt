@@ -1,7 +1,8 @@
 package com.github.sylux6.watanabot.internal.commands
 
-import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.exceptions.accessFail
+import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.modules.general.GeneralCommandModule
@@ -46,12 +47,12 @@ abstract class AbstractCommand(
         try {
             for (access in levelAccess) {
                 if (!checkCommandAccess(event, access)) {
-                    throw CommandAccessException(access.info)
+                    accessFail(access.info)
                 }
             }
             when {
                 args.contains("--help") -> help(commandModule, event.channel)
-                args.size < minArgs -> throw CommandException("Invalid command, do you need help ? (see documentation with `--help`)")
+                args.size < minArgs -> commandFail("Invalid command, do you need help ? (see documentation with `--help`)")
                 else -> runCommand(event, args)
             }
         } catch (e: CommandException) {

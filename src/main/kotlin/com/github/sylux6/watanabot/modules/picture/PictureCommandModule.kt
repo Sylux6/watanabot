@@ -1,7 +1,7 @@
 package com.github.sylux6.watanabot.modules.picture
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommandModule
-import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.modules.picture.commands.PictureNsfwCommand
 import com.github.sylux6.watanabot.modules.picture.commands.PictureSafeCommand
 import com.github.sylux6.watanabot.utils.buildEmbedImageBooru
@@ -41,10 +41,10 @@ object PictureCommandModule : AbstractCommandModule(
                     getImage(event, search, Rating.QUESTIONABLE)
                 rating == Rating.QUESTIONABLE -> // If no questionable image has been found, try again with safe rating
                     getImage(event, search, Rating.SAFE)
-                else -> throw CommandException("No picture found")
+                else -> commandFail("No picture found")
             }
         } catch (e: Exception) {
-            throw CommandException(e.message)
+            commandFail(e.message)
         }
     }
 }

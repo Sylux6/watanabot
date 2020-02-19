@@ -1,7 +1,7 @@
 package com.github.sylux6.watanabot.modules.birthday.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.sendMessage
 import db.models.Users
@@ -28,7 +28,7 @@ object BirthdayMonthCommand : AbstractCommand("month") {
         val month = if (args.isEmpty()) LocalDate.now().monthValue else args[0].toInt()
 
         if (month < 1 || month > 12) {
-            throw CommandException("Invalid month")
+            commandFail("Invalid month")
         }
 
         val birthdays: Map<Int, List<Member>> = transaction {

@@ -1,7 +1,7 @@
 package com.github.sylux6.watanabot.modules.birthday.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.utils.linkTextChannel
 import com.github.sylux6.watanabot.utils.sendMessage
 import db.models.Guilds
@@ -21,7 +21,7 @@ object BirthdayGetChannelCommand : AbstractCommand("getchannel") {
                 .slice(Guilds.birthdayChannelId)
                 .select { Guilds.guildId eq event.guild.idLong }
                 .singleOrNull()?.get(Guilds.birthdayChannelId)
-                ?: throw CommandException("Birthday channel is not set")
+                ?: commandFail("Birthday channel is not set")
         }
         val birthdayChannelName = event.guild.getTextChannelById(birthdayChannelId)!!
         sendMessage(event.channel, "Birthdays are announced in " + linkTextChannel(birthdayChannelName))

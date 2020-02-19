@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.modules.birthday.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.commands.checkCommandAccess
-import com.github.sylux6.watanabot.internal.exceptions.CommandAccessException
-import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.exceptions.accessFail
+import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.utils.dayFormatter
 import com.github.sylux6.watanabot.utils.sendMessageAt
@@ -29,9 +29,9 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
             // Check if all conditions are met to set another member birthday
             val (date: DateTime, member: Member) = if (args.size > 1) {
                 if (!checkCommandAccess(event, CommandLevelAccess.ADMIN)) {
-                    throw CommandAccessException("You cannot set a birthday for another member")
+                    accessFail("You cannot set a birthday for another member")
                 }
-                Pair(DateTime(formatter.parse(args[1])), event.guild.getMemberById(args.first()) ?: throw CommandException("Cannot find member id"))
+                Pair(DateTime(formatter.parse(args[1])), event.guild.getMemberById(args.first()) ?: commandFail("Cannot find member id"))
             } else {
                 Pair(DateTime(formatter.parse(args.first())), event.member!!)
             }
@@ -47,9 +47,9 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
                     dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date.toDate()))
             )
         } catch (e: ParseException) {
-            throw CommandException("Cannot get your birthday, please give your birthday following this format: dd/MM")
+            commandFail("Cannot get your birthday, please give your birthday following this format: dd/MM")
         } catch (e: NumberFormatException) {
-            throw CommandException("Cannot parse the member id")
+            commandFail("Cannot parse the member id")
         }
     }
 }

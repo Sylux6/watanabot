@@ -3,7 +3,7 @@ package com.github.sylux6.watanabot.modules.azur_lane.commands
 import com.github.azurapi.azurapikotlin.api.Atago
 import com.github.azurapi.azurapikotlin.internal.entities.Ship
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.findMemberOrNull
 import com.github.sylux6.watanabot.utils.sendMessage
@@ -26,14 +26,14 @@ object AzurLaneWaifuCommand : AbstractCommand("waifu") {
             event.member!!
         } else {
             findMemberOrNull(event.guild, args.joinToString(" "))
-                ?: throw CommandException("Cannot find user in the server")
+                ?: commandFail("Cannot find user in the server")
         }
         val shipId: String = transaction {
             Users
                 .slice(Users.azurLaneWaifuId)
                 .select { Users.userId eq member.idLong }
                 .singleOrNull()?.get(Users.azurLaneWaifuId)
-                ?: throw CommandException("**${member.effectiveName}** didn't pledge to a ship")
+                ?: commandFail("**${member.effectiveName}** didn't pledge to a ship")
         }
         val ship: Ship = Atago.getShipById(shipId)
         waifuEmbedMessage(event.channel, member, Atago.getShipById(shipId))

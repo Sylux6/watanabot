@@ -1,7 +1,7 @@
 package com.github.sylux6.watanabot.modules.general.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.utils.sendDM
 import com.github.sylux6.watanabot.utils.sendMessage
 import net.dv8tion.jda.api.entities.Member
@@ -19,7 +19,7 @@ object GetRoleCommand : AbstractCommand("getrole", 1) {
         val message = StringBuilder()
         val role: List<Role> = event.guild.getRolesByName(roleName, true)
         if (role.isEmpty()) {
-            throw CommandException("**$roleName** role not found")
+            commandFail("**$roleName** role not found")
         }
 
         val l: List<Member> = event.guild.getMembersWithRoles(role.first())

@@ -1,7 +1,7 @@
 package com.github.sylux6.watanabot.modules.birthday.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
-import com.github.sylux6.watanabot.internal.exceptions.CommandException
+import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.dayFormatter
 import com.github.sylux6.watanabot.utils.findMemberOrNull
@@ -27,10 +27,10 @@ object BirthdayGetCommand : AbstractCommand("get") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         // No member provided, get self birthday
         val member = if (args.isEmpty()) {
-            event.member ?: throw CommandException("You must run this command in a guild")
+            event.member ?: commandFail("You must run this command in a guild")
         } else {
             val username = args.joinToString(" ")
-            findMemberOrNull(event.guild, username) ?: throw CommandException("Cannot find **$username** in this server")
+            findMemberOrNull(event.guild, username) ?: commandFail("Cannot find **$username** in this server")
         }
 
         val birthday: DateTime = transaction {
@@ -38,7 +38,7 @@ object BirthdayGetCommand : AbstractCommand("get") {
                 .slice(Users.birthday)
                 .select { Users.userId eq member.idLong }
                 .singleOrNull()?.get(Users.birthday)
-                ?: throw CommandException("**${member.effectiveName}** didn't set a birthday")
+                ?: commandFail("**${member.effectiveName}** didn't set a birthday")
         }
         birthdayEmbedMessage(event.channel, member, birthday.toDate())
     }
