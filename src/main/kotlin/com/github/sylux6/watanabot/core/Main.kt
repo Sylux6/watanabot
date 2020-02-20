@@ -5,10 +5,12 @@ import com.github.sylux6.watanabot.core.events.initReactiveEventManager
 import com.github.sylux6.watanabot.core.events.manager
 import com.github.sylux6.watanabot.scheduler.QuartzScheduler
 import com.github.sylux6.watanabot.utils.CONFIG_TOKEN
+import com.github.sylux6.watanabot.utils.SENTRY_DNS
 import com.github.sylux6.watanabot.utils.config
 import com.github.sylux6.watanabot.utils.jda
 import com.natpryce.konfig.Misconfiguration
 import db.utils.connectToDatabase
+import io.sentry.Sentry
 import kotlin.system.exitProcess
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
@@ -19,6 +21,11 @@ object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        // Sentry logger setup
+        if (config.contains(SENTRY_DNS)) {
+            Sentry.init(config[SENTRY_DNS])
+        }
+
         // Building bot
         initReactiveEventManager()
         jda = JDABuilder(AccountType.BOT)

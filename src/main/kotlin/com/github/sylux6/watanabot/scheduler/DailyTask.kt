@@ -4,6 +4,7 @@ import com.github.azurapi.azurapikotlin.api.Atago
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.getYousoro
 import com.github.sylux6.watanabot.utils.jda
+import com.github.sylux6.watanabot.utils.log
 import com.github.sylux6.watanabot.utils.mentionAt
 import com.github.sylux6.watanabot.utils.randomStatus
 import com.github.sylux6.watanabot.utils.sendLog
@@ -71,7 +72,9 @@ class DailyTask : Job {
 
     private fun addJob(embed: EmbedBuilder, jobTitle: String, job: () -> Unit): EmbedBuilder {
         try {
-            embed.addField(jobTitle, "${measureTimeMillis(job)}ms", false)
+            val timeExecution = measureTimeMillis(job)
+            embed.addField(jobTitle, "${timeExecution}ms", false)
+            logger.log("$jobTitle executed in ${timeExecution}ms")
         } catch (e: Exception) {
             embed.addField(jobTitle, "failed because: ${e.message}", false)
             logger.error("$jobTitle failed because $e")

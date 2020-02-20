@@ -5,6 +5,7 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %boldCyan([%thread]) %highlight(%-6level) %boldGreen(%-15.-15logger{0}) - %msg%n</pattern>
         </encoder>
     </appender>
+
     <appender name="ERROR_FILE" class="ch.qos.logback.core.FileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
@@ -15,6 +16,7 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-6level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+
     <appender name="ACTIVITY_FILE" class="ch.qos.logback.core.FileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -27,9 +29,34 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-6level %-15.-15logger{0} - %msg%n</pattern>
         </encoder>
     </appender>
+
+    <appender name="SENTRY_WARN" class="io.sentry.logback.SentryAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-6level %-15.-15logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SENTRY_INFO" class="io.sentry.logback.SentryAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>SENTRY_INFO</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>ACCEPT</onMatch>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-6level %-15.-15logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="ERROR_FILE" />
         <appender-ref ref="ACTIVITY_FILE" />
+        <appender-ref ref="SENTRY_WARN"/>
+        <appender-ref ref="SENTRY_INFO"/>
     </root>
 </configuration>

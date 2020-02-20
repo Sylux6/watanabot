@@ -18,6 +18,11 @@ val config = EnvironmentVariables overriding ConfigurationProperties.fromFile(Fi
 // Bot properties definition
 
 /**
+ * Sentry DNS
+ */
+val SENTRY_DNS = Key("log.sentry_dns", stringType)
+
+/**
  * Discord bot token
  */
 val CONFIG_TOKEN = Key("bot.token", stringType)
