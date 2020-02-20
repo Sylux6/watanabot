@@ -37,7 +37,7 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
             }
             transaction {
                 Users.insertOrUpdate(Users.userId) {
-                    it[userId] = event.author.idLong
+                    it[userId] = member.idLong
                     it[birthday] = date
                 }
             }
