@@ -1,4 +1,21 @@
+val atriumVersion = "0.9.1"
+val azurapiVersion = "3.1.3"
+val exposedVersion = "0.21.1"
+val harmonicaVersion = "develop-SNAPSHOT"
+val imageboardVersion = "2.1"
+val javaStringSimilarityVersion = "1.2.1"
+val jdaVersion = "4.1.1_108"
+val jdaReactorVersion = "1.0.0"
+val jsonVersion = "20190722"
+val konfigVersion = "1.6.10.0"
+val kotlinLoggingVersion = "1.7.8"
 val kotlinVersion = "1.3.61"
+val lavaplayerVersion = "1.3.34"
+val logbackVersion = "1.2.3"
+val mockkVersion = "1.9.3"
+val postgresqlVersion = "42.2.10"
+val quartzVersion = "2.3.2"
+val reflectionsVersion = "0.9.12"
 val spekVersion = "2.0.9"
 
 buildscript {
@@ -41,42 +58,42 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
 
     // Discord
-    implementation("net.dv8tion:JDA:4.1.1_108")
-    implementation("com.sedmelluq:lavaplayer:1.3.34")
-    implementation("club.minnced:jda-reactor:1.0.0")
+    implementation("net.dv8tion:JDA:$jdaVersion")
+    implementation("com.sedmelluq:lavaplayer:$lavaplayerVersion")
+    implementation("club.minnced:jda-reactor:$jdaReactorVersion")
 
     // Database
-    implementation("org.postgresql:postgresql:42.2.10")
-    implementation("org.quartz-scheduler:quartz:2.3.2")
-    implementation("org.jetbrains.exposed:exposed-core:0.21.1")
-    implementation("org.jetbrains.exposed:exposed-dao:0.21.1")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.21.1")
-    implementation("org.jetbrains.exposed:exposed-jodatime:0.21.1")
+    implementation("org.postgresql:postgresql:$postgresqlVersion")
+    implementation("org.quartz-scheduler:quartz:$quartzVersion")
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jodatime:$exposedVersion")
 
     // Database migration
-    implementation("com.github.KenjiOhtsuka:harmonica:develop-SNAPSHOT")
-    implementation("org.reflections:reflections:0.9.12")
-    implementation("org.jetbrains.kotlin:kotlin-script-runtime:1.3.61")
+    implementation("com.github.KenjiOhtsuka:harmonica:$harmonicaVersion")
+    implementation("org.reflections:reflections:$reflectionsVersion")
+    implementation("org.jetbrains.kotlin:kotlin-script-runtime:$kotlinVersion")
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation("io.github.microutils:kotlin-logging:1.7.8")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
 
     // Utils
-    implementation("org.json:json:20190722")
-    implementation("info.debatty:java-string-similarity:1.2.1")
-    implementation("com.natpryce:konfig:1.6.10.0")
+    implementation("org.json:json:$jsonVersion")
+    implementation("info.debatty:java-string-similarity:$javaStringSimilarityVersion")
+    implementation("com.natpryce:konfig:$konfigVersion")
 
     // API
-    implementation("net.kodehawa:imageboard-api:2.1")
-    implementation("com.github.AzurAPI:AzurApi-Kotlin:3.1.3")
+    implementation("net.kodehawa:imageboard-api:$imageboardVersion")
+    implementation("com.github.AzurAPI:AzurApi-Kotlin:$azurapiVersion")
 
     // Test
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-    testImplementation("io.mockk:mockk:1.9.3")
-    testImplementation("ch.tutteli.atrium:atrium-fluent-en_GB:0.9.1")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("ch.tutteli.atrium:atrium-fluent-en_GB:$atriumVersion")
 }
 
 tasks {
@@ -95,6 +112,7 @@ tasks {
         options.encoding = "UTF-8"
     }
     shadowJar {
+	archiveFileName.set("watanabot.jar")
         manifest {
             attributes["Main-Class"] = "com.github.sylux6.watanabot.core.Main"
         }
@@ -102,6 +120,14 @@ tasks {
             exclude(dependency("com.github.KenjiOhtsuka:harmonica"))
             exclude(dependency("org.reflections:reflections"))
             exclude(dependency("org.jetbrains.kotlin:kotlin-script-runtime"))
+        }
+       	// Exclude dependencies if there are ClassNotFoundError with them
+        minimize {
+            exclude(dependency("ch.qos.logback:logback-classic"))
+            exclude(dependency("org.quartz-scheduler:quartz"))
+            exclude(dependency(("org.jetbrains.exposed:exposed-dao")))
+            exclude(dependency(("org.jetbrains.exposed:exposed-jdbc")))
+            exclude(dependency("org.postgresql:postgresql"))
         }
     }
     create("cleanLogs", Delete::class) {
