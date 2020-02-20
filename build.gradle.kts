@@ -16,6 +16,7 @@ val mockkVersion = "1.9.3"
 val postgresqlVersion = "42.2.10"
 val quartzVersion = "2.3.2"
 val reflectionsVersion = "0.9.12"
+val sentryVersion = "1.7.30"
 val spekVersion = "2.0.9"
 
 buildscript {
@@ -78,6 +79,8 @@ dependencies {
     // Logging
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+    implementation("io.sentry:sentry:$sentryVersion")
+    implementation("io.sentry:sentry-logback:$sentryVersion")
 
     // Utils
     implementation("org.json:json:$jsonVersion")
@@ -130,6 +133,7 @@ tasks {
             exclude(dependency(("org.jetbrains.exposed:exposed-dao")))
             exclude(dependency(("org.jetbrains.exposed:exposed-jdbc")))
             exclude(dependency("org.postgresql:postgresql"))
+            exclude(dependency("io.sentry:sentry-logback"))
         }
     }
     create("cleanLogs", Delete::class) {
