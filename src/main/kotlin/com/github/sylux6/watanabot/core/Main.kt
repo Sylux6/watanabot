@@ -8,17 +8,12 @@ import com.github.sylux6.watanabot.utils.CONFIG_TOKEN
 import com.github.sylux6.watanabot.utils.config
 import com.github.sylux6.watanabot.utils.jda
 import com.natpryce.konfig.Misconfiguration
-import db.utils.DB_HOST
-import db.utils.DB_NAME
-import db.utils.DB_PASSWORD
-import db.utils.DB_PORT
-import db.utils.DB_USER
+import db.utils.connectToDatabase
 import kotlin.system.exitProcess
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.events.ShutdownEvent
-import org.jetbrains.exposed.sql.Database
 
 object Main {
 
@@ -38,12 +33,7 @@ object Main {
         QuartzScheduler.run()
 
         // Database connection
-        Database.connect(
-            "jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME",
-            driver = "org.postgresql.Driver",
-            user = DB_USER,
-            password = DB_PASSWORD
-        )
+        connectToDatabase()
     }
 
     private fun getToken(): String {

@@ -5,7 +5,8 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.jodatime.date
 import org.joda.time.DateTime
 
-object Users : IntIdTable("users") {
+object AzurLaneUsers : IntIdTable("azur_lane_users") {
     val userId: Column<Long> = long("user_id").uniqueIndex()
-    val birthday: Column<DateTime?> = date("birthday").nullable()
+    val oathId: Column<String?> = varchar("oath_id", 128).nullable()
+    val oathDate: Column<DateTime?> = date("oath_date").nullable()
 }

@@ -6,7 +6,7 @@ import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.jda
 import com.github.sylux6.watanabot.utils.sendBotMessage
 import com.github.sylux6.watanabot.utils.sendMessage
-import db.models.Users
+import db.models.AzurLaneUsers
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -21,14 +21,14 @@ object AzurLanePopularityCommand : AbstractCommand("popularity") {
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val topThree: List<Pair<String, Int>> = transaction {
-            Users
-                .slice(Users.azurLaneWaifuId, Users.userId)
-                .select { Users.azurLaneWaifuId.isNotNull() }
-                .filter { event.guild.getMemberById(it[Users.userId]) != null }
-                .groupBy { it[Users.azurLaneWaifuId]!! }
+            AzurLaneUsers
+                .slice(AzurLaneUsers.oathId, AzurLaneUsers.userId)
+                .select { AzurLaneUsers.oathId.isNotNull() }
+                .filter { event.guild.getMemberById(it[AzurLaneUsers.userId]) != null }
+                .groupBy { it[AzurLaneUsers.oathId]!! }
                 .mapValues { (_, users) -> users.size }
                 .entries.sortedByDescending { it.value }
-                .map { Pair(it.key, it.value) }
+                .map { it.key to it.value }
                 .take(3)
         }
         if (topThree.isNotEmpty()) {

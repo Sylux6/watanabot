@@ -7,10 +7,23 @@ import com.github.sylux6.watanabot.utils.CONFIG_DB_PORT
 import com.github.sylux6.watanabot.utils.CONFIG_DB_USER
 import com.github.sylux6.watanabot.utils.config
 import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.transactions.TransactionManager
+
+/**
+ * Static function to connect to database (useful during migration)
+ */
+fun connectToDatabase() {
+    Database.connect(
+        "jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME",
+        driver = "org.postgresql.Driver",
+        user = DB_USER,
+        password = DB_PASSWORD
+    )
+}
 
 // Configuration
 val DB_HOST = config[CONFIG_DB_HOST]
