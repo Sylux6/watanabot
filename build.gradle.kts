@@ -123,7 +123,9 @@ tasks {
         }
        	// Exclude dependencies if there are ClassNotFoundError with them
         minimize {
+	    exclude(dependency("com.sedmelluq:lavaplayer"))
             exclude(dependency("ch.qos.logback:logback-classic"))
+	    exclude(dependency("io.github.microutils:kotlin-logging"))
             exclude(dependency("org.quartz-scheduler:quartz"))
             exclude(dependency(("org.jetbrains.exposed:exposed-dao")))
             exclude(dependency(("org.jetbrains.exposed:exposed-jdbc")))
