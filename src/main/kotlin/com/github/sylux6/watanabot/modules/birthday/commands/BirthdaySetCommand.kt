@@ -31,9 +31,9 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
                 if (!checkCommandAccess(event, CommandLevelAccess.ADMIN)) {
                     accessFail("You cannot set a birthday for another member")
                 }
-                Pair(DateTime(formatter.parse(args[1])), event.guild.getMemberById(args.first()) ?: commandFail("Cannot find member id"))
+                DateTime(formatter.parse(args[1])) to (event.guild.getMemberById(args.first()) ?: commandFail("Cannot find member id"))
             } else {
-                Pair(DateTime(formatter.parse(args.first())), event.member!!)
+                DateTime(formatter.parse(args.first())) to event.member!!
             }
             transaction {
                 Users.insertOrUpdate(Users.userId) {

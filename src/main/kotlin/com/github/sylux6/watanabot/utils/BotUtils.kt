@@ -48,7 +48,7 @@ fun findMemberOrNull(guild: Guild, searchText: String): Member? {
         return guild.getMemberByTag(searchText)
     }
     val cosine = Cosine()
-    var bestMatch: Pair<Double, Member?> = Pair(0.0, null)
+    var bestMatch: Pair<Double, Member?> = 0.0 to null
     for (member in guild.members) {
         val nickname = member.effectiveName.toLowerCase()
         val username = member.user.name.toLowerCase()
@@ -59,8 +59,8 @@ fun findMemberOrNull(guild: Guild, searchText: String): Member? {
         val scoreUserName: Double = cosine.similarity(username, searchText.toLowerCase())
         val scoreEffectiveName: Double = cosine.similarity(nickname, searchText.toLowerCase())
         bestMatch = when {
-            scoreUserName > bestMatch.first -> Pair(scoreUserName, member)
-            scoreEffectiveName > bestMatch.first -> Pair(scoreEffectiveName, member)
+            scoreUserName > bestMatch.first -> scoreUserName to member
+            scoreEffectiveName > bestMatch.first -> scoreEffectiveName to member
             else -> bestMatch
         }
     }
