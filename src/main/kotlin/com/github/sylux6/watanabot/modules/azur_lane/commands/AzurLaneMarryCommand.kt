@@ -12,7 +12,7 @@ import org.joda.time.DateTime
 
 object AzurLaneMarryCommand : AbstractCommand("marry", 1) {
     override val template: String
-        get() = "<name>"
+        get() = "<ship_ame>"
     override val description: String
         get() = "Marry to a ship."
 

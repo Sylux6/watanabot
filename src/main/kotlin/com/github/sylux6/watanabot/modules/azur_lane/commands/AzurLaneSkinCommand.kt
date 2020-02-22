@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object AzurLaneSkinCommand : AbstractCommand("skin", 2) {
     override val template: String
-        get() = "<number> <name>"
+        get() = "<number> <ship_name>"
     override val description: String
         get() = "Show skin of a ship. Use `skins` command to get the available skins."
 
