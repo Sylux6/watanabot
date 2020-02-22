@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object AzurLaneChibiCommand : AbstractCommand("chibi", 1) {
     override val template: String
-        get() = "<name>"
+        get() = "<ship_name>"
     override val description: String
         get() = "Show chibi of a ship."
 
