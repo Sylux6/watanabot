@@ -6,6 +6,7 @@ import com.github.sylux6.watanabot.internal.exceptions.accessFail
 import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.internal.types.CommandLevelAccess
 import com.github.sylux6.watanabot.utils.dayFormatter
+import com.github.sylux6.watanabot.utils.findMemberOrNull
 import com.github.sylux6.watanabot.utils.sendMessageAt
 import db.models.Users
 import db.utils.insertOrUpdate
@@ -31,7 +32,8 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
                 if (!checkCommandAccess(event, CommandLevelAccess.ADMIN)) {
                     accessFail("You cannot set a birthday for another member")
                 }
-                DateTime(formatter.parse(args[1])) to (event.guild.getMemberById(args.first()) ?: commandFail("Cannot find member id"))
+                DateTime(formatter.parse(args[1])) to (findMemberOrNull(event.guild, args.first())
+                    ?: commandFail("Cannot find member"))
             } else {
                 DateTime(formatter.parse(args.first())) to event.member!!
             }
