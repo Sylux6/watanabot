@@ -12,6 +12,9 @@ val infoMarker: Marker = MarkerFactory.getMarker("SENTRY_INFO")
  *
  * @param message message
  */
-fun <T : KLogger> T.log(message: String) {
+fun KLogger.log(message: String?) {
     info(infoMarker, message)
+}
+fun KLogger.log(t: Throwable) {
+    info(infoMarker, t.message)
 }

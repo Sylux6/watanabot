@@ -11,6 +11,7 @@ import com.github.sylux6.watanabot.utils.BOT_PREFIX
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
 import com.github.sylux6.watanabot.utils.jda
+import com.github.sylux6.watanabot.utils.log
 import com.github.sylux6.watanabot.utils.sendBotMessage
 import com.github.sylux6.watanabot.utils.sendMessage
 import mu.KLogging
@@ -62,13 +63,13 @@ abstract class AbstractCommand(
                 message = e.message ?: "Error during ${commandModule.name} command",
                 type = BotMessageType.ERROR
             )
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             // Something unexpected happened
-            logger.error(e.message)
+            logger.log(e)
             sendBotMessage(
                 event.channel,
                 message = "$e",
-                type = BotMessageType.ERROR
+                type = BotMessageType.FATAL
             )
         }
     }

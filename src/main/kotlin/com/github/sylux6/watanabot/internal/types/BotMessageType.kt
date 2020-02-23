@@ -5,6 +5,7 @@ import java.awt.Color
 
 enum class BotMessageType(val display: String, val color: Int) {
     NORMAL("", BOT_PRIMARY_COLOR),
+    WARNING("⚠️Warning", Color.YELLOW.rgb),
     ERROR("⚠️Error", Color.RED.rgb),
-    WARNING("⚠️Warning", Color.YELLOW.rgb)
+    FATAL("⚠️Fatal error", Color.RED.rgb),
 }

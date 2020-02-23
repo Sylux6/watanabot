@@ -39,10 +39,13 @@ fun buildBotMessage(
     thumbnail: String? = null
 ): MessageEmbed {
     val embed = EmbedBuilder()
-    if (type == BotMessageType.NORMAL) {
-        embed.setAuthor(title ?: jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
-    } else {
-        embed.setAuthor(title ?: type.display)
+    when (type) {
+        BotMessageType.NORMAL -> embed.setAuthor(title ?: jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
+        BotMessageType.FATAL -> {
+            embed.setAuthor(title ?: type.display)
+            embed.setTitle("report issue", "https://github.com/Sylux6/WatanaBot/issues")
+        }
+        else -> embed.setAuthor(title ?: type.display)
     }
     if (thumbnail != null) {
         embed.setThumbnail(thumbnail)

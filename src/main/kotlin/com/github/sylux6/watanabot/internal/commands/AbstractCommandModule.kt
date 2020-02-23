@@ -42,7 +42,7 @@ abstract class AbstractCommandModule(
                     ) {
                         continue
                     }
-                    if (commandName == "--help") {
+                    if (commandName == "--help" || levelAccess.contains(CommandLevelAccess.HIDDEN)) {
                         continue
                     }
                     message.addField("`$commandName`", command.description, false)

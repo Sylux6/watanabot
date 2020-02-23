@@ -2,6 +2,10 @@ package com.github.sylux6.watanabot.internal.types
 
 enum class CommandLevelAccess(val info: String) {
     /**
+     * Hidden debug command
+     */
+    HIDDEN(""),
+    /**
      * Everyone can use
      */
     EVERYONE(""),
