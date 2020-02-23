@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
@@ -37,6 +38,12 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
             } else {
                 DateTime(formatter.parse(args.first())) to event.member!!
             }
+            val oldValue: DateTime? = transaction {
+                Users
+                    .slice(Users.userId, Users.birthday)
+                    .select { Users.userId eq member.idLong }
+                    .singleOrNull()?.getOrNull(Users.birthday)
+            }
             transaction {
                 Users.insertOrUpdate(Users.userId) {
                     it[userId] = member.idLong
@@ -46,7 +53,11 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
             sendMessageAt(
                 event.channel, event.author,
                 "${member.effectiveName} birthday is set to the " +
-                    dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date.toDate()))
+                    dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date.toDate())) +
+                    if (oldValue != null)
+                        " (previously ${dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(oldValue.toDate()))})"
+                    else
+                        ""
             )
         } catch (e: ParseException) {
             commandFail("Cannot get your birthday, please give your birthday following this format: dd/MM")
