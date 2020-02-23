@@ -47,6 +47,9 @@ fun findMemberOrNull(guild: Guild, searchText: String): Member? {
     if (DISCORD_TAG.matches(searchText)) {
         return guild.getMemberByTag(searchText)
     }
+    if (guild.members.map { member -> member.id }.contains(searchText)) {
+        return guild.getMemberById(searchText)
+    }
     val cosine = Cosine()
     var bestMatch: Pair<Double, Member?> = 0.0 to null
     for (member in guild.members) {
