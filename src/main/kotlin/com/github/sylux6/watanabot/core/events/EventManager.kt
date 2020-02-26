@@ -12,6 +12,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.ScheduledExecutorService
 import kotlin.concurrent.thread
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.user.UserActivityEndEvent
@@ -29,21 +32,30 @@ val manager: ReactiveEventManager = createManager {
     scheduler = schedulerWrap
     isDispose = false
 }
+val eventScope = CoroutineScope(Dispatchers.Default)
+
+/**
+ * Launch a coroutine to handle an event
+ * @param job function
+ */
+fun launchEvent(job: () -> Unit) {
+    eventScope.launch { job() }
+}
 
 fun initReactiveEventManager() {
     manager.on<MessageReceivedEvent>()
         .filter { !it.message.author.isBot && !it.message.author.isFake }
-        .subscribe { onMessageReceivedEvent(it) }
+        .subscribe { launchEvent { onMessageReceivedEvent(it) } }
 
     manager.on<GuildMemberLeaveEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { onGuildMemberLeaveEvent(it) }
+        .subscribe { launchEvent { onGuildMemberLeaveEvent(it) } }
 
     manager.on<UserActivityStartEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { onUserUpdateActivityStart(it) }
+        .subscribe { launchEvent { onUserUpdateActivityStart(it) } }
 
     manager.on<UserActivityEndEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { onUserUpdateActivityEnd(it) }
+        .subscribe { launchEvent { onUserUpdateActivityEnd(it) } }
 }
