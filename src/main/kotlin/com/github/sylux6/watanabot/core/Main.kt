@@ -1,6 +1,7 @@
 package com.github.sylux6.watanabot.core
 
 import club.minnced.jda.reactor.on
+import com.github.sylux6.watanabot.core.events.executor
 import com.github.sylux6.watanabot.core.events.initReactiveEventManager
 import com.github.sylux6.watanabot.core.events.manager
 import com.github.sylux6.watanabot.scheduler.QuartzScheduler
@@ -33,6 +34,8 @@ object Main {
             .setActivity(Activity.playing("with Chika-chan"))
             .setGuildSubscriptionsEnabled(true)
             .setEventManager(manager)
+            .setRateLimitPool(executor)
+            .setGatewayPool(executor)
             .build()
         jda.on<ShutdownEvent>().subscribe { it.jda.httpClient.connectionPool().evictAll() }
 

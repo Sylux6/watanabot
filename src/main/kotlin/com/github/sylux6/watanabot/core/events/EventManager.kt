@@ -12,6 +12,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.ScheduledExecutorService
 import kotlin.concurrent.thread
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.user.UserActivityEndEvent
@@ -33,17 +35,17 @@ val manager: ReactiveEventManager = createManager {
 fun initReactiveEventManager() {
     manager.on<MessageReceivedEvent>()
         .filter { !it.message.author.isBot && !it.message.author.isFake }
-        .subscribe { onMessageReceivedEvent(it) }
+        .subscribe { GlobalScope.launch() { onMessageReceivedEvent(it) } }
 
     manager.on<GuildMemberLeaveEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { onGuildMemberLeaveEvent(it) }
+        .subscribe { GlobalScope.launch() { onGuildMemberLeaveEvent(it) } }
 
     manager.on<UserActivityStartEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { onUserUpdateActivityStart(it) }
+        .subscribe { GlobalScope.launch() { onUserUpdateActivityStart(it) } }
 
     manager.on<UserActivityEndEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { onUserUpdateActivityEnd(it) }
+        .subscribe { GlobalScope.launch() { onUserUpdateActivityEnd(it) } }
 }

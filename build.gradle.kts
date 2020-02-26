@@ -10,6 +10,7 @@ val jsonVersion = "20190722"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggingVersion = "1.7.8"
 val kotlinVersion = "1.3.61"
+val kotlinxVersion = "1.3.3"
 val lavaplayerVersion = "1.3.34"
 val logbackVersion = "1.2.3"
 val mockkVersion = "1.9.3"
@@ -57,6 +58,7 @@ dependencies {
     // Core
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxVersion")
 
     // Discord
     implementation("net.dv8tion:JDA:$jdaVersion")
