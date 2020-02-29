@@ -29,7 +29,8 @@ class DailyTask : Job {
 
     override fun execute(context: JobExecutionContext) {
         val today = LocalDate.now()
-        val messageLog = EmbedBuilder()
+        val logBuilder = StringBuilder()
+        val embedLogBuilder = EmbedBuilder()
             .setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
             .setColor(BOT_PRIMARY_COLOR)
             .setTitle("Daily task ($today)")
@@ -38,10 +39,10 @@ class DailyTask : Job {
         randomStatus()
 
         // Update Azur Lane database
-        addJob(messageLog, "Update Azur Lane database") { Atago.reloadDatabase() }
+        addJob(embedLogBuilder, logBuilder, "Update Azur Lane database") { Atago.reloadDatabase() }
 
         // Birthday
-        addJob(messageLog, "Check members' birthday") {
+        addJob(embedLogBuilder, logBuilder, "Check members' birthday") {
             val memberIds: List<Long> = transaction {
                 Users
                     .slice(Users.userId)
@@ -67,18 +68,19 @@ class DailyTask : Job {
             }
         }
         // Send log
-        sendLog(messageLog.build())
+        logger.log(logBuilder.toString())
+        sendLog(embedLogBuilder.build())
     }
 
-    private fun addJob(embed: EmbedBuilder, jobTitle: String, job: () -> Unit): EmbedBuilder {
+    private fun addJob(embedLogBuilder: EmbedBuilder, logBuilder: StringBuilder, jobTitle: String, job: () -> Unit): EmbedBuilder {
         try {
             val timeExecution = measureTimeMillis(job)
-            embed.addField(jobTitle, "${timeExecution}ms", false)
-            logger.log("$jobTitle executed in ${timeExecution}ms")
+            embedLogBuilder.addField(jobTitle, "${timeExecution}ms", false)
+            logBuilder.append("$jobTitle executed in ${timeExecution}ms\n")
         } catch (e: Exception) {
-            embed.addField(jobTitle, "failed because: ${e.message}", false)
-            logger.error("$jobTitle failed because $e")
+            embedLogBuilder.addField(jobTitle, "failed because: ${e.message}", false)
+            logBuilder.append("$jobTitle failed because $e\n")
         }
-        return embed
+        return embedLogBuilder
     }
 }
