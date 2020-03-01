@@ -15,6 +15,6 @@ object MusicStopCommand : AbstractCommand("stop", levelAccess = listOf(CommandLe
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val musicManager = getGuildAudioPlayer(event.guild)
         musicManager.player.stopTrack()
-        sendBotMessage(event.channel, "Music player", "Stop playing")
+        sendBotMessage(event.channel, "Music player", message = "Stop playing")
     }
 }

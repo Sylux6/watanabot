@@ -16,6 +16,6 @@ object MusicClearCommand : AbstractCommand("clear", levelAccess = listOf(Command
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val musicManager: GuildMusicManager = getGuildAudioPlayer(event.guild)
         musicManager.scheduler.purgeQueue()
-        sendBotMessage(event.channel, "Music player", "Playlist has been cleared")
+        sendBotMessage(event.channel, "Music player", message = "Playlist has been cleared")
     }
 }

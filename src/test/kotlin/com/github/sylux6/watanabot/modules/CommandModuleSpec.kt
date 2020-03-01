@@ -64,6 +64,8 @@ import com.github.sylux6.watanabot.modules.music.commands.MusicStopCommand
 import com.github.sylux6.watanabot.modules.picture.PictureCommandModule
 import com.github.sylux6.watanabot.modules.picture.commands.PictureNsfwCommand
 import com.github.sylux6.watanabot.modules.picture.commands.PictureSafeCommand
+import com.github.sylux6.watanabot.modules.poll.PollCommandModule
+import com.github.sylux6.watanabot.modules.poll.commands.PollNew
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -78,19 +80,21 @@ object CommandModuleSpec : Spek({
         }
 
         it("should define all modules") {
-            expect(COMMAND_MODULES.size).toBe(5)
+            expect(COMMAND_MODULES.size).toBe(6)
             expect(COMMAND_MODULES).contains.inAnyOrder.only.values(
                 AzurLaneCommandModule,
                 BirthdayCommandModule,
                 PictureCommandModule,
                 LoveLiveCommandModule,
-                MusicCommandModule
+                MusicCommandModule,
+                PollCommandModule
             )
         }
 
         it("should define all commands") {
             val commandList = COMMAND_MODULES.flatMap { it.commandMap.values } + GeneralCommandModule.commandMap.values
-            expect(commandList.size).toBe(55)
+            // 1 extra command for each module because documentation counts as a command
+            expect(commandList.size).toBe(57)
             expect(commandList).contains(
                 AzurLaneChibiCommand,
                 AzurLaneInfoCommand,
@@ -140,7 +144,8 @@ object CommandModuleSpec : Spek({
                 MusicShuffleCommand,
                 MusicStopCommand,
                 PictureNsfwCommand,
-                PictureSafeCommand
+                PictureSafeCommand,
+                PollNew
             )
         }
     }

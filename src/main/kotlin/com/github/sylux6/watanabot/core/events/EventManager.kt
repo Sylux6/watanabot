@@ -4,7 +4,10 @@ import club.minnced.jda.reactor.ReactiveEventManager
 import club.minnced.jda.reactor.createManager
 import club.minnced.jda.reactor.on
 import com.github.sylux6.watanabot.core.events.guild.onGuildMemberLeaveEvent
+import com.github.sylux6.watanabot.core.events.message.onMessageAddReaction
+import com.github.sylux6.watanabot.core.events.message.onMessageDelete
 import com.github.sylux6.watanabot.core.events.message.onMessageReceivedEvent
+import com.github.sylux6.watanabot.core.events.message.onMessageRemoveReaction
 import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityEnd
 import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityStart
 import com.github.sylux6.watanabot.utils.isPrivateServer
@@ -16,7 +19,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent
+import net.dv8tion.jda.api.events.message.MessageDeleteEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent
 import net.dv8tion.jda.api.events.user.UserActivityEndEvent
 import net.dv8tion.jda.api.events.user.UserActivityStartEvent
 import reactor.core.scheduler.Scheduler
@@ -58,4 +64,14 @@ fun initReactiveEventManager() {
     manager.on<UserActivityEndEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
         .subscribe { launchEvent { onUserUpdateActivityEnd(it) } }
+
+    manager.on<MessageReactionAddEvent>()
+        .filter { !it.user!!.isBot }
+        .subscribe { launchEvent { onMessageAddReaction(it) } }
+
+    manager.on<MessageReactionRemoveEvent>()
+        .filter { !it.user!!.isBot }
+        .subscribe { launchEvent { onMessageRemoveReaction(it) } }
+    manager.on<MessageDeleteEvent>()
+        .subscribe { launchEvent { onMessageDelete(it) } }
 }

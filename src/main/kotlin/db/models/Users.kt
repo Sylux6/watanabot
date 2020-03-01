@@ -8,4 +8,6 @@ import org.joda.time.DateTime
 object Users : IntIdTable("users") {
     val userId: Column<Long> = long("user_id").uniqueIndex()
     val birthday: Column<DateTime?> = date("birthday").nullable()
+    val multiple: Column<Boolean> = bool("multiple")
+    val countdown: Column<Int> = integer("countdown")
 }

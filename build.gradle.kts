@@ -10,6 +10,7 @@ val jsonVersion = "20190722"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggingVersion = "1.7.8"
 val kotlinVersion = "1.3.61"
+val kotlinxSerializationVersion = "0.14.0"
 val kotlinxVersion = "1.3.3"
 val lavaplayerVersion = "1.3.34"
 val logbackVersion = "1.2.3"
@@ -39,6 +40,7 @@ plugins {
     java
     maven
     kotlin("jvm") version "1.3.61"
+    kotlin("plugin.serialization") version "1.3.61"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("org.jmailen.kotlinter") version "2.3.0"
 }
@@ -59,6 +61,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationVersion")
 
     // Discord
     implementation("net.dv8tion:JDA:$jdaVersion")

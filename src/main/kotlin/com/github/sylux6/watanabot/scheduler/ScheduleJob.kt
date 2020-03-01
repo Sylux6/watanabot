@@ -1,5 +1,7 @@
 package com.github.sylux6.watanabot.scheduler
 
+import com.github.sylux6.watanabot.modules.poll.utils.pollMap
+import com.github.sylux6.watanabot.modules.poll.utils.removePollFromDatabase
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
 import com.github.sylux6.watanabot.utils.getEmojiMessage
 import com.github.sylux6.watanabot.utils.getYousoro
@@ -11,7 +13,6 @@ import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
 
 class WatanabeYou : Job {
-
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
         if (PRIVATE_SERVER_ID == null) {
@@ -36,7 +37,6 @@ class WatanabeYou : Job {
 }
 
 class Maia : Job {
-
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
         if (PRIVATE_SERVER_ID == null) {
@@ -57,5 +57,17 @@ class Maia : Job {
                 true
             )[0], m
         )
+    }
+}
+
+class CheckPoll : Job {
+    @Throws(JobExecutionException::class)
+    override fun execute(context: JobExecutionContext) {
+        for ((key, poll) in pollMap) {
+            if (poll.isDeprecated()) {
+                pollMap.remove(key)
+                removePollFromDatabase(poll)
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ import com.github.sylux6.watanabot.utils.sendBotMessage
 import com.github.sylux6.watanabot.utils.sendMessage
 import mu.KLogging
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
@@ -83,6 +84,9 @@ fun checkCommandAccess(event: MessageReceivedEvent, access: CommandLevelAccess):
         CommandLevelAccess.IN_VOICE_WITH_BOT -> MusicCommandModule.isInBotVoiceChannel(event)
         CommandLevelAccess.BOT_IN_VOICE -> event.guild.audioManager.isConnected
         CommandLevelAccess.ADMIN -> event.member!!.isOwner
+        CommandLevelAccess.MOD -> event.member!!.hasPermission(
+            Permission.MESSAGE_MANAGE
+        )
         CommandLevelAccess.OWNER -> event.author == jda.retrieveApplicationInfo().complete().owner
         CommandLevelAccess.PRIVATE -> event.guild.idLong == PRIVATE_SERVER_ID
         else -> true

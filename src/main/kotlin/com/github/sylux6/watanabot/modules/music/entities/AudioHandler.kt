@@ -15,7 +15,7 @@ class AudioHandler(
 ) : AudioLoadResultHandler {
 
     override fun trackLoaded(track: AudioTrack) {
-        sendBotMessage(channel, "Music player", "Adding to queue ${track.info.title}")
+        sendBotMessage(channel, "Music player", message = "Adding to queue ${track.info.title}")
         musicManager.scheduler.queue(track)
     }
 
@@ -29,22 +29,22 @@ class AudioHandler(
             sendBotMessage(
                 channel,
                 "Music player",
-                "Adding to queue ${track!!.info.title} (first track of playlist ${playlist.name})"
+                message = "Adding to queue ${track!!.info.title} (first track of playlist ${playlist.name})"
             )
         } else {
             // Load all the tracks from the playlist
             for (t in playlist.tracks) {
                 musicManager.scheduler.queue(t)
             }
-            sendBotMessage(channel, "Music player", "Adding to queue all tracks from playlist ${playlist.name}")
+            sendBotMessage(channel, "Music player", message = "Adding to queue all tracks from playlist ${playlist.name}")
         }
     }
 
     override fun noMatches() {
-        sendBotMessage(channel, "Music player", "Nothing found by $track", BotMessageType.ERROR)
+        sendBotMessage(channel, "Music player", message = "Nothing found by $track", type = BotMessageType.ERROR)
     }
 
     override fun loadFailed(e: FriendlyException) {
-        sendBotMessage(channel, "Music player", "Could not play: ${e.message}", BotMessageType.ERROR)
+        sendBotMessage(channel, "Music player", message = "Could not play: ${e.message}", type = BotMessageType.ERROR)
     }
 }

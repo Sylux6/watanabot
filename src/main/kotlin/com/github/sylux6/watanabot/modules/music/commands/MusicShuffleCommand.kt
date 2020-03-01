@@ -15,6 +15,6 @@ object MusicShuffleCommand : AbstractCommand("shuffle", levelAccess = listOf(Com
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val musicManager = getGuildAudioPlayer(event.guild)
         musicManager.scheduler.shuffle()
-        sendBotMessage(event.channel, "Music player", "Playlist has been shuffled")
+        sendBotMessage(event.channel, "Music player", message = "Playlist has been shuffled")
     }
 }
