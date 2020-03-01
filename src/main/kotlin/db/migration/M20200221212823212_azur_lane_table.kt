@@ -10,7 +10,7 @@ import org.joda.time.DateTime
 class M20200221212823212_azur_lane_table : AbstractMigration() {
     override fun up() {
         createTable("azur_lane_users") {
-            bigInteger("user_id", nullable = false)
+            bigInteger("user_id")
             varchar("oath_id", 128, nullable = true)
             date("oath_date", nullable = true)
         }

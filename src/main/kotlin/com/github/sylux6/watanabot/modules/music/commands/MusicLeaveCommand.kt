@@ -15,6 +15,6 @@ object MusicLeaveCommand : AbstractCommand("leave", levelAccess = listOf(Command
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         event.guild.audioManager.closeAudioConnection()
         getGuildAudioPlayer(event.guild).player.destroy()
-        sendBotMessage(event.channel, "Music player", "Bye bye!~ (> ᴗ •)ゞ")
+        sendBotMessage(event.channel, "Music player", message = "Bye bye!~ (> ᴗ •)ゞ")
     }
 }

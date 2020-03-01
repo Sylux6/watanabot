@@ -19,6 +19,6 @@ object MusicJoinCommand : AbstractCommand("join") {
             commandFail("Bot is already in a voice channel")
         }
         audioManager.openAudioConnection(event.member?.voiceState?.channel)
-        sendBotMessage(event.channel, "Music player", "Ohayousoro!~ (> ᴗ •)ゞ")
+        sendBotMessage(event.channel, "Music player", message = "Ohayousoro!~ (> ᴗ •)ゞ")
     }
 }

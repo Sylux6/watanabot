@@ -1,19 +1,38 @@
 package com.github.sylux6.watanabot.utils
 
+import com.natpryce.konfig.Configuration
 import com.natpryce.konfig.ConfigurationProperties
 import com.natpryce.konfig.EnvironmentVariables
 import com.natpryce.konfig.Key
+import com.natpryce.konfig.Misconfiguration
 import com.natpryce.konfig.intType
 import com.natpryce.konfig.longType
 import com.natpryce.konfig.overriding
 import com.natpryce.konfig.stringType
 import java.io.File
+import kotlin.system.exitProcess
 
 /**
  * Bot properties. Properties are defined in watanabot.properties file. If some of them are defined in environment
  * variables then they override the file properties.
  */
-val config = EnvironmentVariables overriding ConfigurationProperties.fromFile(File("watanabot.properties"))
+val config: Configuration by lazy {
+    try {
+        EnvironmentVariables overriding ConfigurationProperties.fromFile(File("watanabot.properties"))
+    } catch (e: Misconfiguration) {
+        println("watanabot.properties file not found")
+        exitProcess(1)
+    }
+}
+
+fun getToken(): String {
+    try {
+        return config[CONFIG_TOKEN]
+    } catch (e: Misconfiguration) {
+        println("Please define a bot.token property in properties file")
+        exitProcess(1)
+    }
+}
 
 // Bot properties definition
 

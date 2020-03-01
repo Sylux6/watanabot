@@ -6,6 +6,7 @@ import com.github.sylux6.watanabot.modules.birthday.BirthdayCommandModule
 import com.github.sylux6.watanabot.modules.love_live.LoveLiveCommandModule
 import com.github.sylux6.watanabot.modules.music.MusicCommandModule
 import com.github.sylux6.watanabot.modules.picture.PictureCommandModule
+import com.github.sylux6.watanabot.modules.poll.PollCommandModule
 
 object CommandHandler {
 
@@ -15,7 +16,7 @@ object CommandHandler {
     // Command modules
     val COMMAND_MODULES = setOf(
         AzurLaneCommandModule, BirthdayCommandModule,
-        PictureCommandModule, LoveLiveCommandModule, MusicCommandModule
+        PictureCommandModule, LoveLiveCommandModule, MusicCommandModule, PollCommandModule
     )
 
     init {

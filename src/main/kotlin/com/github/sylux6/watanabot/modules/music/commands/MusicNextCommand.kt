@@ -19,7 +19,7 @@ object MusicNextCommand : AbstractCommand("next", levelAccess = listOf(CommandLe
         sendBotMessage(
             event.channel,
             "Music player",
-            "Playing next track: ${musicManager.player.playingTrack.info.title}"
+            message = "Playing next track: ${musicManager.player.playingTrack.info.title}"
         )
     }
 }
