@@ -7,7 +7,7 @@ import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.internal.types.BotMessageType
 import com.github.sylux6.watanabot.modules.general.GeneralCommandModule
 import com.github.sylux6.watanabot.modules.picture.PictureCommandModule
-import com.github.sylux6.watanabot.modules.picture.PictureCommandModule.getImage
+import com.github.sylux6.watanabot.modules.picture.utils.getImage
 import com.github.sylux6.watanabot.utils.BOT_PREFIX
 import com.github.sylux6.watanabot.utils.sendBotMessage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent

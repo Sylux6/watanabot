@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.modules.love_live.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.modules.love_live.LoveLiveCommandModule.CARD_ID_API_URL
-import com.github.sylux6.watanabot.modules.love_live.LoveLiveCommandModule.getCardByID
 import com.github.sylux6.watanabot.modules.love_live.entities.Card
+import com.github.sylux6.watanabot.modules.love_live.utils.getCardByID
 import com.github.sylux6.watanabot.utils.getRequest
 import com.github.sylux6.watanabot.utils.mentionAt
 import com.github.sylux6.watanabot.utils.sendFile

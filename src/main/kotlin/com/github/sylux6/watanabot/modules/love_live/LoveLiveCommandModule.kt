@@ -6,12 +6,6 @@ import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveIdolizedId
 import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveInfoCommand
 import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveScoutCommand
 import com.github.sylux6.watanabot.modules.love_live.commands.LoveLiveSearchCommand
-import com.github.sylux6.watanabot.modules.love_live.entities.Card
-import com.github.sylux6.watanabot.utils.getRequest
-import com.github.sylux6.watanabot.utils.stringToJsonObject
-import java.io.IOException
-import net.dv8tion.jda.api.entities.User
-import okhttp3.OkHttpClient
 
 object LoveLiveCommandModule : AbstractCommandModule(
     "Love Live!",
@@ -29,14 +23,4 @@ object LoveLiveCommandModule : AbstractCommandModule(
 
     const val CARD_API_URL = "https://schoolido.lu/api/cards/"
     const val CARD_ID_API_URL = "http://schoolido.lu/api/cardids/"
-
-    fun getCardByID(id: Int, user: User): Card? {
-        return try {
-            val client = OkHttpClient()
-            val json = stringToJsonObject(getRequest(client, "$CARD_API_URL/${Integer.valueOf(id)}"))
-            if (json.has("detail")) null else Card(json, user)
-        } catch (e: IOException) {
-            null
-        }
-    }
 }

@@ -2,7 +2,7 @@ package com.github.sylux6.watanabot.modules.picture.commands
 
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.commandFail
-import com.github.sylux6.watanabot.modules.picture.PictureCommandModule.getImage
+import com.github.sylux6.watanabot.modules.picture.utils.getImage
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.kodehawa.lib.imageboards.entities.Rating
 
