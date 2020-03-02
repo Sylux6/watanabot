@@ -76,10 +76,10 @@ class DailyTask : Job {
         try {
             val timeExecution = measureTimeMillis(job)
             embedLogBuilder.addField(jobTitle, "${timeExecution}ms", false)
-            logBuilder.append("\n* $jobTitle executed in ${timeExecution}ms\n")
+            logBuilder.append("\n* $jobTitle executed in ${timeExecution}ms")
         } catch (e: Exception) {
             embedLogBuilder.addField(jobTitle, "failed because: ${e.message}", false)
-            logBuilder.append("\n* $jobTitle failed because $e\n")
+            logBuilder.append("\n* $jobTitle failed because $e")
         }
         return embedLogBuilder
     }

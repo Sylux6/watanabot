@@ -72,6 +72,7 @@ fun initReactiveEventManager() {
     manager.on<MessageReactionRemoveEvent>()
         .filter { !it.user!!.isBot }
         .subscribe { launchEvent { onMessageRemoveReaction(it) } }
+
     manager.on<MessageDeleteEvent>()
         .subscribe { launchEvent { onMessageDelete(it) } }
 }
