@@ -9,7 +9,7 @@ val jdaReactorVersion = "1.0.0"
 val jsonVersion = "20190722"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggingVersion = "1.7.8"
-val kotlinVersion = "1.3.61"
+val kotlinVersion = "1.3.70"
 val kotlinxSerializationVersion = "0.14.0"
 val kotlinxVersion = "1.3.3"
 val lavaplayerVersion = "1.3.34"
@@ -27,7 +27,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-script-util:1.3.61")
+        classpath("org.jetbrains.kotlin:kotlin-script-util:1.3.70")
         classpath("com.github.KenjiOhtsuka:harmonica:develop-SNAPSHOT")
         classpath("com.github.cesarferreira:kotlin-pluralizer:0.2.9")
     }
@@ -39,8 +39,8 @@ plugins {
     application
     java
     maven
-    kotlin("jvm") version "1.3.61"
-    kotlin("plugin.serialization") version "1.3.61"
+    kotlin("jvm") version "1.3.70"
+    kotlin("plugin.serialization") version "1.3.70"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("org.jmailen.kotlinter") version "2.3.0"
 }
