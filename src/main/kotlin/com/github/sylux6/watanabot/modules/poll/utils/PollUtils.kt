@@ -67,7 +67,7 @@ fun savePoll(poll: Poll): Poll {
                 it[creationDatetime] = poll.creationDatetime
                 it[hoursDuration] = poll.hoursDuration
                 it[serializedOptions] = serializeListOfStrings(poll.options)
-                it[multipleChoice] = poll.multipleChoice
+                it[multipleChoices] = poll.multipleChoices
             }
     }
     pollMap[Triple(poll.message.guild.idLong, poll.message.channel.idLong, poll.message.idLong)] = poll
@@ -83,7 +83,7 @@ fun sendPollMessage(
     hoursDuration: Int,
     title: String,
     options: List<String>,
-    multipleChoice: Boolean
+    multipleChoices: Boolean
 ) {
     event.channel.sendMessage(message).queue() { sentMessage ->
         val poll = savePoll(
@@ -94,7 +94,7 @@ fun sendPollMessage(
                 hoursDuration,
                 title,
                 options,
-                multipleChoice
+                multipleChoices
             )
         )
         refreshPoll(poll)
@@ -126,9 +126,12 @@ fun refreshPoll(poll: Poll) {
         .setTitle(poll.title)
         .setColor(Color.YELLOW)
     if (poll.isDeprecated()) {
-        embedPoll.setFooter("❌❌❌❌❎✗ Closed")
+        embedPoll.setFooter("❌ Closed")
     } else {
-        embedPoll.setFooter("✔ Lasting for ${poll.hoursDuration} ${if (poll.hoursDuration > 0) "hours" else "hour"}")
+        embedPoll.setFooter("✔ Lasting for ${poll.hoursDuration} ${if (poll.hoursDuration > 1) "hours" else "hour"}")
+    }
+    if (poll.multipleChoices) {
+        embedPoll.setDescription("(multiple choices allowed)")
     }
 
     val votes = HashMap<String, Int>()
@@ -180,7 +183,7 @@ fun initPollsFromDb() {
                                 row[Polls.hoursDuration],
                                 row[Polls.title],
                                 deserializeListOfStrings(row[Polls.serializedOptions]),
-                                row[Polls.multipleChoice]
+                                row[Polls.multipleChoices]
                             )
                             if (poll.isDeprecated()) {
                                 removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])

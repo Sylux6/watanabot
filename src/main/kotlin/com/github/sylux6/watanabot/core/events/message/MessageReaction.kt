@@ -27,7 +27,7 @@ fun onMessageAddReaction(event: MessageReactionAddEvent) {
             }
         }
         // Remove previous vote if multiple choice is disabled
-        else if (!poll.multipleChoice) {
+        else if (!poll.multipleChoices) {
             for (emote in emoteToIndex.keys.filter { unicode -> event.reactionEmote.emoji != unicode }) {
                 completableFutures.add(poll.message.removeReaction(emote, event.user!!).submit())
             }

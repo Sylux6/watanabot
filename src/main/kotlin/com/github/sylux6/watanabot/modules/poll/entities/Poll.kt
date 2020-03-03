@@ -11,7 +11,7 @@ class Poll(
     val hoursDuration: Int,
     val title: String,
     val options: List<String>,
-    val multipleChoice: Boolean
+    val multipleChoices: Boolean
 ) {
     fun isDeprecated(): Boolean {
         return !creationDatetime.plusHours(hoursDuration).isAfterNow

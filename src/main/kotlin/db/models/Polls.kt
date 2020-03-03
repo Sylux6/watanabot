@@ -14,7 +14,7 @@ object Polls : IntIdTable("polls") {
     val creationDatetime: Column<DateTime> = datetime("creation_datetime")
     val hoursDuration: Column<Int> = integer("hours_duration")
     val serializedOptions: Column<String> = text("serialized_options")
-    val multipleChoice: Column<Boolean> = bool("multiple_choice")
+    val multipleChoices: Column<Boolean> = bool("multiple_choices")
 
     init {
         index(true, guildId, channelId, messageId)
