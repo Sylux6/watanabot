@@ -9,12 +9,26 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 object PollNew : AbstractCommand("new", 1) {
     override val template: String
-        get() = "<topic> | <option 1> | <option 2> [ | <option 3> ... ]"
+        get() = "[--m]  [--<hours>] <topic> | <option 1> | <option 2> [ | <option 3> ... ]"
     override val description: String
-        get() = "Create a new poll, up to 10 options."
+        get() = "Create a new poll for 24 hours, up to 10 options. Add `--m` flag to allow multiple votes. "
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        val options = args.joinToString(" ").split("|").map { element -> element.trim() }
+        var duration = 24
+        var multiple = false
+
+        // Look for optional parameters: hours and multiple
+        args.filter { el -> el.startsWith("--") }.forEach { el ->
+            when (el.removePrefix("--")) {
+                "m" -> multiple = true
+                else -> el.removePrefix("--").toIntOrNull()?.let { durationParam -> duration = durationParam }
+            }
+        }
+        val options = args
+            .filter { el -> !el.startsWith("--") }
+            .joinToString(" ")
+            .split("|")
+            .map { element -> element.trim() }
         if (options.size < 3 || options.size > 11) {
             throw CommandException("Please provide 2 to 10 options.")
         }
@@ -23,6 +37,6 @@ object PollNew : AbstractCommand("new", 1) {
             .setDescription("Making poll...")
             .setColor(Color.YELLOW)
             .build()
-        sendPollMessage(event, embedInit, 24, options.first(), options.drop(1), false)
+        sendPollMessage(event, embedInit, duration, options.first(), options.drop(1), multiple)
     }
 }
