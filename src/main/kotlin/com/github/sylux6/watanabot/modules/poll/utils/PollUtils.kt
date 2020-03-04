@@ -127,6 +127,7 @@ fun refreshPoll(poll: Poll) {
     if (poll.isDeprecated()) {
         embedPoll.setFooter("❌ Closed")
     } else {
+        embedPoll.setColor(Color.YELLOW)
         embedPoll.setFooter("✔ Lasting for ${poll.hoursDuration} ${if (poll.hoursDuration > 1) "hours" else "hour"}")
     }
     if (poll.multipleChoices) {

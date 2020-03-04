@@ -1,6 +1,7 @@
 package com.github.sylux6.watanabot.scheduler
 
 import com.github.sylux6.watanabot.modules.poll.utils.pollMap
+import com.github.sylux6.watanabot.modules.poll.utils.refreshPoll
 import com.github.sylux6.watanabot.modules.poll.utils.removePollFromDatabase
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
 import com.github.sylux6.watanabot.utils.getEmojiMessage
@@ -67,6 +68,7 @@ class CheckPoll : Job {
             if (poll.isDeprecated()) {
                 pollMap.remove(key)
                 removePollFromDatabase(poll)
+                refreshPoll(poll)
             }
         }
     }

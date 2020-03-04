@@ -21,7 +21,12 @@ object PollNew : AbstractCommand("new", 1) {
         args.filter { el -> el.startsWith("--") }.forEach { el ->
             when (el.removePrefix("--")) {
                 "m" -> multiple = true
-                else -> el.removePrefix("--").toIntOrNull()?.let { durationParam -> duration = durationParam }
+                else -> el.removePrefix("--").toIntOrNull()?.let { durationParam ->
+                    if (durationParam < 1) {
+                        throw CommandException("Invalid hours duration")
+                    }
+                    duration = durationParam
+                }
             }
         }
         val options = args
