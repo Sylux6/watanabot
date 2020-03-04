@@ -114,7 +114,6 @@ fun initPoll(poll: Poll) {
     for (index in 1..poll.options.size) {
         poll.message.addReaction(indexToEmote[index] ?: error("")).queue()
     }
-    poll.message.addReaction(resetEmoji).queue()
 }
 
 /**

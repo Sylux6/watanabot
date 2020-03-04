@@ -1,7 +1,5 @@
 package com.github.sylux6.watanabot.modules.poll.utils
 
-const val resetEmoji = "↩"
-
 val indexToEmote = mapOf(
     Pair(1, "1⃣"),
     Pair(2, "2⃣"),
