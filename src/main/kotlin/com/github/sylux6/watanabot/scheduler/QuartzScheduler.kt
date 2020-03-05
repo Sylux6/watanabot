@@ -17,8 +17,8 @@ object QuartzScheduler {
         val maiaBirthday = newTrigger().startAt(startTime).withSchedule(cronSchedule("0 0 0 14 3 ? *")).build()
         val dailyTrigger = newTrigger().startAt(startTime).withSchedule(cronSchedule("0 0 0 * * ?")).build()
 
-        scheduler.scheduleJob(newJob(WatanabeYou::class.java).build(), youBirthday)
-        scheduler.scheduleJob(newJob(Maia::class.java).build(), maiaBirthday)
+        scheduler.scheduleJob(newJob(WatanabeYouBirthdayJob::class.java).build(), youBirthday)
+        scheduler.scheduleJob(newJob(MaiaBirthdayJob::class.java).build(), maiaBirthday)
         scheduler.scheduleJob(newJob(DailyTask::class.java).build(), dailyTrigger)
         scheduler.start()
     }
