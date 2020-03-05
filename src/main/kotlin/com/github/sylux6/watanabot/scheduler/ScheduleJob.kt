@@ -65,7 +65,7 @@ class CheckPoll : Job {
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
         for ((key, poll) in pollMap) {
-            if (poll.isDeprecated()) {
+            if (poll.hasExpired()) {
                 pollMap.remove(key)
                 removePollFromDatabase(poll)
                 refreshPoll(poll)
