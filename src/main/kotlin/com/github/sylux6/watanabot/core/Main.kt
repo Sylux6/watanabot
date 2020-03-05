@@ -12,6 +12,9 @@ import com.github.sylux6.watanabot.utils.getToken
 import com.github.sylux6.watanabot.utils.jda
 import db.utils.connectToDatabase
 import io.sentry.Sentry
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
@@ -41,7 +44,11 @@ object Main {
             .build()
         jda.on<ShutdownEvent>().subscribe { it.jda.httpClient.connectionPool().evictAll() }
         jda.awaitReady()
-        // Init polls
-        initPollsFromDb()
+        runBlocking {
+            withContext(Dispatchers.Default) {
+                // Init polls
+                initPollsFromDb()
+            }
+        }
     }
 }

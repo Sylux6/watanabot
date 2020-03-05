@@ -1,19 +1,22 @@
 package com.github.sylux6.watanabot.scheduler
 
+import com.github.sylux6.watanabot.modules.poll.utils.closePoll
 import com.github.sylux6.watanabot.modules.poll.utils.pollMap
-import com.github.sylux6.watanabot.modules.poll.utils.refreshPoll
-import com.github.sylux6.watanabot.modules.poll.utils.removePollFromDatabase
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
 import com.github.sylux6.watanabot.utils.getEmojiMessage
 import com.github.sylux6.watanabot.utils.getYousoro
 import com.github.sylux6.watanabot.utils.jda
 import com.github.sylux6.watanabot.utils.sendMessage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import net.dv8tion.jda.api.EmbedBuilder
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
 
-class WatanabeYou : Job {
+class WatanabeYouBirthdayJob : Job {
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
         if (PRIVATE_SERVER_ID == null) {
@@ -37,7 +40,7 @@ class WatanabeYou : Job {
     }
 }
 
-class Maia : Job {
+class MaiaBirthdayJob : Job {
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
         if (PRIVATE_SERVER_ID == null) {
@@ -61,14 +64,18 @@ class Maia : Job {
     }
 }
 
-class CheckPoll : Job {
+class TerminatePollJob : Job {
     @Throws(JobExecutionException::class)
     override fun execute(context: JobExecutionContext) {
-        for ((key, poll) in pollMap) {
-            if (poll.hasExpired()) {
-                pollMap.remove(key)
-                removePollFromDatabase(poll)
-                refreshPoll(poll)
+        runBlocking {
+            withContext(Dispatchers.Default) {
+                for ((key, poll) in pollMap) {
+                    launch {
+                        if (poll.hasExpired()) {
+                            closePoll(key, poll)
+                        }
+                    }
+                }
             }
         }
     }

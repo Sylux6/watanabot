@@ -77,8 +77,15 @@ fun sendFileByUrl(channel: MessageChannel, message: String, url: String) {
 }
 
 fun sendDM(user: User, message: String) {
-    val channel = user.openPrivateChannel().complete()
-    channel.sendMessage(message).queue()
+    user.openPrivateChannel().queue() { channel ->
+        channel.sendMessage(message).queue()
+    }
+}
+
+fun sendDM(user: User, message: MessageEmbed) {
+    user.openPrivateChannel().queue() { channel ->
+        channel.sendMessage(message).queue()
+    }
 }
 
 fun editMessage(oldMessage: Message, newMessage: String) {
