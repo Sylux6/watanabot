@@ -193,6 +193,23 @@ suspend fun initPollsFromDb() {
                                     deserializeListOfStrings(row[Polls.serializedOptions]),
                                     row[Polls.multipleChoices]
                                 )
+                                if (!poll.multipleChoices) {
+                                    val completableFutures = mutableListOf<CompletableFuture<List<User>>>()
+                                    val userReactionMap: MutableMap<User, List<String>> = HashMap()
+                                    for (unicode in emoteToIndex.keys) {
+                                        completableFutures.add(poll.message.retrieveReactionUsers(unicode).submit().whenComplete { mutableList, _ ->
+                                            mutableList.filter { !it.isBot }.forEach { user ->
+                                                userReactionMap[user] = userReactionMap.getOrDefault(user, emptyList()) + unicode
+                                            }
+                                        })
+                                    }
+                                    CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
+                                    userReactionMap.forEach { (user, reactions) ->
+                                        reactions.drop(1).forEach { reaction ->
+                                            poll.message.removeReaction(reaction, user).queue()
+                                        }
+                                    }
+                                }
                                 if (poll.hasExpired()) {
                                     closePoll(PollKey(guild.idLong, channel.idLong, poll.message.idLong), poll)
                                 } else {
