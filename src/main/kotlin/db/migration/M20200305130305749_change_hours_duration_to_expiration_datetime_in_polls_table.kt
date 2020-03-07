@@ -19,6 +19,7 @@ class M20200305130305749_change_hours_duration_to_expiration_datetime_in_polls_t
     }
 
     override fun down() {
+        addIntegerColumn("polls", "hours_duration", nullable = false)
         removeColumn("polls", "expiration_datetime")
     }
 }
