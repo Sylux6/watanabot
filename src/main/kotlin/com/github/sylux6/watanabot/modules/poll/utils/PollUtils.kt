@@ -124,7 +124,7 @@ fun refreshPoll(poll: Poll) {
         .setAuthor(poll.author.effectiveName, null, poll.author.user.effectiveAvatarUrl)
         .setTitle(poll.title)
         .setColor(Color.YELLOW)
-    if (poll.isDeprecated()) {
+    if (poll.hasExpired()) {
         embedPoll.setFooter("❌ Closed")
     } else {
         embedPoll.setColor(Color.YELLOW)
@@ -185,7 +185,7 @@ fun initPollsFromDb() {
                                 deserializeListOfStrings(row[Polls.serializedOptions]),
                                 row[Polls.multipleChoices]
                             )
-                            if (poll.isDeprecated()) {
+                            if (poll.hasExpired()) {
                                 removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])
                             } else {
                                 pollMap[Triple(message.guild.idLong, message.channel.idLong, message.idLong)] = poll
