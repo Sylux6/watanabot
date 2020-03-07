@@ -1,20 +1,22 @@
 package com.github.sylux6.watanabot.modules.poll.utils
 
 import com.github.sylux6.watanabot.modules.poll.entities.Poll
-import com.github.sylux6.watanabot.scheduler.CheckPoll
+import com.github.sylux6.watanabot.scheduler.TerminatePollJob
 import com.github.sylux6.watanabot.scheduler.scheduler
 import com.github.sylux6.watanabot.utils.deserializeListOfStrings
 import com.github.sylux6.watanabot.utils.jda
+import com.github.sylux6.watanabot.utils.sendDM
 import com.github.sylux6.watanabot.utils.serializeListOfStrings
 import db.models.Polls
 import java.awt.Color
 import java.util.HashMap
 import java.util.Locale
 import java.util.concurrent.CompletableFuture
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.events.message.GenericMessageEvent
@@ -25,23 +27,26 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
+import org.joda.time.Hours
+import org.joda.time.Minutes
 import org.quartz.JobBuilder.newJob
 import org.quartz.TriggerBuilder
 
 /**
  * Map of polls indexed by <guildId, channelId, messageId>
  */
-val pollMap = HashMap<Triple<Long, Long, Long>, Poll>()
+typealias PollKey = Triple<Long, Long, Long>
+val pollMap = HashMap<PollKey, Poll>()
 
-fun HashMap<Triple<Long, Long, Long>, Poll>.containsPoll(event: GenericMessageEvent): Boolean {
+fun HashMap<PollKey, Poll>.containsPoll(event: GenericMessageEvent): Boolean {
     return containsKey(Triple(event.guild.idLong, event.channel.idLong, event.messageIdLong))
 }
 
-fun HashMap<Triple<Long, Long, Long>, Poll>.getPoll(event: GenericMessageEvent): Poll? {
+fun HashMap<PollKey, Poll>.getPoll(event: GenericMessageEvent): Poll? {
     return get(Triple(event.guild.idLong, event.channel.idLong, event.messageIdLong))
 }
 
-fun HashMap<Triple<Long, Long, Long>, Poll>.removePoll(event: GenericMessageEvent): Poll? {
+fun HashMap<PollKey, Poll>.removePoll(event: GenericMessageEvent): Poll? {
     return remove(Triple(event.guild.idLong, event.channel.idLong, event.messageIdLong))
 }
 
@@ -65,7 +70,7 @@ fun savePoll(poll: Poll): Poll {
                 it[authorId] = poll.author.idLong
                 it[title] = poll.title
                 it[creationDatetime] = poll.creationDatetime
-                it[hoursDuration] = poll.hoursDuration
+                it[expirationDatetime] = poll.expirationDatetime
                 it[serializedOptions] = serializeListOfStrings(poll.options)
                 it[multipleChoices] = poll.multipleChoices
             }
@@ -80,7 +85,8 @@ fun savePoll(poll: Poll): Poll {
 fun sendPollMessage(
     event: MessageReceivedEvent,
     message: MessageEmbed,
-    hoursDuration: Int,
+    creationDatetime: DateTime,
+    expirationDateTime: DateTime,
     title: String,
     options: List<String>,
     multipleChoices: Boolean
@@ -90,8 +96,8 @@ fun sendPollMessage(
             Poll(
                 event.member!!,
                 sentMessage,
-                DateTime.now(),
-                hoursDuration,
+                creationDatetime,
+                expirationDateTime,
                 title,
                 options,
                 multipleChoices
@@ -101,9 +107,9 @@ fun sendPollMessage(
         initPoll(poll)
         val trigger = TriggerBuilder
             .newTrigger()
-            .startAt(poll.creationDatetime.plusHours(poll.hoursDuration).toDate())
+            .startAt(poll.expirationDatetime.toDate())
             .build()
-        scheduler.scheduleJob(newJob(CheckPoll::class.java).build(), trigger)
+        scheduler.scheduleJob(newJob(TerminatePollJob::class.java).build(), trigger)
     }
 }
 
@@ -123,12 +129,14 @@ fun refreshPoll(poll: Poll) {
     val embedPoll = EmbedBuilder()
         .setAuthor(poll.author.effectiveName, null, poll.author.user.effectiveAvatarUrl)
         .setTitle(poll.title)
-        .setColor(Color.YELLOW)
     if (poll.hasExpired()) {
         embedPoll.setFooter("❌ Closed")
     } else {
         embedPoll.setColor(Color.YELLOW)
-        embedPoll.setFooter("✔ Lasting for ${poll.hoursDuration} ${if (poll.hoursDuration > 1) "hours" else "hour"}")
+        embedPoll.setFooter("✔️ Open for " +
+            "${Hours.hoursBetween(poll.creationDatetime, poll.expirationDatetime).hours}h" +
+            String.format("%02d", Minutes.minutesBetween(poll.creationDatetime, poll.expirationDatetime).minutes % 60)
+        )
     }
     if (poll.multipleChoices) {
         embedPoll.setDescription("(multiple choices allowed)")
@@ -164,46 +172,64 @@ fun refreshPoll(poll: Poll) {
 /**
  * Retrieve polls from database
  */
-fun initPollsFromDb() {
-    val coroutineScope = CoroutineScope(Dispatchers.Default)
-    transaction {
-        Polls
-            .selectAll()
-            .forEach { row ->
-                coroutineScope.launch {
-                    val guild = jda.getGuildById(row[Polls.guildId])
-                    val channel = jda.getTextChannelById(row[Polls.channelId])
-                    val author = guild?.getMemberById(row[Polls.authorId])
-                    if (guild != null && channel != null && author != null) {
-                        channel.retrieveMessageById(row[Polls.messageId]).queue({ message ->
-                            val poll = Poll(
-                                author,
-                                message,
-                                row[Polls.creationDatetime],
-                                row[Polls.hoursDuration],
-                                row[Polls.title],
-                                deserializeListOfStrings(row[Polls.serializedOptions]),
-                                row[Polls.multipleChoices]
-                            )
-                            if (poll.hasExpired()) {
+suspend fun initPollsFromDb() {
+    withContext(Dispatchers.Default) {
+        transaction {
+            Polls
+                .selectAll()
+                .forEach { row ->
+                    launch {
+                        val guild = jda.getGuildById(row[Polls.guildId])
+                        val channel = jda.getTextChannelById(row[Polls.channelId])
+                        val author = guild?.getMemberById(row[Polls.authorId])
+                        if (guild != null && channel != null && author != null) {
+                            channel.retrieveMessageById(row[Polls.messageId]).queue({ message ->
+                                val poll = Poll(
+                                    author,
+                                    message,
+                                    row[Polls.creationDatetime],
+                                    row[Polls.expirationDatetime],
+                                    row[Polls.title],
+                                    deserializeListOfStrings(row[Polls.serializedOptions]),
+                                    row[Polls.multipleChoices]
+                                )
+                                if (!poll.multipleChoices) {
+                                    val completableFutures = mutableListOf<CompletableFuture<List<User>>>()
+                                    val userReactionMap: MutableMap<User, List<String>> = HashMap()
+                                    for (unicode in emoteToIndex.keys) {
+                                        completableFutures.add(poll.message.retrieveReactionUsers(unicode).submit().whenComplete { mutableList, _ ->
+                                            mutableList.filter { !it.isBot }.forEach { user ->
+                                                userReactionMap[user] = userReactionMap.getOrDefault(user, emptyList()) + unicode
+                                            }
+                                        })
+                                    }
+                                    CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
+                                    userReactionMap.forEach { (user, reactions) ->
+                                        reactions.drop(1).forEach { reaction ->
+                                            poll.message.removeReaction(reaction, user).queue()
+                                        }
+                                    }
+                                }
+                                if (poll.hasExpired()) {
+                                    closePoll(PollKey(guild.idLong, channel.idLong, poll.message.idLong), poll)
+                                } else {
+                                    pollMap[Triple(message.guild.idLong, message.channel.idLong, message.idLong)] = poll
+                                    refreshPoll(poll)
+                                    val trigger = TriggerBuilder
+                                        .newTrigger()
+                                        .startAt(row[Polls.expirationDatetime].toDate())
+                                        .build()
+                                    scheduler.scheduleJob(newJob(TerminatePollJob::class.java).build(), trigger)
+                                }
+                            }, { _ ->
                                 removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])
-                            } else {
-                                pollMap[Triple(message.guild.idLong, message.channel.idLong, message.idLong)] = poll
-                                refreshPoll(poll)
-                                val trigger = TriggerBuilder
-                                    .newTrigger()
-                                    .startAt(row[Polls.creationDatetime].plusHours(row[Polls.hoursDuration]).toDate())
-                                    .build()
-                                scheduler.scheduleJob(newJob(CheckPoll::class.java).build(), trigger)
-                            }
-                        }, { _ ->
+                            })
+                        } else {
                             removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])
-                        })
-                    } else {
-                        removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])
+                        }
                     }
                 }
-            }
+        }
     }
 }
 
@@ -225,4 +251,38 @@ fun removePollFromDatabase(poll: Poll) {
                 (Polls.messageId eq poll.message.idLong)
             }
     }
+}
+
+fun closePoll(key: PollKey, poll: Poll) {
+    pollMap.remove(key)
+    removePollFromDatabase(poll)
+    refreshPoll(poll)
+
+    // Send results to the author
+    val votes = mutableMapOf<String, List<Member>>()
+    val completableFutures = mutableListOf<CompletableFuture<List<User>>>()
+    for (reaction in emoteToIndex.keys) {
+        completableFutures.add(poll.message.retrieveReactionUsers(reaction).submit()
+            .whenComplete { mutableList, _ ->
+                votes[reaction] = mutableList
+                    .filter { user -> !user.isBot }
+                    .mapNotNull { user -> poll.message.guild.getMemberById(user.idLong) }
+            }
+        )
+    }
+    CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
+    val result = EmbedBuilder()
+        .setAuthor(poll.message.guild.name, null, poll.message.guild.iconUrl)
+        .setTitle("Poll results")
+        .setDescription(poll.title)
+        .setColor(Color.YELLOW)
+        .setFooter("in #${poll.message.channel.name} channel")
+    for ((index, option) in poll.options.withIndex()) {
+        result.addField(
+            "${indexToEmote[index + 1]} $option (**${votes[indexToEmote[index + 1]]?.size ?: 0}**)",
+            votes[indexToEmote[index + 1]]?.joinToString("\n") { member -> member.effectiveName }
+                ?: "",
+            false)
+    }
+    sendDM(poll.author.user, result.build())
 }

@@ -8,12 +8,10 @@ class Poll(
     val author: Member,
     val message: Message,
     val creationDatetime: DateTime,
-    val hoursDuration: Int,
+    val expirationDatetime: DateTime,
     val title: String,
     val options: List<String>,
     val multipleChoices: Boolean
 ) {
-    fun hasExpired(): Boolean {
-        return !creationDatetime.plusHours(hoursDuration).isAfterNow
-    }
+    val hasExpired: () -> Boolean = { !expirationDatetime.isAfterNow }
 }

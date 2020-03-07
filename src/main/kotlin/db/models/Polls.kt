@@ -12,7 +12,7 @@ object Polls : IntIdTable("polls") {
     val authorId: Column<Long> = long("author_id")
     val title: Column<String> = text("title")
     val creationDatetime: Column<DateTime> = datetime("creation_datetime")
-    val hoursDuration: Column<Int> = integer("hours_duration")
+    val expirationDatetime: Column<DateTime> = datetime("expiration_datetime")
     val serializedOptions: Column<String> = text("serialized_options")
     val multipleChoices: Column<Boolean> = bool("multiple_choices")
 

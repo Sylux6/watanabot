@@ -6,6 +6,7 @@ import com.github.sylux6.watanabot.modules.poll.utils.sendPollMessage
 import java.awt.Color
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import org.joda.time.DateTime
 
 object PollNew : AbstractCommand("new", 1) {
     override val template: String
@@ -14,18 +15,26 @@ object PollNew : AbstractCommand("new", 1) {
         get() = "Create a new poll for 24 hours, up to 10 options. Add `--m` flag to allow multiple votes. "
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-        var duration = 24
+        val creationDatetime = DateTime.now()
+        var expirationDatetime = creationDatetime.plusHours(24)
         var multiple = false
 
         // Look for optional parameters: hours and multiple
         args.filter { el -> el.startsWith("--") }.forEach { el ->
-            when (el.removePrefix("--")) {
-                "m" -> multiple = true
-                else -> el.removePrefix("--").toIntOrNull()?.let { durationParam ->
-                    if (durationParam < 1) {
-                        throw CommandException("Invalid hours duration")
-                    }
-                    duration = durationParam
+            val param = el.removePrefix("--")
+            when {
+                param == "m" -> {
+                    multiple = true
+                }
+                Regex("[0-9]+:[0-9][0-9]").matches(param) -> {
+                    val (hours, minutes) = param.split(":").map { it.toInt() }
+                    expirationDatetime = creationDatetime.plusHours(hours).plusMinutes(minutes)
+                }
+                Regex("[0-9]+").matches(param) -> {
+                    expirationDatetime = creationDatetime.plusHours(param.toInt())
+                }
+                else -> {
+                    throw CommandException("Invalid parameter: $param")
                 }
             }
         }
@@ -42,6 +51,6 @@ object PollNew : AbstractCommand("new", 1) {
             .setDescription("Making poll...")
             .setColor(Color.YELLOW)
             .build()
-        sendPollMessage(event, embedInit, duration, options.first(), options.drop(1), multiple)
+        sendPollMessage(event, embedInit, creationDatetime, expirationDatetime, options.first(), options.drop(1), multiple)
     }
 }
