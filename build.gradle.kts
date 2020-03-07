@@ -19,7 +19,7 @@ val postgresqlVersion = "42.2.10"
 val quartzVersion = "2.3.2"
 val reflectionsVersion = "0.9.12"
 val sentryVersion = "1.7.30"
-val spekVersion = "2.0.9"
+val spekVersion = "2.0.10"
 
 buildscript {
     repositories {
