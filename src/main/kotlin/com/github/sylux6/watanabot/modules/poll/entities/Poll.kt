@@ -14,4 +14,6 @@ class Poll(
     val multipleChoices: Boolean
 ) {
     val hasExpired: () -> Boolean = { !expirationDatetime.isAfterNow }
+    // True when the author wants to prematurely close the poll
+    var forcedToClose: Boolean = false
 }

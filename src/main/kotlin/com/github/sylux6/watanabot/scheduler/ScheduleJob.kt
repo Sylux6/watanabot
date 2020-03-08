@@ -1,5 +1,6 @@
 package com.github.sylux6.watanabot.scheduler
 
+import com.github.sylux6.watanabot.modules.poll.utils.closeEmote
 import com.github.sylux6.watanabot.modules.poll.utils.closePoll
 import com.github.sylux6.watanabot.modules.poll.utils.pollMap
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
@@ -69,10 +70,11 @@ class TerminatePollJob : Job {
     override fun execute(context: JobExecutionContext) {
         runBlocking {
             withContext(Dispatchers.Default) {
-                for ((key, poll) in pollMap) {
+                pollMap.forEach { (_, poll) ->
                     launch {
                         if (poll.hasExpired()) {
-                            closePoll(key, poll)
+                            closePoll(poll)
+                            poll.message.clearReactions(closeEmote).queue()
                         }
                     }
                 }

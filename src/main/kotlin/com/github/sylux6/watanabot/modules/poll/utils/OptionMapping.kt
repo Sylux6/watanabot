@@ -1,5 +1,7 @@
 package com.github.sylux6.watanabot.modules.poll.utils
 
+val closeEmote = "❌"
+
 val indexToEmote = mapOf(
     Pair(1, "1⃣"),
     Pair(2, "2⃣"),

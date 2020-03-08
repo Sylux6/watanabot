@@ -10,9 +10,11 @@ import org.joda.time.DateTime
 
 object PollNew : AbstractCommand("new", 1) {
     override val template: String
-        get() = "[--m]  [--<hours>] <topic> | <option 1> | <option 2> [ | <option 3> ... ]"
+        get() = "[--m]  [--<duration>] <topic> | <option 1> | <option 2> [ | <option 3> ... ]"
     override val description: String
-        get() = "Create a new poll for 24 hours, up to 10 options. Add `--m` flag to allow multiple votes. "
+        get() = "Create a new poll up to 10 options." +
+            "\nAdd `--m` flag to allow multiple votes." +
+            "\nSpecify poll duration by `--HH` or `HH:mm`"
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         val creationDatetime = DateTime.now()

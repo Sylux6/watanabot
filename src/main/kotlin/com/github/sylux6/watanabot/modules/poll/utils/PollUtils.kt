@@ -120,6 +120,7 @@ fun initPoll(poll: Poll) {
     for (index in 1..poll.options.size) {
         poll.message.addReaction(indexToEmote[index] ?: error("")).queue()
     }
+    poll.message.addReaction(closeEmote).queue()
 }
 
 /**
@@ -129,7 +130,7 @@ fun refreshPoll(poll: Poll) {
     val embedPoll = EmbedBuilder()
         .setAuthor(poll.author.effectiveName, null, poll.author.user.effectiveAvatarUrl)
         .setTitle(poll.title)
-    if (poll.hasExpired()) {
+    if (poll.hasExpired() || poll.forcedToClose) {
         embedPoll.setFooter("❌ Closed")
     } else {
         embedPoll.setColor(Color.YELLOW)
@@ -211,7 +212,7 @@ suspend fun initPollsFromDb() {
                                     }
                                 }
                                 if (poll.hasExpired()) {
-                                    closePoll(PollKey(guild.idLong, channel.idLong, poll.message.idLong), poll)
+                                    closePoll(poll)
                                 } else {
                                     pollMap[Triple(message.guild.idLong, message.channel.idLong, message.idLong)] = poll
                                     refreshPoll(poll)
@@ -253,8 +254,9 @@ fun removePollFromDatabase(poll: Poll) {
     }
 }
 
-fun closePoll(key: PollKey, poll: Poll) {
-    pollMap.remove(key)
+fun closePoll(poll: Poll) {
+    poll.forcedToClose = true
+    pollMap.remove(PollKey(poll.message.guild.idLong, poll.message.channel.idLong, poll.message.idLong))
     removePollFromDatabase(poll)
     refreshPoll(poll)
 
