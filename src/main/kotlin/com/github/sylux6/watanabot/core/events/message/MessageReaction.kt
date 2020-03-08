@@ -17,7 +17,6 @@ fun onMessageAddReaction(event: MessageReactionAddEvent) {
         if (event.reactionEmote.emoji == closeEmote) {
             if (event.member == poll.author) {
                 closePoll(poll)
-                poll.message.clearReactions(closeEmote).queue()
             } else {
                 poll.message.removeReaction(closeEmote, event.member!!.user).queue()
             }

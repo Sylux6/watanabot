@@ -273,6 +273,8 @@ fun closePoll(poll: Poll) {
         )
     }
     CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
+    emoteToIndex.keys.forEach { emote -> poll.message.removeReaction(emote, jda.selfUser).queue() }
+    poll.message.clearReactions(closeEmote).queue()
     val result = EmbedBuilder()
         .setAuthor(poll.message.guild.name, null, poll.message.guild.iconUrl)
         .setTitle("Poll results")
