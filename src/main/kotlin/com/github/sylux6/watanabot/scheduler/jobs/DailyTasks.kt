@@ -1,4 +1,4 @@
-package com.github.sylux6.watanabot.scheduler
+package com.github.sylux6.watanabot.scheduler.jobs
 
 import com.github.azurapi.azurapikotlin.api.Atago
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
@@ -25,8 +25,7 @@ import org.quartz.JobExecutionContext
 
 private val logger = KotlinLogging.logger {}
 
-class DailyTask : Job {
-
+class DailyTasks : Job {
     override fun execute(context: JobExecutionContext) {
         val today = LocalDate.now()
         val logBuilder = StringBuilder("List of tasks:")
