@@ -1,7 +1,7 @@
 package com.github.sylux6.watanabot.modules.poll.utils
 
 import com.github.sylux6.watanabot.modules.poll.entities.Poll
-import com.github.sylux6.watanabot.scheduler.TerminatePollJob
+import com.github.sylux6.watanabot.scheduler.jobs.TerminatePoll
 import com.github.sylux6.watanabot.scheduler.scheduler
 import com.github.sylux6.watanabot.utils.deserializeListOfStrings
 import com.github.sylux6.watanabot.utils.jda
@@ -29,7 +29,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 import org.joda.time.Hours
 import org.joda.time.Minutes
-import org.quartz.JobBuilder.newJob
+import org.quartz.JobBuilder
 import org.quartz.TriggerBuilder
 
 /**
@@ -109,7 +109,7 @@ fun sendPollMessage(
             .newTrigger()
             .startAt(poll.expirationDatetime.toDate())
             .build()
-        scheduler.scheduleJob(newJob(TerminatePollJob::class.java).build(), trigger)
+        scheduler.scheduleJob(JobBuilder.newJob(TerminatePoll::class.java).build(), trigger)
     }
 }
 
@@ -158,9 +158,9 @@ fun refreshPoll(poll: Poll) {
             embedPoll.addField(
                 "${indexToEmote[index + 1]} **$option**",
                 if (total > 0)
-                "${"█".repeat(Math.floorDiv(count * 20, total))} " +
-                    "**${String.format(Locale.ENGLISH, " %.1f", count.toDouble() / total * 100)}%** " +
-                    "(**$count**)"
+                    "${"█".repeat(Math.floorDiv(count * 20, total))} " +
+                        "**${String.format(Locale.ENGLISH, " %.1f", count.toDouble() / total * 100)}%** " +
+                        "(**$count**)"
                 else
                     "**0.0%** (**0**)",
                 false
@@ -220,7 +220,7 @@ suspend fun initPollsFromDb() {
                                         .newTrigger()
                                         .startAt(row[Polls.expirationDatetime].toDate())
                                         .build()
-                                    scheduler.scheduleJob(newJob(TerminatePollJob::class.java).build(), trigger)
+                                    scheduler.scheduleJob(JobBuilder.newJob(TerminatePoll::class.java).build(), trigger)
                                 }
                             }, { _ ->
                                 removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])
