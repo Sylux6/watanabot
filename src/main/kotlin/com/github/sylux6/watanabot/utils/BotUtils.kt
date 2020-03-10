@@ -2,7 +2,6 @@ package com.github.sylux6.watanabot.utils
 
 import info.debatty.java.stringsimilarity.Cosine
 import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.entities.Emote
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
@@ -24,14 +23,6 @@ val isPrivateServer: (Long?) -> (Boolean) = { id: Long? -> id == PRIVATE_SERVER_
 // ///////////////////////////////////////////
 // //////      FUNCTIONS         /////////////
 // ///////////////////////////////////////////
-
-fun randomStatus() {
-    jda.presence.setPresence(
-        listOf(
-            Activity.playing("with Chika-chan"), Activity.watching("Chika-chan")
-        ).random(), true
-    )
-}
 
 /**
  * Attempts to find a user in a channel, first look for account name then for nickname
