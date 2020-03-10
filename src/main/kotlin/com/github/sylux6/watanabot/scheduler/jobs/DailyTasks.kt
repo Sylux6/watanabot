@@ -1,31 +1,30 @@
 package com.github.sylux6.watanabot.scheduler.jobs
 
 import com.github.azurapi.azurapikotlin.api.Atago
+import com.github.sylux6.watanabot.scheduler.utils.birthdayDailyChecker
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.getYousoro
 import com.github.sylux6.watanabot.utils.jda
 import com.github.sylux6.watanabot.utils.log
-import com.github.sylux6.watanabot.utils.mentionAt
-import com.github.sylux6.watanabot.utils.randomStatus
 import com.github.sylux6.watanabot.utils.sendLog
-import com.github.sylux6.watanabot.utils.sendMessage
-import db.models.Guilds
-import db.models.Users
 import java.time.LocalDate
 import kotlin.system.measureTimeMillis
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.dv8tion.jda.api.EmbedBuilder
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.jodatime.day
-import org.jetbrains.exposed.sql.jodatime.month
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 
 private val logger = KotlinLogging.logger {}
 
 class DailyTasks : Job {
+
+    private val logMutex = Mutex()
+
     override fun execute(context: JobExecutionContext) {
         val today = LocalDate.now()
         val logBuilder = StringBuilder("List of tasks:")
@@ -34,51 +33,38 @@ class DailyTasks : Job {
             .setColor(BOT_PRIMARY_COLOR)
             .setTitle("Daily task ($today)")
 
-        // Random status
-        randomStatus()
-
-        // Update Azur Lane database
-        addJob(embedLogBuilder, logBuilder, "Update Azur Lane database") { Atago.reloadDatabase() }
-
-        // Birthday
-        addJob(embedLogBuilder, logBuilder, "Check members' birthday") {
-            val memberIds: List<Long> = transaction {
-                Users
-                    .slice(Users.userId)
-                    .select { Users.birthday.month() eq today.monthValue and (Users.birthday.day() eq today.dayOfMonth) }
-                    .map { it[Users.userId] }
-            }
-            val channelIdsByGuildId: Map<Long, Long> = transaction {
-                Guilds
-                    .slice(Guilds.guildId, Guilds.birthdayChannelId)
-                    .select { Guilds.birthdayChannelId.isNotNull() }
-                    .associateBy { it[Guilds.guildId] }
-                    .mapValues { (_, guild) -> guild[Guilds.birthdayChannelId]!! }
-            }
-
-            for ((guildId, channelId) in channelIdsByGuildId) {
-                val guild = jda.getGuildById(guildId) ?: continue
-                val channel = guild.getTextChannelById(channelId) ?: continue
-                val mentions = memberIds.mapNotNull { guild.getMemberById(it)?.let { member -> mentionAt(member) } }
-                if (mentions.isNotEmpty()) {
-                    sendMessage(channel, "Happy Birthday ${getYousoro(guild)} \uD83C\uDF82\n" +
-                        mentions.joinToString("\n"))
-                }
+        // BE CAREFUL WHEN ADDING A NEW TASK TO CONCURRENCY ACCESS AND MUTABLE STATE
+        runBlocking {
+            withContext(Dispatchers.Default) {
+                // Update Azur Lane database
+                launch { addJob(embedLogBuilder, logBuilder, "Update Azur Lane database") { Atago.reloadDatabase() } }
+                // Birthday
+                launch { addJob(embedLogBuilder, logBuilder, "Check members' birthday") { birthdayDailyChecker() } }
             }
         }
+
         // Send log
         logger.log(logBuilder.toString())
         sendLog(embedLogBuilder.build())
     }
 
-    private fun addJob(embedLogBuilder: EmbedBuilder, logBuilder: StringBuilder, jobTitle: String, job: () -> Unit): EmbedBuilder {
+    private suspend fun addJob(
+        embedLogBuilder: EmbedBuilder,
+        logBuilder: StringBuilder,
+        jobTitle: String,
+        job: () -> Unit
+    ): EmbedBuilder {
         try {
             val timeExecution = measureTimeMillis(job)
-            embedLogBuilder.addField(jobTitle, "${timeExecution}ms", false)
-            logBuilder.append("\n* $jobTitle executed in ${timeExecution}ms")
+            logMutex.withLock {
+                embedLogBuilder.addField(jobTitle, "${timeExecution}ms", false)
+                logBuilder.append("\n* $jobTitle executed in ${timeExecution}ms")
+            }
         } catch (e: Exception) {
-            embedLogBuilder.addField(jobTitle, "failed because: ${e.message}", false)
-            logBuilder.append("\n* $jobTitle failed because $e")
+            logMutex.withLock {
+                embedLogBuilder.addField(jobTitle, "failed because: ${e.message}", false)
+                logBuilder.append("\n* $jobTitle failed because $e")
+            }
         }
         return embedLogBuilder
     }
