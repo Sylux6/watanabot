@@ -4,6 +4,7 @@ val exposedVersion = "0.21.1"
 val harmonicaVersion = "develop-SNAPSHOT"
 val imageboardVersion = "2.1"
 val javaStringSimilarityVersion = "1.2.1"
+val jdaNasVersion = "1.1.0"
 val jdaVersion = "4.1.1_110"
 val jdaReactorVersion = "1.0.0"
 val jsonVersion = "20190722"
@@ -67,6 +68,7 @@ dependencies {
     implementation("net.dv8tion:JDA:$jdaVersion")
     implementation("com.sedmelluq:lavaplayer:$lavaplayerVersion")
     implementation("club.minnced:jda-reactor:$jdaReactorVersion")
+    implementation("com.sedmelluq:jda-nas:$jdaNasVersion")
 
     // Database
     implementation("org.postgresql:postgresql:$postgresqlVersion")

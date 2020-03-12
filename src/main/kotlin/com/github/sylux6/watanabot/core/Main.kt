@@ -10,6 +10,7 @@ import com.github.sylux6.watanabot.utils.SENTRY_DNS
 import com.github.sylux6.watanabot.utils.config
 import com.github.sylux6.watanabot.utils.getToken
 import com.github.sylux6.watanabot.utils.jda
+import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory
 import db.utils.connectToDatabase
 import io.sentry.Sentry
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,7 @@ object Main {
             .setEventManager(manager)
             .setRateLimitPool(executor)
             .setGatewayPool(executor)
+            .setAudioSendFactory(NativeAudioSendFactory())
             .build()
         jda.on<ShutdownEvent>().subscribe { it.jda.httpClient.connectionPool().evictAll() }
         jda.awaitReady()
