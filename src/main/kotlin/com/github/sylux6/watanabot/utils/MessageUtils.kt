@@ -52,7 +52,7 @@ fun sendMessageAt(channel: MessageChannel, user: User, message: MessageEmbed) {
 }
 
 fun sendLog(message: String, type: BotMessageType = BotMessageType.NORMAL) {
-    PRIVATE_SERVER_ID?.let { jda.getGuildById(it) }!!.getTextChannelsByName("log", true)[0].sendMessage(
+    PRIVATE_SERVER_ID?.let { jdaInstance.getGuildById(it) }!!.getTextChannelsByName("log", true)[0].sendMessage(
         buildBotMessage(
             message = message,
             type = type
@@ -61,7 +61,7 @@ fun sendLog(message: String, type: BotMessageType = BotMessageType.NORMAL) {
 }
 
 fun sendLog(message: MessageEmbed) {
-    PRIVATE_SERVER_ID?.let { jda.getGuildById(it) }!!.getTextChannelsByName("log", true)[0].sendMessage(message).queue()
+    PRIVATE_SERVER_ID?.let { jdaInstance.getGuildById(it) }!!.getTextChannelsByName("log", true)[0].sendMessage(message).queue()
 }
 
 fun sendFile(channel: MessageChannel, file: ByteArray, attachment: String, message: Message) {

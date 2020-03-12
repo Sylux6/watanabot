@@ -40,7 +40,7 @@ fun buildBotMessage(
 ): MessageEmbed {
     val embed = EmbedBuilder()
     when (type) {
-        BotMessageType.NORMAL -> embed.setAuthor(title ?: jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
+        BotMessageType.NORMAL -> embed.setAuthor(title ?: jdaInstance.selfUser.name, null, jdaInstance.selfUser.effectiveAvatarUrl)
         BotMessageType.FATAL -> {
             embed.setAuthor(title ?: type.display)
             embed.setTitle("report issue", "https://github.com/Sylux6/WatanaBot/issues")

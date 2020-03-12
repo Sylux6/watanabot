@@ -4,7 +4,7 @@ import com.github.azurapi.azurapikotlin.api.Atago
 import com.github.azurapi.azurapikotlin.internal.entities.Ship
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.jda
+import com.github.sylux6.watanabot.utils.jdaInstance
 import com.github.sylux6.watanabot.utils.sendBotMessage
 import com.github.sylux6.watanabot.utils.sendMessage
 import db.models.AzurLaneUsers
@@ -74,7 +74,7 @@ object AzurLanePopularityCommand : AbstractCommand("popularity") {
         val message = EmbedBuilder()
             .setTitle("Most popular ships")
             .setColor(BOT_PRIMARY_COLOR)
-            .setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
+            .setAuthor(jdaInstance.selfUser.name, null, jdaInstance.selfUser.effectiveAvatarUrl)
         val total: Int = topShips.map { (_, userList) -> userList.size }.reduce { acc, i -> acc + i }
         for ((index, pair) in topShips.take(3).withIndex()) {
             val (shipId: String, userList: List<Long>) = pair
@@ -115,7 +115,7 @@ object AzurLanePopularityCommand : AbstractCommand("popularity") {
             .setTitle(ship.names.en + " (" + ship.names.jp + ")", ship.wikiUrl)
             .setDescription("(**$shipTotal**) | **${String.format(Locale.ENGLISH, "%.1f", shipTotal.toDouble() / total * 100)}%**")
             .setColor(BOT_PRIMARY_COLOR)
-            .setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
+            .setAuthor(jdaInstance.selfUser.name, null, jdaInstance.selfUser.effectiveAvatarUrl)
             .setThumbnail(ship.thumbnail)
         for (pair in membersByShipId[ship.id] ?: error("")) {
             val (date: DateTime, members: List<Member>) = pair

@@ -4,7 +4,7 @@ import com.github.sylux6.watanabot.modules.poll.entities.Poll
 import com.github.sylux6.watanabot.scheduler.jobs.TerminatePoll
 import com.github.sylux6.watanabot.scheduler.scheduler
 import com.github.sylux6.watanabot.utils.deserializeListOfStrings
-import com.github.sylux6.watanabot.utils.jda
+import com.github.sylux6.watanabot.utils.jdaInstance
 import com.github.sylux6.watanabot.utils.sendDM
 import com.github.sylux6.watanabot.utils.serializeListOfStrings
 import db.models.Polls
@@ -180,8 +180,8 @@ suspend fun initPollsFromDb() {
                 .selectAll()
                 .forEach { row ->
                     launch {
-                        val guild = jda.getGuildById(row[Polls.guildId])
-                        val channel = jda.getTextChannelById(row[Polls.channelId])
+                        val guild = jdaInstance.getGuildById(row[Polls.guildId])
+                        val channel = jdaInstance.getTextChannelById(row[Polls.channelId])
                         val author = guild?.getMemberById(row[Polls.authorId])
                         if (guild != null && channel != null && author != null) {
                             channel.retrieveMessageById(row[Polls.messageId]).queue({ message ->
@@ -273,7 +273,7 @@ fun closePoll(poll: Poll) {
         )
     }
     CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
-    emoteToIndex.keys.forEach { emote -> poll.message.removeReaction(emote, jda.selfUser).queue() }
+    emoteToIndex.keys.forEach { emote -> poll.message.removeReaction(emote, jdaInstance.selfUser).queue() }
     poll.message.clearReactions(closeEmote).queue()
     val result = EmbedBuilder()
         .setAuthor(poll.message.guild.name, null, poll.message.guild.iconUrl)

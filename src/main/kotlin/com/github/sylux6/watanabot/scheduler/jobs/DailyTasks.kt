@@ -3,7 +3,7 @@ package com.github.sylux6.watanabot.scheduler.jobs
 import com.github.azurapi.azurapikotlin.api.Atago
 import com.github.sylux6.watanabot.scheduler.utils.birthdayDailyChecker
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
-import com.github.sylux6.watanabot.utils.jda
+import com.github.sylux6.watanabot.utils.jdaInstance
 import com.github.sylux6.watanabot.utils.log
 import com.github.sylux6.watanabot.utils.sendLog
 import java.time.LocalDate
@@ -29,7 +29,7 @@ class DailyTasks : Job {
         val today = LocalDate.now()
         val logBuilder = StringBuilder("List of tasks:")
         val embedLogBuilder = EmbedBuilder()
-            .setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
+            .setAuthor(jdaInstance.selfUser.name, null, jdaInstance.selfUser.effectiveAvatarUrl)
             .setColor(BOT_PRIMARY_COLOR)
             .setTitle("Daily task ($today)")
 

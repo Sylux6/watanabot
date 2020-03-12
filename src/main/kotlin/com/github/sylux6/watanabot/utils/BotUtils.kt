@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role
 
 // Bot
-lateinit var jda: JDA
+lateinit var jdaInstance: JDA
 
 // CONSTANTS
 val BOT_PREFIX = config.getOrElse(CONFIG_PREFIX, "o7")

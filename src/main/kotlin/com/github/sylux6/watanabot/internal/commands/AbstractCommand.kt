@@ -10,7 +10,7 @@ import com.github.sylux6.watanabot.modules.music.MusicCommandModule
 import com.github.sylux6.watanabot.utils.BOT_PREFIX
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.PRIVATE_SERVER_ID
-import com.github.sylux6.watanabot.utils.jda
+import com.github.sylux6.watanabot.utils.jdaInstance
 import com.github.sylux6.watanabot.utils.log
 import com.github.sylux6.watanabot.utils.sendBotMessage
 import com.github.sylux6.watanabot.utils.sendMessage
@@ -31,7 +31,7 @@ abstract class AbstractCommand(
 
     private fun help(commandModule: AbstractCommandModule, channel: MessageChannel) {
         val message = EmbedBuilder()
-            .setAuthor(jda.selfUser.name, null, jda.selfUser.effectiveAvatarUrl)
+            .setAuthor(jdaInstance.selfUser.name, null, jdaInstance.selfUser.effectiveAvatarUrl)
             .setColor(BOT_PRIMARY_COLOR)
             .setTitle("Documentation for `$name`")
             .addField(
@@ -87,7 +87,7 @@ fun checkCommandAccess(event: MessageReceivedEvent, access: CommandLevelAccess):
         CommandLevelAccess.MOD -> event.member!!.hasPermission(
             Permission.MESSAGE_MANAGE
         )
-        CommandLevelAccess.OWNER -> event.author == jda.retrieveApplicationInfo().complete().owner
+        CommandLevelAccess.OWNER -> event.author == jdaInstance.retrieveApplicationInfo().complete().owner
         CommandLevelAccess.PRIVATE -> event.guild.idLong == PRIVATE_SERVER_ID
         else -> true
     }

@@ -1,6 +1,5 @@
 package com.github.sylux6.watanabot.core
 
-import club.minnced.jda.reactor.on
 import com.github.sylux6.watanabot.core.events.executor
 import com.github.sylux6.watanabot.core.events.initReactiveEventManager
 import com.github.sylux6.watanabot.core.events.manager
@@ -9,7 +8,7 @@ import com.github.sylux6.watanabot.scheduler.QuartzScheduler
 import com.github.sylux6.watanabot.utils.SENTRY_DNS
 import com.github.sylux6.watanabot.utils.config
 import com.github.sylux6.watanabot.utils.getToken
-import com.github.sylux6.watanabot.utils.jda
+import com.github.sylux6.watanabot.utils.jdaInstance
 import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory
 import db.utils.connectToDatabase
 import io.sentry.Sentry
@@ -19,7 +18,6 @@ import kotlinx.coroutines.withContext
 import net.dv8tion.jda.api.AccountType
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
-import net.dv8tion.jda.api.events.ShutdownEvent
 
 object Main {
 
@@ -35,7 +33,7 @@ object Main {
         connectToDatabase()
         // Building bot
         initReactiveEventManager()
-        jda = JDABuilder(AccountType.BOT)
+        jdaInstance = JDABuilder(AccountType.BOT)
             .setToken(getToken())
             .setActivity(Activity.playing("with Chika-chan"))
             .setGuildSubscriptionsEnabled(true)
@@ -44,8 +42,7 @@ object Main {
             .setGatewayPool(executor)
             .setAudioSendFactory(NativeAudioSendFactory())
             .build()
-        jda.on<ShutdownEvent>().subscribe { it.jda.httpClient.connectionPool().evictAll() }
-        jda.awaitReady()
+            .awaitReady()
         runBlocking {
             withContext(Dispatchers.Default) {
                 // Init polls
