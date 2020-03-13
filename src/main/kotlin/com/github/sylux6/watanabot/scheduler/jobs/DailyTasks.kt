@@ -55,16 +55,20 @@ class DailyTasks : Job {
         job: () -> Unit
     ): EmbedBuilder {
         try {
-            val timeExecution = measureTimeMillis(job)
-            logMutex.withLock {
-                embedLogBuilder.addField(jobTitle, "${timeExecution}ms", false)
-                logBuilder.append("\n* $jobTitle executed in ${timeExecution}ms")
+            try {
+                val timeExecution = measureTimeMillis(job)
+                logMutex.withLock {
+                    embedLogBuilder.addField(jobTitle, "${timeExecution}ms", false)
+                    logBuilder.append("\n* $jobTitle executed in ${timeExecution}ms")
+                }
+            } catch (e: Exception) {
+                logMutex.withLock {
+                    embedLogBuilder.addField(jobTitle, "failed because: ${e.message}", false)
+                    logBuilder.append("\n* $jobTitle failed because $e")
+                }
             }
-        } catch (e: Exception) {
-            logMutex.withLock {
-                embedLogBuilder.addField(jobTitle, "failed because: ${e.message}", false)
-                logBuilder.append("\n* $jobTitle failed because $e")
-            }
+        } catch (e: Throwable) {
+            logger.log(e)
         }
         return embedLogBuilder
     }
