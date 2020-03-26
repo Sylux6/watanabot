@@ -5,15 +5,15 @@ val harmonicaVersion = "develop-SNAPSHOT"
 val imageboardVersion = "2.1"
 val javaStringSimilarityVersion = "1.2.1"
 val jdaNasVersion = "1.1.0"
-val jdaVersion = "4.1.1_110"
+val jdaVersion = "4.1.1_125"
 val jdaReactorVersion = "1.0.0"
 val jsonVersion = "20190722"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggingVersion = "1.7.8"
-val kotlinVersion = "1.3.70"
+val kotlinVersion = "1.3.71"
 val kotlinxSerializationVersion = "0.14.0"
 val kotlinxVersion = "1.3.4"
-val lavaplayerVersion = "1.3.34"
+val lavaplayerVersion = "1.3.38"
 val logbackVersion = "1.2.3"
 val mockkVersion = "1.9.3"
 val postgresqlVersion = "42.2.10"
@@ -28,7 +28,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-script-util:1.3.70")
+        classpath("org.jetbrains.kotlin:kotlin-script-util:1.3.71")
         classpath("com.github.KenjiOhtsuka:harmonica:develop-SNAPSHOT")
         classpath("com.github.cesarferreira:kotlin-pluralizer:0.2.9")
     }
@@ -40,8 +40,8 @@ plugins {
     application
     java
     maven
-    kotlin("jvm") version "1.3.70"
-    kotlin("plugin.serialization") version "1.3.70"
+    kotlin("jvm") version "1.3.71"
+    kotlin("plugin.serialization") version "1.3.71"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("org.jmailen.kotlinter") version "2.3.0"
 }
