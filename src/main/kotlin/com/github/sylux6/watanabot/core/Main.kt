@@ -15,8 +15,7 @@ import io.sentry.Sentry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import net.dv8tion.jda.api.AccountType
-import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.JDABuilder.createDefault
 import net.dv8tion.jda.api.entities.Activity
 
 object Main {
@@ -33,10 +32,9 @@ object Main {
         connectToDatabase()
         // Building bot
         initReactiveEventManager()
-        jdaInstance = JDABuilder(AccountType.BOT)
-            .setToken(getToken())
+        jdaInstance = createDefault(getToken())
             .setActivity(Activity.playing("with Chika-chan"))
-            .setGuildSubscriptionsEnabled(true)
+            .setBulkDeleteSplittingEnabled(false)
             .setEventManager(manager)
             .setRateLimitPool(executor)
             .setGatewayPool(executor)
