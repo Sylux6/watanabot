@@ -1,9 +1,9 @@
 package com.github.sylux6.watanabot.utils
 
+import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.list
-import kotlinx.serialization.serializer
 
 /**
  * A function to serialize a list of String into a String

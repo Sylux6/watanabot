@@ -18,7 +18,7 @@ import kotlin.concurrent.thread
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
@@ -53,7 +53,7 @@ fun initReactiveEventManager() {
         .filter { !it.message.author.isBot && !it.message.author.isFake }
         .subscribe { launchEvent { onMessageReceivedEvent(it) } }
 
-    manager.on<GuildMemberLeaveEvent>()
+    manager.on<GuildMemberRemoveEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
         .subscribe { launchEvent { onGuildMemberLeaveEvent(it) } }
 
