@@ -17,6 +17,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import net.dv8tion.jda.api.JDABuilder.createDefault
 import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.requests.GatewayIntent
 
 object Main {
 
@@ -34,6 +35,7 @@ object Main {
         initReactiveEventManager()
         jdaInstance = createDefault(getToken())
             .setActivity(Activity.playing("with Chika-chan"))
+            .enableIntents(GatewayIntent.GUILD_PRESENCES)
             .setBulkDeleteSplittingEnabled(false)
             .setEventManager(manager)
             .setRateLimitPool(executor)
