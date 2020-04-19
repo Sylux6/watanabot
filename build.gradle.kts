@@ -65,7 +65,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationVersion")
 
     // Discord
-    implementation("net.dv8tion:JDA:$jdaVersion")
+    implementation("net.dv8tion:JDA:$jdaVersion") {
+        exclude(module="opus-java")
+    }
     implementation("com.sedmelluq:lavaplayer:$lavaplayerVersion")
     implementation("club.minnced:jda-reactor:$jdaReactorVersion")
     implementation("com.sedmelluq:jda-nas:$jdaNasVersion")
