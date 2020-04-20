@@ -15,7 +15,7 @@ import io.sentry.Sentry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import net.dv8tion.jda.api.JDABuilder.createDefault
+import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.requests.GatewayIntent
 
@@ -33,7 +33,8 @@ object Main {
         connectToDatabase()
         // Building bot
         initReactiveEventManager()
-        jdaInstance = createDefault(getToken())
+        // FIXME: Deprecated method
+        jdaInstance = JDABuilder(getToken())
             .setActivity(Activity.playing("with Chika-chan"))
             .enableIntents(GatewayIntent.GUILD_PRESENCES)
             .setBulkDeleteSplittingEnabled(false)
