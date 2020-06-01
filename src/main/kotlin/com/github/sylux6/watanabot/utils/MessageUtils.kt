@@ -43,14 +43,6 @@ fun sendMessageAt(channel: MessageChannel, user: User, message: String) {
     channel.sendMessage(mentionAt(user) + " " + message).queue()
 }
 
-fun sendMessageAt(channel: MessageChannel, user: User, message: Message) {
-    channel.sendMessage(mentionAt(user) + " " + message).queue()
-}
-
-fun sendMessageAt(channel: MessageChannel, user: User, message: MessageEmbed) {
-    channel.sendMessage(mentionAt(user) + " " + message).queue()
-}
-
 fun sendLog(message: String, type: BotMessageType = BotMessageType.NORMAL) {
     PRIVATE_SERVER_ID?.let { jdaInstance.getGuildById(it) }!!.getTextChannelsByName("log", true)[0].sendMessage(
         buildBotMessage(
@@ -86,18 +78,6 @@ fun sendDM(user: User, message: MessageEmbed) {
     user.openPrivateChannel().queue() { channel ->
         channel.sendMessage(message).queue()
     }
-}
-
-fun editMessage(oldMessage: Message, newMessage: String) {
-    oldMessage.editMessage(newMessage).queue()
-}
-
-fun editMessage(oldMessage: Message, newMessage: Message) {
-    oldMessage.editMessage(newMessage).queue()
-}
-
-fun editMessage(oldMessage: Message, newMessage: MessageEmbed) {
-    oldMessage.editMessage(newMessage).queue()
 }
 
 /**
