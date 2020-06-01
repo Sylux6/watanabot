@@ -5,7 +5,9 @@ import com.github.sylux6.watanabot.scheduler.jobs.TerminatePoll
 import com.github.sylux6.watanabot.scheduler.scheduler
 import com.github.sylux6.watanabot.utils.deserializeListOfStrings
 import com.github.sylux6.watanabot.utils.jdaInstance
+import com.github.sylux6.watanabot.utils.mentionAt
 import com.github.sylux6.watanabot.utils.sendDM
+import com.github.sylux6.watanabot.utils.sendMessage
 import com.github.sylux6.watanabot.utils.serializeListOfStrings
 import db.models.Polls
 import java.awt.Color
@@ -16,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.MessageBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.entities.User
@@ -275,6 +278,7 @@ fun closePoll(poll: Poll) {
     CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
     emoteToIndex.keys.forEach { emote -> poll.message.removeReaction(emote, jdaInstance.selfUser).queue() }
     poll.message.clearReactions(closeEmote).queue()
+    val mentions = mutableSetOf(poll.author.user)
     val result = EmbedBuilder()
         .setAuthor(poll.message.guild.name, null, poll.message.guild.iconUrl)
         .setTitle("Poll results")
@@ -284,9 +288,18 @@ fun closePoll(poll: Poll) {
     for ((index, option) in poll.options.withIndex()) {
         result.addField(
             "${indexToEmote[index + 1]} $option (**${votes[indexToEmote[index + 1]]?.size ?: 0}**)",
-            votes[indexToEmote[index + 1]]?.joinToString("\n") { member -> member.effectiveName }
+            votes[indexToEmote[index + 1]]?.joinToString("\n") { member -> run {
+                mentions.add(member.user)
+                member.effectiveName
+            } }
                 ?: "",
             false)
     }
+    // Remove bot from mentions
+    mentions.remove(jdaInstance.selfUser)
+    val message = MessageBuilder(result)
+        .append("\n\n")
+        .append(mentionAt(mentions))
+    sendMessage(poll.message.channel, message.build())
     sendDM(poll.author.user, result.build())
 }

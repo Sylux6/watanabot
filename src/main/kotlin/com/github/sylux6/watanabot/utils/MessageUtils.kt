@@ -126,6 +126,19 @@ fun mentionAt(user: User): String {
 
 /**
  * Returns mention syntax for message
+ * @param users list of users
+ * @return mention syntax
+ */
+fun mentionAt(users: Set<User>): String {
+    val result = StringBuilder()
+    for (user in users) {
+        result.append("<@${user.id}> ")
+    }
+    return result.toString()
+}
+
+/**
+ * Returns mention syntax for message
  * @param member member
  * @return mention syntax
  */
