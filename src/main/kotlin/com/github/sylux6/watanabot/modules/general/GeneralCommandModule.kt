@@ -13,7 +13,6 @@ import com.github.sylux6.watanabot.modules.general.commands.ModulesCommand
 import com.github.sylux6.watanabot.modules.general.commands.NyaCommand
 import com.github.sylux6.watanabot.modules.general.commands.RollCommand
 import com.github.sylux6.watanabot.modules.general.commands.SayCommand
-import com.github.sylux6.watanabot.modules.general.commands.ScreenShareCommand
 import com.github.sylux6.watanabot.modules.general.commands.ServerIconCommand
 import com.github.sylux6.watanabot.modules.general.commands.ShutdownCommand
 import com.github.sylux6.watanabot.modules.general.commands.YousolewdCommand
@@ -34,7 +33,6 @@ object GeneralCommandModule : AbstractCommandModule(
         NyaCommand,
         RollCommand,
         SayCommand,
-        ScreenShareCommand,
         YousolewdCommand,
         YousoroCommand,
         ModulesCommand,

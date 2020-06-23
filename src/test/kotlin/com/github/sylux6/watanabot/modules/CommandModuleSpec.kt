@@ -37,7 +37,6 @@ import com.github.sylux6.watanabot.modules.general.commands.ModulesCommand
 import com.github.sylux6.watanabot.modules.general.commands.NyaCommand
 import com.github.sylux6.watanabot.modules.general.commands.RollCommand
 import com.github.sylux6.watanabot.modules.general.commands.SayCommand
-import com.github.sylux6.watanabot.modules.general.commands.ScreenShareCommand
 import com.github.sylux6.watanabot.modules.general.commands.ServerIconCommand
 import com.github.sylux6.watanabot.modules.general.commands.ShutdownCommand
 import com.github.sylux6.watanabot.modules.general.commands.YousolewdCommand
@@ -94,7 +93,7 @@ object CommandModuleSpec : Spek({
         it("should define all commands") {
             val commandList = COMMAND_MODULES.flatMap { it.commandMap.values } + GeneralCommandModule.commandMap.values
             // 1 extra command for each module because documentation counts as a command
-            expect(commandList.size).toBe(57)
+            expect(commandList.size).toBe(56)
             expect(commandList).contains(
                 AzurLaneChibiCommand,
                 AzurLaneInfoCommand,
@@ -121,7 +120,6 @@ object CommandModuleSpec : Spek({
                 NyaCommand,
                 RollCommand,
                 SayCommand,
-                ScreenShareCommand,
                 ServerIconCommand,
                 ShutdownCommand,
                 YousolewdCommand,
