@@ -51,6 +51,7 @@ object AzurLanePopularityCommand : AbstractCommand("popularity") {
                 AzurLaneUsers
                     .slice(AzurLaneUsers.userId, AzurLaneUsers.oathId, AzurLaneUsers.oathDate)
                     .select { AzurLaneUsers.oathId.isNotNull() }
+                    .filter { event.guild.getMemberById(it[AzurLaneUsers.userId]) != null }
                     .groupBy { it[AzurLaneUsers.oathId]!! }
                     .mapValues { (_, value) ->
                         value
