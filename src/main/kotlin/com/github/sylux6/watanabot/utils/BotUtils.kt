@@ -33,7 +33,7 @@ val isPrivateServer: (Long?) -> (Boolean) = { id: Long? -> id == PRIVATE_SERVER_
  */
 fun findMemberOrNull(guild: Guild, searchText: String): Member? {
     if (DISCORD_MENTION.matches(searchText)) {
-        return guild.getMemberById(searchText.drop(2).dropLast(1))
+        return guild.getMemberById(searchText.drop(3).dropLast(1))
     }
     if (DISCORD_TAG.matches(searchText)) {
         return guild.getMemberByTag(searchText)

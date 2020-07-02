@@ -13,7 +13,7 @@ import net.dv8tion.jda.internal.utils.IOUtil
 import org.apache.commons.io.FilenameUtils
 
 val DISCORD_TAG = Regex("\\w+?#\\d{4}")
-val DISCORD_MENTION = Regex("<@\\d{17}>")
+val DISCORD_MENTION = Regex("<@!\\d{17}>")
 val DISCORD_CHANNEL = Regex("<#{18}>")
 val DISCORD_ROL = Regex("<@&\\d{18}>")
 
