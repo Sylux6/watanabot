@@ -1,5 +1,5 @@
 val atriumVersion = "0.12.0"
-val azurapiVersion = "3.1.3"
+val azurapiVersion = "3.1.4"
 val exposedVersion = "0.26.1"
 val harmonicaVersion = "1.1.26"
 val imageboardVersion = "2.1"
