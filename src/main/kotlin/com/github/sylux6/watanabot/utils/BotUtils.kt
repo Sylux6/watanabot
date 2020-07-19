@@ -25,40 +25,43 @@ val isPrivateServer: (Long?) -> (Boolean) = { id: Long? -> id == PRIVATE_SERVER_
 // ///////////////////////////////////////////
 
 /**
- * Attempts to find a user in a channel, first look for account name then for nickname
+ * Attempts to find a user in a channel, first look for account name then for nickname. This is a blocking function!
  *
  * @param guild the guild to look in
  * @param searchText the name to look for
  * @return member
  */
 fun findMemberOrNull(guild: Guild, searchText: String): Member? {
-    if (DISCORD_MENTION.matches(searchText)) {
-        return guild.getMemberById(searchText.drop(3).dropLast(1))
-    }
-    if (DISCORD_TAG.matches(searchText)) {
-        return guild.getMemberByTag(searchText)
-    }
-    if (guild.members.map { member -> member.id }.contains(searchText)) {
-        return guild.getMemberById(searchText)
-    }
-    val cosine = Cosine()
-    var bestMatch: Pair<Double, Member?> = 0.0 to null
-    for (member in guild.members) {
-        val nickname = member.effectiveName.toLowerCase()
-        val username = member.user.name.toLowerCase()
-        if (nickname == searchText || username == searchText || member.user.id == searchText) {
-            return member
+    if (DISCORD_MENTION matches searchText) {
+        return guild.retrieveMemberById(Regex("\\d{18}|\\d{17}").find(searchText)!!.value).complete()
+    } else {
+        val memberList = guild.loadMembers().get()
+        memberList.find { member ->
+            member.id == searchText || member.effectiveName == searchText
+        }.let { result ->
+            if (result != null) {
+                return result
+            }
+            val cosine = Cosine()
+            var bestMatch: Pair<Double, Member?> = 0.0 to null
+            for (member in guild.members) {
+                val nickname = member.effectiveName.toLowerCase()
+                val username = member.user.name.toLowerCase()
+                if (nickname == searchText || username == searchText || member.user.id == searchText) {
+                    return member
+                }
+                // Score similarity
+                val scoreUserName: Double = cosine.similarity(username, searchText.toLowerCase())
+                val scoreEffectiveName: Double = cosine.similarity(nickname, searchText.toLowerCase())
+                bestMatch = when {
+                    scoreUserName > bestMatch.first -> scoreUserName to member
+                    scoreEffectiveName > bestMatch.first -> scoreEffectiveName to member
+                    else -> bestMatch
+                }
+            }
+            return bestMatch.second
         }
-        // Score similarity
-        val scoreUserName: Double = cosine.similarity(username, searchText.toLowerCase())
-        val scoreEffectiveName: Double = cosine.similarity(nickname, searchText.toLowerCase())
-        bestMatch = when {
-            scoreUserName > bestMatch.first -> scoreUserName to member
-            scoreEffectiveName > bestMatch.first -> scoreEffectiveName to member
-            else -> bestMatch
-        }
     }
-    return bestMatch.second
 }
 
 // /////// ROLE FUNCTION ////////

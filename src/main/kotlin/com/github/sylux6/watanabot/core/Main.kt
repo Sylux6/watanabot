@@ -18,6 +18,8 @@ import kotlinx.coroutines.withContext
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.requests.GatewayIntent
+import net.dv8tion.jda.api.utils.MemberCachePolicy
+import net.dv8tion.jda.api.utils.cache.CacheFlag
 
 object Main {
 
@@ -33,10 +35,11 @@ object Main {
         connectToDatabase()
         // Building bot
         initReactiveEventManager()
-        // FIXME: Deprecated method
-        jdaInstance = JDABuilder(getToken())
+        jdaInstance = JDABuilder.createDefault(getToken())
+            .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES)
+            .enableCache(CacheFlag.ACTIVITY)
+            .setMemberCachePolicy(MemberCachePolicy.ALL)
             .setActivity(Activity.playing("with Chika-chan"))
-            .enableIntents(GatewayIntent.GUILD_PRESENCES)
             .setBulkDeleteSplittingEnabled(false)
             .setEventManager(manager)
             .setRateLimitPool(executor)
