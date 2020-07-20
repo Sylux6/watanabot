@@ -35,7 +35,7 @@ fun birthdayDailyChecker() {
     for ((guildId, channelId) in channelIdsByGuildId) {
         val guild = jdaInstance.getGuildById(guildId) ?: continue
         val channel = guild.getTextChannelById(channelId) ?: continue
-        val mentions = memberIds.mapNotNull { guild.getMemberById(it)?.let { member -> mentionAt(member) } }
+        val mentions = memberIds.mapNotNull { guild.retrieveMemberById(it).complete()?.let { member -> mentionAt(member) } }
         if (mentions.isNotEmpty()) {
             sendMessage(channel, "Happy Birthday ${getYousoro(guild)} \uD83C\uDF82\n" +
                 mentions.joinToString("\n"))
