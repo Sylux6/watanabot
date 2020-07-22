@@ -21,6 +21,7 @@ val quartzVersion = "2.3.2"
 val reflectionsVersion = "0.9.12"
 val sentryVersion = "1.7.30"
 val spekVersion = "2.0.12"
+val twitch4jVersion = "1.1.0"
 
 buildscript {
     repositories {
@@ -99,6 +100,7 @@ dependencies {
     // API
     implementation("net.kodehawa:imageboard-api:$imageboardVersion")
     implementation("com.github.AzurAPI:AzurApi-Kotlin:$azurapiVersion")
+    implementation("com.github.twitch4j:twitch4j:$twitch4jVersion")
 
     // Test
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")

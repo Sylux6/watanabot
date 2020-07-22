@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.events.user.UserActivityEndEvent
 fun onUserUpdateActivityEnd(event: UserActivityEndEvent) {
     // Remove On Live role
     if (event.member.activities.map { it.type }.none { it == Activity.ActivityType.STREAMING }) {
-        removeRole(event.guild, event.member, event.guild.getRolesByName("On Live", false).getOrElse(0) { return })
+        event.guild.getRolesByName("On Live", false).getOrNull(0)?.let { role ->
+            removeRole(event.guild, event.member, role)
+        }
     }
 }

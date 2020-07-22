@@ -9,6 +9,7 @@ import com.github.sylux6.watanabot.utils.SENTRY_DNS
 import com.github.sylux6.watanabot.utils.config
 import com.github.sylux6.watanabot.utils.getToken
 import com.github.sylux6.watanabot.utils.jdaInstance
+import com.github.twitch4j.TwitchClientBuilder
 import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory
 import db.utils.connectToDatabase
 import io.sentry.Sentry

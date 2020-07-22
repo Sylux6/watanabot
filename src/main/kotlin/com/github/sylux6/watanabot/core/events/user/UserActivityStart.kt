@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.events.user.UserActivityStartEvent
 fun onUserUpdateActivityStart(event: UserActivityStartEvent) {
     // Add On Live role
     if (event.newActivity.type == Activity.ActivityType.STREAMING) {
-        addRole(event.guild, event.member, event.guild.getRolesByName("On Live", false).getOrElse(0) { return })
+        event.guild.getRolesByName("On Live", false).getOrNull(0)?.let { role ->
+            addRole(event.guild, event.member, role)
+        }
     }
 }
