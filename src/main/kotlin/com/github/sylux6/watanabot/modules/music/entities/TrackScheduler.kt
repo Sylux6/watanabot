@@ -17,7 +17,7 @@ class TrackScheduler
  * @param player
  * The audio player this scheduler uses
  */
-    (private val player: AudioPlayer) : AudioEventAdapter() {
+(private val player: AudioPlayer) : AudioEventAdapter() {
     private val queue: BlockingQueue<AudioTrack>
 
     val tracklist: List<AudioTrack>

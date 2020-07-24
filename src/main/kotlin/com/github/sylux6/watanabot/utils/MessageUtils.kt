@@ -1,8 +1,6 @@
 package com.github.sylux6.watanabot.utils
 
 import com.github.sylux6.watanabot.internal.types.BotMessageType
-import java.io.IOException
-import java.net.URL
 import net.dv8tion.jda.api.MessageBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Message
@@ -11,6 +9,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.internal.utils.IOUtil
 import org.apache.commons.io.FilenameUtils
+import java.io.IOException
+import java.net.URL
 
 val DISCORD_TAG = Regex("\\w+?#\\d{4}")
 val DISCORD_MENTION = Regex("<@(!\\d{17}|\\d{18})>")

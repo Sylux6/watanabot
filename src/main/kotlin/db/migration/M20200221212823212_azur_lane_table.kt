@@ -44,8 +44,10 @@ class M20200221212823212_azur_lane_table : AbstractMigration() {
             }
             for (pair in result) {
                 val (userId: Long, oathId: String) = pair
-                exec("INSERT INTO users (user_id, azur_lane_waifu_id) VALUES ($userId, '$oathId') " +
-                    "ON CONFLICT (user_id) DO UPDATE SET azur_lane_waifu_id = $oathId")
+                exec(
+                    "INSERT INTO users (user_id, azur_lane_waifu_id) VALUES ($userId, '$oathId') " +
+                        "ON CONFLICT (user_id) DO UPDATE SET azur_lane_waifu_id = $oathId"
+                )
             }
         }
         dropTable("azur_lane_users")

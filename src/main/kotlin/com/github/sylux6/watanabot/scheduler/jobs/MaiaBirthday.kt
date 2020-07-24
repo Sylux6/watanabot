@@ -27,7 +27,8 @@ class MaiaBirthday : Job {
             jdaInstance.getGuildById(PRIVATE_SERVER_ID)!!.getTextChannelsByName(
                 "announcements",
                 true
-            )[0], m
+            )[0],
+            m
         )
     }
 }

@@ -2,8 +2,8 @@ package com.github.sylux6.watanabot.modules.music.entities
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame
-import java.nio.ByteBuffer
 import net.dv8tion.jda.api.audio.AudioSendHandler
+import java.nio.ByteBuffer
 
 /**
  * This is a wrapper around AudioPlayer which makes it behave as an
@@ -16,7 +16,7 @@ class AudioPlayerSendHandler
  * @param audioPlayer
  * Audio player to wrap.
  */
-    (private val audioPlayer: AudioPlayer) : AudioSendHandler {
+(private val audioPlayer: AudioPlayer) : AudioSendHandler {
     private var lastFrame: AudioFrame? = null
 
     override fun canProvide(): Boolean {

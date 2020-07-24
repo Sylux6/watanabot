@@ -23,7 +23,8 @@ object BirthdaySetChannelCommand : AbstractCommand("setchannel", levelAccess = l
             }
         }
         sendMessage(
-            event.channel, "Birthdays will be announced in " +
+            event.channel,
+            "Birthdays will be announced in " +
                 linkTextChannel(event.channel) +
                 " (note that I'll check your birthdays everyday on CEST timezone (> ᴗ •)ゞ)"
         )

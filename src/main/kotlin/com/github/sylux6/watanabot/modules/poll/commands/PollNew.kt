@@ -3,10 +3,10 @@ package com.github.sylux6.watanabot.modules.poll.commands
 import com.github.sylux6.watanabot.internal.commands.AbstractCommand
 import com.github.sylux6.watanabot.internal.exceptions.CommandException
 import com.github.sylux6.watanabot.modules.poll.utils.sendPollMessage
-import java.awt.Color
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.joda.time.DateTime
+import java.awt.Color
 
 object PollNew : AbstractCommand("new", 1) {
     override val template: String
