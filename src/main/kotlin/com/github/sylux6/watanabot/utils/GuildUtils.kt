@@ -8,7 +8,11 @@ fun Guild.retrieveMemberByIdOrNull(id: Long): Member? {
     return try {
         retrieveMemberById(id).complete()
     } catch (e: ErrorResponseException) {
-        null
+        if (e.errorResponse.name == ("UNKNOWN_MEMBER")) {
+            null
+        } else {
+            throw e
+        }
     }
 }
 
@@ -16,6 +20,10 @@ fun Guild.retrieveMemberByIdOrNull(id: String): Member? {
     return try {
         retrieveMemberById(id).complete()
     } catch (e: ErrorResponseException) {
-        null
+        if (e.errorResponse.name == ("UNKNOWN_MEMBER")) {
+            null
+        } else {
+            throw e
+        }
     }
 }
