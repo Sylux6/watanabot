@@ -10,10 +10,6 @@ import com.github.sylux6.watanabot.utils.sendDM
 import com.github.sylux6.watanabot.utils.sendMessage
 import com.github.sylux6.watanabot.utils.serializeListOfStrings
 import db.models.Polls
-import java.awt.Color
-import java.util.HashMap
-import java.util.Locale
-import java.util.concurrent.CompletableFuture
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,6 +30,10 @@ import org.joda.time.Hours
 import org.joda.time.Minutes
 import org.quartz.JobBuilder
 import org.quartz.TriggerBuilder
+import java.awt.Color
+import java.util.HashMap
+import java.util.Locale
+import java.util.concurrent.CompletableFuture
 
 /**
  * Map of polls indexed by <guildId, channelId, messageId>
@@ -137,9 +137,10 @@ fun refreshPoll(poll: Poll) {
         embedPoll.setFooter("❌ Closed")
     } else {
         embedPoll.setColor(Color.YELLOW)
-        embedPoll.setFooter("✔️ Open for " +
-            "${Hours.hoursBetween(poll.creationDatetime, poll.expirationDatetime).hours}h" +
-            String.format("%02d", Minutes.minutesBetween(poll.creationDatetime, poll.expirationDatetime).minutes % 60)
+        embedPoll.setFooter(
+            "✔️ Open for " +
+                "${Hours.hoursBetween(poll.creationDatetime, poll.expirationDatetime).hours}h" +
+                String.format("%02d", Minutes.minutesBetween(poll.creationDatetime, poll.expirationDatetime).minutes % 60)
         )
     }
     if (poll.multipleChoices) {
@@ -150,8 +151,9 @@ fun refreshPoll(poll: Poll) {
     val completableFutures = mutableListOf<CompletableFuture<List<User>>>()
 
     for (reaction in emoteToIndex.keys) {
-        completableFutures.add(poll.message.retrieveReactionUsers(reaction).submit()
-            .whenComplete { mutableList, _ -> votes[reaction] = mutableList.filter { !it.isBot }.size }
+        completableFutures.add(
+            poll.message.retrieveReactionUsers(reaction).submit()
+                .whenComplete { mutableList, _ -> votes[reaction] = mutableList.filter { !it.isBot }.size }
         )
     }
     CompletableFuture.allOf(*completableFutures.toTypedArray()).thenRun {
@@ -187,47 +189,52 @@ suspend fun initPollsFromDb() {
                         val channel = jdaInstance.getTextChannelById(row[Polls.channelId])
                         val author = guild?.getMemberById(row[Polls.authorId])
                         if (guild != null && channel != null && author != null) {
-                            channel.retrieveMessageById(row[Polls.messageId]).queue({ message ->
-                                val poll = Poll(
-                                    author,
-                                    message,
-                                    row[Polls.creationDatetime],
-                                    row[Polls.expirationDatetime],
-                                    row[Polls.title],
-                                    deserializeListOfStrings(row[Polls.serializedOptions]),
-                                    row[Polls.multipleChoices]
-                                )
-                                if (!poll.multipleChoices) {
-                                    val completableFutures = mutableListOf<CompletableFuture<List<User>>>()
-                                    val userReactionMap: MutableMap<User, List<String>> = HashMap()
-                                    for (unicode in emoteToIndex.keys) {
-                                        completableFutures.add(poll.message.retrieveReactionUsers(unicode).submit().whenComplete { mutableList, _ ->
-                                            mutableList.filter { !it.isBot }.forEach { user ->
-                                                userReactionMap[user] = userReactionMap.getOrDefault(user, emptyList()) + unicode
+                            channel.retrieveMessageById(row[Polls.messageId]).queue(
+                                { message ->
+                                    val poll = Poll(
+                                        author,
+                                        message,
+                                        row[Polls.creationDatetime],
+                                        row[Polls.expirationDatetime],
+                                        row[Polls.title],
+                                        deserializeListOfStrings(row[Polls.serializedOptions]),
+                                        row[Polls.multipleChoices]
+                                    )
+                                    if (!poll.multipleChoices) {
+                                        val completableFutures = mutableListOf<CompletableFuture<List<User>>>()
+                                        val userReactionMap: MutableMap<User, List<String>> = HashMap()
+                                        for (unicode in emoteToIndex.keys) {
+                                            completableFutures.add(
+                                                poll.message.retrieveReactionUsers(unicode).submit().whenComplete { mutableList, _ ->
+                                                    mutableList.filter { !it.isBot }.forEach { user ->
+                                                        userReactionMap[user] = userReactionMap.getOrDefault(user, emptyList()) + unicode
+                                                    }
+                                                }
+                                            )
+                                        }
+                                        CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
+                                        userReactionMap.forEach { (user, reactions) ->
+                                            reactions.drop(1).forEach { reaction ->
+                                                poll.message.removeReaction(reaction, user).queue()
                                             }
-                                        })
-                                    }
-                                    CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
-                                    userReactionMap.forEach { (user, reactions) ->
-                                        reactions.drop(1).forEach { reaction ->
-                                            poll.message.removeReaction(reaction, user).queue()
                                         }
                                     }
+                                    if (poll.hasExpired()) {
+                                        closePoll(poll)
+                                    } else {
+                                        pollMap[Triple(message.guild.idLong, message.channel.idLong, message.idLong)] = poll
+                                        refreshPoll(poll)
+                                        val trigger = TriggerBuilder
+                                            .newTrigger()
+                                            .startAt(row[Polls.expirationDatetime].toDate())
+                                            .build()
+                                        scheduler.scheduleJob(JobBuilder.newJob(TerminatePoll::class.java).build(), trigger)
+                                    }
+                                },
+                                { _ ->
+                                    removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])
                                 }
-                                if (poll.hasExpired()) {
-                                    closePoll(poll)
-                                } else {
-                                    pollMap[Triple(message.guild.idLong, message.channel.idLong, message.idLong)] = poll
-                                    refreshPoll(poll)
-                                    val trigger = TriggerBuilder
-                                        .newTrigger()
-                                        .startAt(row[Polls.expirationDatetime].toDate())
-                                        .build()
-                                    scheduler.scheduleJob(JobBuilder.newJob(TerminatePoll::class.java).build(), trigger)
-                                }
-                            }, { _ ->
-                                removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])
-                            })
+                            )
                         } else {
                             removePollFromDatabase(row[Polls.guildId], row[Polls.channelId], row[Polls.messageId])
                         }
@@ -240,9 +247,10 @@ suspend fun initPollsFromDb() {
 fun removePollFromDatabase(guildId: Long, channelId: Long, messageId: Long) {
     transaction {
         Polls
-            .deleteWhere { Polls.guildId eq guildId and
-                (Polls.channelId eq channelId) and
-                (Polls.messageId eq messageId)
+            .deleteWhere {
+                Polls.guildId eq guildId and
+                    (Polls.channelId eq channelId) and
+                    (Polls.messageId eq messageId)
             }
     }
 }
@@ -250,9 +258,10 @@ fun removePollFromDatabase(guildId: Long, channelId: Long, messageId: Long) {
 fun removePollFromDatabase(poll: Poll) {
     transaction {
         Polls
-            .deleteWhere { Polls.guildId eq poll.message.guild.idLong and
-                (Polls.channelId eq poll.message.channel.idLong) and
-                (Polls.messageId eq poll.message.idLong)
+            .deleteWhere {
+                Polls.guildId eq poll.message.guild.idLong and
+                    (Polls.channelId eq poll.message.channel.idLong) and
+                    (Polls.messageId eq poll.message.idLong)
             }
     }
 }
@@ -267,12 +276,13 @@ fun closePoll(poll: Poll) {
     val votes = mutableMapOf<String, List<Member>>()
     val completableFutures = mutableListOf<CompletableFuture<List<User>>>()
     for (reaction in emoteToIndex.keys) {
-        completableFutures.add(poll.message.retrieveReactionUsers(reaction).submit()
-            .whenComplete { mutableList, _ ->
-                votes[reaction] = mutableList
-                    .filter { user -> !user.isBot }
-                    .mapNotNull { user -> poll.message.guild.getMemberById(user.idLong) }
-            }
+        completableFutures.add(
+            poll.message.retrieveReactionUsers(reaction).submit()
+                .whenComplete { mutableList, _ ->
+                    votes[reaction] = mutableList
+                        .filter { user -> !user.isBot }
+                        .mapNotNull { user -> poll.message.guild.getMemberById(user.idLong) }
+                }
         )
     }
     CompletableFuture.allOf(*completableFutures.toTypedArray()).get()
@@ -288,12 +298,15 @@ fun closePoll(poll: Poll) {
     for ((index, option) in poll.options.withIndex()) {
         result.addField(
             "${indexToEmote[index + 1]} $option (**${votes[indexToEmote[index + 1]]?.size ?: 0}**)",
-            votes[indexToEmote[index + 1]]?.joinToString("\n") { member -> run {
-                mentions.add(member.user)
-                member.effectiveName
-            } }
+            votes[indexToEmote[index + 1]]?.joinToString("\n") { member ->
+                run {
+                    mentions.add(member.user)
+                    member.effectiveName
+                }
+            }
                 ?: "",
-            false)
+            false
+        )
     }
     // Remove bot from mentions
     mentions.remove(jdaInstance.selfUser)

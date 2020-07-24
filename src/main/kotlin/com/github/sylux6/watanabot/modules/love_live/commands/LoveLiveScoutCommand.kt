@@ -9,10 +9,10 @@ import com.github.sylux6.watanabot.utils.mentionAt
 import com.github.sylux6.watanabot.utils.sendFile
 import com.github.sylux6.watanabot.utils.sendMessage
 import com.github.sylux6.watanabot.utils.stringToJsonArray
-import kotlin.random.Random
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import okhttp3.OkHttpClient
 import org.json.JSONArray
+import kotlin.random.Random
 
 object LoveLiveScoutCommand : AbstractCommand("scout", 1) {
     override val template: String

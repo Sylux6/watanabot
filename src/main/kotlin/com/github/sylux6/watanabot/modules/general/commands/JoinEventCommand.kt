@@ -17,7 +17,8 @@ object JoinEventCommand : AbstractCommand("joinevent", levelAccess = listOf(Comm
         if (!event.member!!.roles.contains(eventRole)) {
             event.guild.addRoleToMember(event.member!!, eventRole).queue()
             sendMessage(
-                event.channel, "${mentionAt(event.author)} " +
+                event.channel,
+                "${mentionAt(event.author)} " +
                     "${eventRole.name} role added"
             )
         }

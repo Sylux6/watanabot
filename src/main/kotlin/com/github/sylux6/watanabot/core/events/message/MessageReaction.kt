@@ -7,9 +7,9 @@ import com.github.sylux6.watanabot.modules.poll.utils.emoteToIndex
 import com.github.sylux6.watanabot.modules.poll.utils.getPoll
 import com.github.sylux6.watanabot.modules.poll.utils.pollMap
 import com.github.sylux6.watanabot.modules.poll.utils.refreshPoll
-import java.util.concurrent.CompletableFuture
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent
+import java.util.concurrent.CompletableFuture
 
 fun onMessageAddReaction(event: MessageReactionAddEvent) {
     if (pollMap.containsPoll(event)) {

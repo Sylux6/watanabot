@@ -6,8 +6,6 @@ import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.jdaInstance
 import com.github.sylux6.watanabot.utils.log
 import com.github.sylux6.watanabot.utils.sendLog
-import java.time.LocalDate
-import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -18,6 +16,8 @@ import mu.KotlinLogging
 import net.dv8tion.jda.api.EmbedBuilder
 import org.quartz.Job
 import org.quartz.JobExecutionContext
+import java.time.LocalDate
+import kotlin.system.measureTimeMillis
 
 private val logger = KotlinLogging.logger {}
 

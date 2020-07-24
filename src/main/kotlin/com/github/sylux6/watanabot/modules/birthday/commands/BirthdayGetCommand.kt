@@ -7,9 +7,6 @@ import com.github.sylux6.watanabot.utils.dayFormatter
 import com.github.sylux6.watanabot.utils.findMemberOrNull
 import com.github.sylux6.watanabot.utils.sendMessage
 import db.models.Users
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
@@ -17,6 +14,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object BirthdayGetCommand : AbstractCommand("get") {
     override val template: String

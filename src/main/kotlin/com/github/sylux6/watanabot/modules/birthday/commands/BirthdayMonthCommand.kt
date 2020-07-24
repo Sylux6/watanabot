@@ -5,11 +5,6 @@ import com.github.sylux6.watanabot.internal.exceptions.commandFail
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.sendMessage
 import db.models.Users
-import java.text.DecimalFormat
-import java.time.LocalDate
-import java.time.Month
-import java.time.format.TextStyle
-import java.util.Locale
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.MessageChannel
@@ -17,6 +12,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.jetbrains.exposed.sql.jodatime.month
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.Month
+import java.time.format.TextStyle
+import java.util.Locale
 
 object BirthdayMonthCommand : AbstractCommand("month") {
     override val template: String

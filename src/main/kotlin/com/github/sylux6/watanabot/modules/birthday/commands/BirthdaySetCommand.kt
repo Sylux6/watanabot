@@ -10,14 +10,14 @@ import com.github.sylux6.watanabot.utils.findMemberOrNull
 import com.github.sylux6.watanabot.utils.sendMessageAt
 import db.models.Users
 import db.utils.insertOrUpdate
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Locale
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object BirthdaySetCommand : AbstractCommand("set", 1) {
     override val template: String
@@ -31,11 +31,14 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
             // Check if all conditions are met to set another member birthday
             val (date: DateTime, member: Member) = if (args.size > 1) {
                 if (!checkCommandAccess(event, CommandLevelAccess.ADMIN) &&
-                    !checkCommandAccess(event, CommandLevelAccess.OWNER)) {
+                    !checkCommandAccess(event, CommandLevelAccess.OWNER)
+                ) {
                     accessFail("You cannot set a birthday for another member")
                 }
-                DateTime(formatter.parse(args[1])) to (findMemberOrNull(event.guild, args.first())
-                    ?: commandFail("Cannot find member"))
+                DateTime(formatter.parse(args[1])) to (
+                    findMemberOrNull(event.guild, args.first())
+                        ?: commandFail("Cannot find member")
+                    )
             } else {
                 DateTime(formatter.parse(args.first())) to event.member!!
             }

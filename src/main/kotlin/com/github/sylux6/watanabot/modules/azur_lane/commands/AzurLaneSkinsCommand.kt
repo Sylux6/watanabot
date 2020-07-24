@@ -15,7 +15,7 @@ object AzurLaneSkinsCommand : AbstractCommand("skins", 1) {
         get() = "Get available skins of a ship."
 
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
-            try {
+        try {
             val ship = Atago.getShipByName(args.joinToString(" "))
             sendMessage(
                 event.channel,

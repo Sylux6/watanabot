@@ -15,7 +15,8 @@ fun getImage(event: MessageReceivedEvent, search: List<String>, rating: Rating =
             images.isNotEmpty() -> {
                 val image = images.random()
                 sendMessage(
-                    event.channel, buildEmbedImageBooru(
+                    event.channel,
+                    buildEmbedImageBooru(
                         image.url,
                         image.tag_string_character,
                         image.tag_string_artist,

@@ -12,10 +12,6 @@ import com.github.sylux6.watanabot.core.events.message.onMessageRemoveReaction
 import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityEnd
 import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityStart
 import com.github.sylux6.watanabot.utils.isPrivateServer
-import java.util.concurrent.Executors
-import java.util.concurrent.ForkJoinPool
-import java.util.concurrent.ScheduledExecutorService
-import kotlin.concurrent.thread
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +25,10 @@ import net.dv8tion.jda.api.events.user.UserActivityEndEvent
 import net.dv8tion.jda.api.events.user.UserActivityStartEvent
 import reactor.core.scheduler.Scheduler
 import reactor.core.scheduler.Schedulers
+import java.util.concurrent.Executors
+import java.util.concurrent.ForkJoinPool
+import java.util.concurrent.ScheduledExecutorService
+import kotlin.concurrent.thread
 
 var count: Int = 0
 val executor: ScheduledExecutorService =
@@ -52,7 +52,7 @@ fun launchEvent(job: () -> Unit) {
 
 fun initReactiveEventManager() {
     manager.on<MessageReceivedEvent>()
-        .filter { !it.message.author.isBot && !it.message.author.isFake }
+        .filter { !it.message.author.isBot }
         .subscribe { launchEvent { onMessageReceivedEvent(it) } }
 
     manager.on<GuildMemberRemoveEvent>()

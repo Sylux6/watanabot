@@ -43,7 +43,7 @@ plugins {
     kotlin("jvm") version "1.3.72"
     kotlin("plugin.serialization") version "1.3.72"
     id("com.github.johnrengelman.shadow") version "5.2.0"
-    id("org.jmailen.kotlinter") version "2.3.0"
+    id("org.jmailen.kotlinter") version "2.4.1"
 }
 
 application {

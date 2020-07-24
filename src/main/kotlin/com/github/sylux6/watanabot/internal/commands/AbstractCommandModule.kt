@@ -33,12 +33,12 @@ abstract class AbstractCommandModule(
                 for ((commandName, command) in commandMap.toSortedMap()) {
                     // Filter some access levels we don't need to check to show documentation
                     if (!command.levelAccess.filter {
-                            it in listOf(
-                                CommandLevelAccess.IN_VOICE,
-                                CommandLevelAccess.BOT_IN_VOICE
-                            )
-                        }
-                            .all { checkCommandAccess(event, it) }
+                        it in listOf(
+                            CommandLevelAccess.IN_VOICE,
+                            CommandLevelAccess.BOT_IN_VOICE
+                        )
+                    }
+                        .all { checkCommandAccess(event, it) }
                     ) {
                         continue
                     }
