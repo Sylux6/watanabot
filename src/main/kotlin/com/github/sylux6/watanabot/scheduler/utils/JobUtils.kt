@@ -3,6 +3,7 @@ package com.github.sylux6.watanabot.scheduler.utils
 import com.github.sylux6.watanabot.utils.getYousoro
 import com.github.sylux6.watanabot.utils.jdaInstance
 import com.github.sylux6.watanabot.utils.mentionAt
+import com.github.sylux6.watanabot.utils.retrieveMemberByIdOrNull
 import com.github.sylux6.watanabot.utils.sendMessage
 import db.models.Guilds
 import db.models.Users
@@ -35,10 +36,17 @@ fun birthdayDailyChecker() {
     for ((guildId, channelId) in channelIdsByGuildId) {
         val guild = jdaInstance.getGuildById(guildId) ?: continue
         val channel = guild.getTextChannelById(channelId) ?: continue
-        val mentions = memberIds.mapNotNull { guild.retrieveMemberById(it).complete()?.let { member -> mentionAt(member) } }
+        val mentions = memberIds.mapNotNull {
+            guild.retrieveMemberByIdOrNull(it)?.let { member ->
+                mentionAt(member)
+            }
+        }
         if (mentions.isNotEmpty()) {
-            sendMessage(channel, "Happy Birthday ${getYousoro(guild)} \uD83C\uDF82\n" +
-                mentions.joinToString("\n"))
+            sendMessage(
+                channel,
+                "Happy Birthday ${getYousoro(guild)} \uD83C\uDF82\n" +
+                    mentions.joinToString("\n")
+            )
         }
     }
 }
