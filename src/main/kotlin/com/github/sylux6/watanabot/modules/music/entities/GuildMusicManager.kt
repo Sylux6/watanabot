@@ -13,7 +13,7 @@ class GuildMusicManager
  * @param manager
  * Audio player com.github.sylux6.watanabot.manager to use for creating the player.
  */
-    (manager: AudioPlayerManager) {
+(manager: AudioPlayerManager) {
     /**
      * Audio player for the guild.
      */

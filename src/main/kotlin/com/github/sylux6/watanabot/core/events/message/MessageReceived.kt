@@ -30,23 +30,26 @@ fun onMessageReceivedEvent(event: MessageReceivedEvent) {
 
     // At this point, words list looks like ["o7", "my_module", "my_command", ...]
     when (val selectedModule = COMMAND_MODULE_MAP.getOrDefault(args.getOrElse(1) { return }, GeneralCommandModule)) {
-        GeneralCommandModule -> selectedModule.commandMap[args[1]]?.preRunCommand(selectedModule, event, args.drop(2))
-            ?: return
-        PictureCommandModule -> selectedModule.commandMap[args.getOrNull(2)]?.preRunCommand(
-            selectedModule,
-            event,
-            args.drop(3)
-        )
-            ?: try {
-                getImage(event, args.drop(3))
-            } catch (e: CommandException) {
-                sendBotMessage(
-                    event.channel,
-                    message = e.message ?: "Error during ${selectedModule.name} command",
-                    type = BotMessageType.ERROR
-                )
-            }
-        else -> selectedModule.commandMap[args.getOrNull(2)]?.preRunCommand(selectedModule, event, args.drop(3))
-            ?: return
+        GeneralCommandModule ->
+            selectedModule.commandMap[args[1]]?.preRunCommand(selectedModule, event, args.drop(2))
+                ?: return
+        PictureCommandModule ->
+            selectedModule.commandMap[args.getOrNull(2)]?.preRunCommand(
+                selectedModule,
+                event,
+                args.drop(3)
+            )
+                ?: try {
+                    getImage(event, args.drop(3))
+                } catch (e: CommandException) {
+                    sendBotMessage(
+                        event.channel,
+                        message = e.message ?: "Error during ${selectedModule.name} command",
+                        type = BotMessageType.ERROR
+                    )
+                }
+        else ->
+            selectedModule.commandMap[args.getOrNull(2)]?.preRunCommand(selectedModule, event, args.drop(3))
+                ?: return
     }
 }

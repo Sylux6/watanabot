@@ -8,13 +8,13 @@ import com.github.sylux6.watanabot.utils.jdaInstance
 import com.github.sylux6.watanabot.utils.sendBotMessage
 import com.github.sylux6.watanabot.utils.sendMessage
 import db.models.AzurLaneUsers
-import java.util.Locale
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
+import java.util.Locale
 
 object AzurLanePopularityCommand : AbstractCommand("popularity") {
     override val template: String
@@ -37,7 +37,8 @@ object AzurLanePopularityCommand : AbstractCommand("popularity") {
             }
             if (topThree.isNotEmpty()) {
                 sendMessage(
-                    event.channel, mostPopularShipEmbed(topThree)
+                    event.channel,
+                    mostPopularShipEmbed(topThree)
                         .setFooter("${event.guild.name} stats", event.guild.iconUrl)
                         .build()
                 )
@@ -61,9 +62,11 @@ object AzurLanePopularityCommand : AbstractCommand("popularity") {
                     }
             }
             if (membersByShipId.containsKey(ship.id)) {
-                sendMessage(event.channel, shipPopularity(ship, membersByShipId)
-                    .setFooter("${event.guild.name} stats", event.guild.iconUrl)
-                    .build()
+                sendMessage(
+                    event.channel,
+                    shipPopularity(ship, membersByShipId)
+                        .setFooter("${event.guild.name} stats", event.guild.iconUrl)
+                        .build()
                 )
             } else {
                 sendBotMessage(event.channel, message = "Nobody has pledged to ${ship.names.en} yet", thumbnail = ship.thumbnail)
@@ -106,8 +109,10 @@ object AzurLanePopularityCommand : AbstractCommand("popularity") {
 
     private fun shipPopularity(ship: Ship, membersByShipId: Map<String, List<Pair<DateTime, List<Member>>>>): EmbedBuilder {
         val total: Int = membersByShipId
-            .flatMap { (_, pairList) -> pairList
-                .map { (_, memberList) -> memberList.size } }
+            .flatMap { (_, pairList) ->
+                pairList
+                    .map { (_, memberList) -> memberList.size }
+            }
             .reduce { acc, i -> acc + i }
         val shipTotal: Int = (membersByShipId[ship.id] ?: error(""))
             .map { (_, memberList) -> memberList.size }
@@ -120,11 +125,11 @@ object AzurLanePopularityCommand : AbstractCommand("popularity") {
             .setThumbnail(ship.thumbnail)
         for (pair in membersByShipId[ship.id] ?: error("")) {
             val (date: DateTime, members: List<Member>) = pair
-                message.addField(
-                    date.toString("dd-MM-yyyy"),
-                    members.joinToString("\n") { it.effectiveName },
-                    false
-                )
+            message.addField(
+                date.toString("dd-MM-yyyy"),
+                members.joinToString("\n") { it.effectiveName },
+                false
+            )
         }
         return message
     }

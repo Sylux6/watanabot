@@ -15,7 +15,8 @@ object AvatarCommand : AbstractCommand("avatar") {
     override fun runCommand(event: MessageReceivedEvent, args: List<String>) {
         if (args.isEmpty()) {
             sendMessage(
-                event.channel, buildEmbedImageOnly(
+                event.channel,
+                buildEmbedImageOnly(
                     event.author.name + "#" + event.author.discriminator,
                     event.author.effectiveAvatarUrl
                 )
@@ -27,7 +28,8 @@ object AvatarCommand : AbstractCommand("avatar") {
 
         if (member != null) {
             sendMessage(
-                event.channel, buildEmbedImageOnly(
+                event.channel,
+                buildEmbedImageOnly(
                     member.user.name + "#" + event.author.discriminator,
                     member.user.effectiveAvatarUrl
                 )

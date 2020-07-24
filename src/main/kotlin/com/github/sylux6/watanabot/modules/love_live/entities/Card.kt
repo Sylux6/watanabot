@@ -1,15 +1,15 @@
 package com.github.sylux6.watanabot.modules.love_live.entities
 
-import java.awt.Color
-import java.io.IOException
-import java.net.MalformedURLException
-import java.net.URL
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.internal.utils.IOUtil
 import org.json.JSONObject
+import java.awt.Color
+import java.io.IOException
+import java.net.MalformedURLException
+import java.net.URL
 
 class Card(json: JSONObject, user: User) {
 

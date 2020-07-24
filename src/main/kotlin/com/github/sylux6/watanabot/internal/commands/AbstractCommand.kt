@@ -54,8 +54,10 @@ abstract class AbstractCommand(
             }
             when {
                 args.contains("--help") -> help(commandModule, event.channel)
-                args.size < minArgs -> commandFail("Invalid command, do you need help ?\n(see documentation with " +
-                    "`$BOT_PREFIX ${commandModule.shortName} $name --help`)")
+                args.size < minArgs -> commandFail(
+                    "Invalid command, do you need help ?\n(see documentation with " +
+                        "`$BOT_PREFIX ${commandModule.shortName} $name --help`)"
+                )
                 else -> runCommand(event, args)
             }
         } catch (e: CommandException) {
