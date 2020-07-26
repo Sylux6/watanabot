@@ -291,7 +291,7 @@ fun closePoll(poll: Poll) {
     val mentions = mutableSetOf(poll.author.user)
     val result = EmbedBuilder()
         .setAuthor(poll.message.guild.name, null, poll.message.guild.iconUrl)
-        .setTitle("Poll results")
+        .setTitle("Poll results", poll.message.jumpUrl)
         .setDescription(poll.title)
         .setColor(Color.YELLOW)
         .setFooter("in #${poll.message.channel.name} channel")
