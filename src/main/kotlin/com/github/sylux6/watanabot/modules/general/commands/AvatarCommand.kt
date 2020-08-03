@@ -30,7 +30,7 @@ object AvatarCommand : AbstractCommand("avatar") {
             sendMessage(
                 event.channel,
                 buildEmbedImageOnly(
-                    member.user.name + "#" + event.author.discriminator,
+                    member.user.name + "#" + member.user.discriminator,
                     member.user.effectiveAvatarUrl
                 )
             )
