@@ -5,14 +5,14 @@ val harmonicaVersion = "1.1.26"
 val imageboardVersion = "2.2.1"
 val javaStringSimilarityVersion = "2.0.0"
 val jdaNasVersion = "1.1.0"
-val jdaVersion = "4.2.0_189"
+val jdaVersion = "4.2.0_198"
 val jdaReactorVersion = "1.2.0"
 val jsonVersion = "20200518"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggingVersion = "1.8.3"
-val kotlinVersion = "1.3.72"
-val kotlinxSerializationVersion = "0.20.0"
-val kotlinxVersion = "1.3.8"
+val kotlinVersion = "1.4.0"
+val kotlinxSerializationVersion = "1.0.0-RC"
+val kotlinxVersion = "1.3.9"
 val lavaplayerVersion = "1.3.50"
 val logbackVersion = "1.3.0-alpha5"
 val mockkVersion = "1.10.0"
@@ -28,8 +28,8 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-script-util:1.3.72")
-        classpath("com.github.KenjiOhtsuka:harmonica:develop-SNAPSHOT")
+        classpath("org.jetbrains.kotlin:kotlin-script-util:1.4.0")
+        classpath("com.github.KenjiOhtsuka:harmonica:1.1.26")
         classpath("com.github.cesarferreira:kotlin-pluralizer:0.2.9")
     }
 }
@@ -39,11 +39,11 @@ apply(plugin = "jarmonica")
 plugins {
     application
     java
-    maven
-    kotlin("jvm") version "1.3.72"
-    kotlin("plugin.serialization") version "1.3.72"
+    `maven-publish`
+    kotlin("jvm") version "1.4.0"
+    kotlin("plugin.serialization") version "1.4.0"
     id("com.github.johnrengelman.shadow") version "6.0.0"
-    id("org.jmailen.kotlinter") version "2.4.1"
+    id("org.jmailen.kotlinter") version "3.0.2"
 }
 
 application {
@@ -62,7 +62,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
 
     // Discord
     implementation("net.dv8tion:JDA:$jdaVersion") {
