@@ -22,7 +22,8 @@ object MusicQueueCommand : AbstractCommand("queue", 1, levelAccess = listOf(Comm
         }
 
         MusicCommandModule.playerManager.loadItemOrdered(
-            musicManager, args.first(),
+            musicManager,
+            args.first(),
             AudioHandler(musicManager, event.channel, args.first())
         )
     }

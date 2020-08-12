@@ -55,11 +55,19 @@ object BirthdaySetCommand : AbstractCommand("set", 1) {
                 }
             }
             sendMessageAt(
-                event.channel, event.author,
+                event.channel,
+                event.author,
                 "${member.effectiveName} birthday is set to the " +
                     dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(date.toDate())) +
                     if (oldValue != null)
-                        " (previously ${dayFormatter(SimpleDateFormat("dd MMM", Locale.ENGLISH).format(oldValue.toDate()))})"
+                        " (previously ${
+                        dayFormatter(
+                            SimpleDateFormat(
+                                "dd MMM",
+                                Locale.ENGLISH
+                            ).format(oldValue.toDate())
+                        )
+                        })"
                     else
                         ""
             )

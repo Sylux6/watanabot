@@ -15,8 +15,12 @@ object CommandHandler {
 
     // Command modules
     val COMMAND_MODULES = setOf(
-        AzurLaneCommandModule, BirthdayCommandModule,
-        PictureCommandModule, LoveLiveCommandModule, MusicCommandModule, PollCommandModule
+        AzurLaneCommandModule,
+        BirthdayCommandModule,
+        PictureCommandModule,
+        LoveLiveCommandModule,
+        MusicCommandModule,
+        PollCommandModule
     )
 
     init {
