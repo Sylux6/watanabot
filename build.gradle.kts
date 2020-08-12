@@ -1,26 +1,26 @@
 val atriumVersion = "0.12.0"
 val azurapiVersion = "3.1.4"
-val exposedVersion = "0.26.1"
+val exposedVersion = "0.26.2"
 val harmonicaVersion = "1.1.26"
 val imageboardVersion = "2.2.1"
 val javaStringSimilarityVersion = "2.0.0"
 val jdaNasVersion = "1.1.0"
-val jdaVersion = "4.2.0_184"
+val jdaVersion = "4.2.0_189"
 val jdaReactorVersion = "1.2.0"
 val jsonVersion = "20200518"
 val konfigVersion = "1.6.10.0"
-val kotlinLoggingVersion = "1.8.0.1"
+val kotlinLoggingVersion = "1.8.3"
 val kotlinVersion = "1.3.72"
 val kotlinxSerializationVersion = "0.20.0"
-val kotlinxVersion = "1.3.5"
+val kotlinxVersion = "1.3.8"
 val lavaplayerVersion = "1.3.50"
-val logbackVersion = "1.2.3"
+val logbackVersion = "1.3.0-alpha5"
 val mockkVersion = "1.10.0"
 val postgresqlVersion = "42.2.14"
 val quartzVersion = "2.3.2"
 val reflectionsVersion = "0.9.12"
 val sentryVersion = "1.7.30"
-val spekVersion = "2.0.11"
+val spekVersion = "2.0.12"
 
 buildscript {
     repositories {
@@ -42,7 +42,7 @@ plugins {
     maven
     kotlin("jvm") version "1.3.72"
     kotlin("plugin.serialization") version "1.3.72"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("com.github.johnrengelman.shadow") version "6.0.0"
     id("org.jmailen.kotlinter") version "2.4.1"
 }
 
