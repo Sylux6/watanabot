@@ -1,26 +1,26 @@
-val atriumVersion = "0.12.0"
+val atriumVersion = "0.14.0"
 val azurapiVersion = "3.1.4"
-val exposedVersion = "0.26.2"
-val harmonicaVersion = "1.1.26"
+val exposedVersion = "0.28.1"
+val harmonicaVersion = "2.0.0"
 val imageboardVersion = "2.2.1"
 val javaStringSimilarityVersion = "2.0.0"
 val jdaNasVersion = "1.1.0"
-val jdaVersion = "4.2.0_198"
+val jdaVersion = "4.2.0_222"
 val jdaReactorVersion = "1.2.0"
-val jsonVersion = "20200518"
+val jsonVersion = "20201115"
 val konfigVersion = "1.6.10.0"
-val kotlinLoggingVersion = "1.8.3"
-val kotlinVersion = "1.4.0"
-val kotlinxSerializationVersion = "1.0.0-RC"
-val kotlinxVersion = "1.3.9"
-val lavaplayerVersion = "1.3.50"
+val kotlinLoggingVersion = "2.0.3"
+val kotlinVersion = "1.4.10"
+val kotlinxSerializationVersion = "1.0.1"
+val kotlinxVersion = "1.4.2"
+val lavaplayerVersion = "1.3.63"
 val logbackVersion = "1.3.0-alpha5"
-val mockkVersion = "1.10.0"
-val postgresqlVersion = "42.2.14"
+val mockkVersion = "1.10.3-jdk8"
+val postgresqlVersion = "42.2.18"
 val quartzVersion = "2.3.2"
 val reflectionsVersion = "0.9.12"
-val sentryVersion = "1.7.30"
-val spekVersion = "2.0.12"
+val sentryVersion = "3.2.0"
+val spekVersion = "2.0.14"
 
 buildscript {
     repositories {
@@ -28,8 +28,8 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-script-util:1.4.0")
-        classpath("com.github.KenjiOhtsuka:harmonica:1.1.26")
+        classpath("org.jetbrains.kotlin:kotlin-script-util:1.4.10")
+        classpath("com.github.KenjiOhtsuka:harmonica:2.0.0")
         classpath("com.github.cesarferreira:kotlin-pluralizer:0.2.9")
     }
 }
@@ -40,10 +40,10 @@ plugins {
     application
     java
     `maven-publish`
-    kotlin("jvm") version "1.4.0"
-    kotlin("plugin.serialization") version "1.4.0"
+    kotlin("jvm") version "1.4.10"
+    kotlin("plugin.serialization") version "1.4.10"
     id("com.github.johnrengelman.shadow") version "6.0.0"
-    id("org.jmailen.kotlinter") version "3.0.2"
+    id("org.jmailen.kotlinter") version "3.2.0"
 }
 
 application {
@@ -62,7 +62,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
 
     // Discord
     implementation("net.dv8tion:JDA:$jdaVersion") {

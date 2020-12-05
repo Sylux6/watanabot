@@ -27,7 +27,9 @@ object Main {
     fun main(args: Array<String>) {
         // Sentry logger setup
         if (config.contains(SENTRY_DNS)) {
-            Sentry.init(config[SENTRY_DNS])
+            Sentry.init { options ->
+                options.dsn = config[SENTRY_DNS]
+            }
         }
         // Running job scheduler
         QuartzScheduler.run()
