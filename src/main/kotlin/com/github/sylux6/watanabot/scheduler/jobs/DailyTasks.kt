@@ -1,6 +1,5 @@
 package com.github.sylux6.watanabot.scheduler.jobs
 
-import com.github.azurapi.azurapikotlin.api.Atago
 import com.github.sylux6.watanabot.scheduler.utils.birthdayDailyChecker
 import com.github.sylux6.watanabot.utils.BOT_PRIMARY_COLOR
 import com.github.sylux6.watanabot.utils.jdaInstance
@@ -25,6 +24,11 @@ class DailyTasks : Job {
 
     private val logMutex = Mutex()
 
+    private val tasks = listOf<Pair<String, () -> Unit>>(
+        // Pair("Update Azur Lane database", Atago.reloadDatabase()),  // Update Azur Lane database
+        Pair("Check members' birthday", { birthdayDailyChecker() }) // Birthday
+    )
+
     override fun execute(context: JobExecutionContext) {
         val today = LocalDate.now()
         val logBuilder = StringBuilder("List of tasks:")
@@ -36,10 +40,9 @@ class DailyTasks : Job {
         // BE CAREFUL WHEN ADDING A NEW TASK TO CONCURRENCY ACCESS AND MUTABLE STATE
         runBlocking {
             withContext(Dispatchers.Default) {
-                // Update Azur Lane database
-                launch { addJob(embedLogBuilder, logBuilder, "Update Azur Lane database") { Atago.reloadDatabase() } }
-                // Birthday
-                launch { addJob(embedLogBuilder, logBuilder, "Check members' birthday") { birthdayDailyChecker() } }
+                for ((jobTitle, jobFunction) in tasks) {
+                    launch { addJob(embedLogBuilder, logBuilder, jobTitle) { jobFunction() } }
+                }
             }
         }
 
