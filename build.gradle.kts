@@ -19,7 +19,7 @@ val mockkVersion = "1.10.6"
 val postgresqlVersion = "42.2.18"
 val quartzVersion = "2.3.2"
 val reflectionsVersion = "0.9.12"
-val sentryVersion = "1.7.30"
+val sentryVersion = "4.0.0"
 val spekVersion = "2.0.15"
 
 buildscript {
