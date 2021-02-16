@@ -1,26 +1,26 @@
-val atriumVersion = "0.12.0"
+val atriumVersion = "0.15.0"
 val azurapiVersion = "3.1.4"
-val exposedVersion = "0.26.2"
+val exposedVersion = "0.29.1"
 val harmonicaVersion = "1.1.26"
-val imageboardVersion = "2.2.1"
+val imageboardVersion = "2.4.5"
 val javaStringSimilarityVersion = "2.0.0"
 val jdaNasVersion = "1.1.0"
-val jdaVersion = "4.2.0_227"
+val jdaVersion = "4.2.0_228"
 val jdaReactorVersion = "1.2.0"
-val jsonVersion = "20200518"
+val jsonVersion = "20201115"
 val konfigVersion = "1.6.10.0"
-val kotlinLoggingVersion = "1.8.3"
-val kotlinVersion = "1.4.0"
+val kotlinLoggingVersion = "2.0.4"
+val kotlinVersion = "1.4.30"
 val kotlinxSerializationVersion = "1.0.0-RC"
 val kotlinxVersion = "1.3.9"
-val lavaplayerVersion = "1.3.66"
+val lavaplayerVersion = "1.3.71"
 val logbackVersion = "1.3.0-alpha5"
-val mockkVersion = "1.10.0"
-val postgresqlVersion = "42.2.14"
+val mockkVersion = "1.10.6"
+val postgresqlVersion = "42.2.18"
 val quartzVersion = "2.3.2"
 val reflectionsVersion = "0.9.12"
 val sentryVersion = "1.7.30"
-val spekVersion = "2.0.12"
+val spekVersion = "2.0.15"
 
 buildscript {
     repositories {
@@ -28,7 +28,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-script-util:1.4.0")
+        classpath("org.jetbrains.kotlin:kotlin-script-util:1.4.30")
         classpath("com.github.KenjiOhtsuka:harmonica:1.1.26")
         classpath("com.github.cesarferreira:kotlin-pluralizer:0.2.9")
     }
@@ -40,10 +40,10 @@ plugins {
     application
     java
     `maven-publish`
-    kotlin("jvm") version "1.4.0"
-    kotlin("plugin.serialization") version "1.4.0"
-    id("com.github.johnrengelman.shadow") version "6.0.0"
-    id("org.jmailen.kotlinter") version "3.0.2"
+    kotlin("jvm") version "1.4.30"
+    kotlin("plugin.serialization") version "1.4.30"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
+    id("org.jmailen.kotlinter") version "3.3.0"
 }
 
 application {
