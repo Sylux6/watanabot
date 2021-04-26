@@ -1,7 +1,6 @@
 package com.github.sylux6.watanabot.utils
 
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 
