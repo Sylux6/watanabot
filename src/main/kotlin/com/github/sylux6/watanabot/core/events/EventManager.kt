@@ -9,8 +9,8 @@ import com.github.sylux6.watanabot.core.events.message.onMessageAddReaction
 import com.github.sylux6.watanabot.core.events.message.onMessageDelete
 import com.github.sylux6.watanabot.core.events.message.onMessageReceivedEvent
 import com.github.sylux6.watanabot.core.events.message.onMessageRemoveReaction
-import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityEnd
-import com.github.sylux6.watanabot.core.events.user.onUserUpdateActivityStart
+import com.github.sylux6.watanabot.core.events.user.onUserActivityEndEvent
+import com.github.sylux6.watanabot.core.events.user.onUserActivityStartEvent
 import com.github.sylux6.watanabot.utils.isPrivateServer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,11 +65,11 @@ fun initReactiveEventManager() {
 
     manager.on<UserActivityStartEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { launchEvent { onUserUpdateActivityStart(it) } }
+        .subscribe { launchEvent { onUserActivityStartEvent(it) } }
 
     manager.on<UserActivityEndEvent>()
         .filter { isPrivateServer(it.guild.idLong) }
-        .subscribe { launchEvent { onUserUpdateActivityEnd(it) } }
+        .subscribe { launchEvent { onUserActivityEndEvent(it) } }
 
     manager.on<MessageReactionAddEvent>()
         .filter { !it.user!!.isBot }
